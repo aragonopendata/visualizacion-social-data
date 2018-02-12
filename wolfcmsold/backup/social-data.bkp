@@ -1,0 +1,90 @@
+<div class="separadorContenidoPagina"></div>
+<div id="contenido">
+	<div class="huecoInicioPagina bordesocialdata"></div>
+	<div class="huecoInicioPagina"></div>
+	<div class="clear"></div>
+	<div id="dvLoading"></div>
+	<div class="seccionSelect">
+	
+		<div id="serviciosODTitulo">
+			<img src="../escucha-activa/public/i/01-TXT-Social-Data.png" alt="Social Data" class="i_i"/>
+		
+			<div class="refrescar">
+				<a href="javascript:onChgChosen1()"><img src = "../escucha-activa/public/i/02-ICON-Refrescar.png" alt="Refrescar" title="Refrescar"></a> 
+			</div>
+			<!--<input type="button" name="refescar" value="Refrescar" onClick="montarUrl();" />-->
+	<!--</div>-->
+		<div class="huecoInicioPagina"></div>
+		<div>
+			<table>
+				<tr>
+					<td class="selectores1">
+						<label class="etiqueta1" title="QUIERO ESCUCHAR" > 
+							<img src="../escucha-activa/public/i/02-TXT-Quiero-Escuchar.png" style="vertical-align:middle;" alt="Quiero escuchar"> 
+						</label>
+						<select id="escucharlb" class="select1" name="ESC"   tabindex="15">
+							<option class="option" value="Toda">Toda la Conversación de Aragón</option>
+							<!--<option value="Propia">Conversación Propia de Aragón</option>-->
+							<option class="option" value="Trending">Trending Topics de Aragón</option>
+						</select>
+					</td>
+					<td class="selectores2">
+						<label class="etiqueta2" title="DE"><img src="../escucha-activa/public/i/03-TXT-De.png" alt="De">  </label>
+						<select id="delb"  class="select2" name="de"  tabindex="16" >
+							<option class="option" value="Todas" selected="selected">Todas las fuentes</option>
+							<option class="option" value="Microblogging">Microblogging/Blogging</option>
+							<!--<option value="Blogging">Blogging</option>
+							<option value="Redes">Redes Sociales</option>-->
+							<option class="option" value="Wiki">Wiki</option>
+							<option class="option" value="Eventos">Eventos</option>
+							<option class="option" value="Video">Vídeo</option>
+							<option class="option" value="Foto">Foto</option>
+							<option class="option" value="Lugares">Lugares</option>
+							<option class="option" value="Desarrolladores">Desarrolladores informáticos</option>
+							<option class="option" value="Prensa">Prensa</option>
+							<!--<option value="Web">Web</option>
+							-->
+						</select>
+					</td>
+					<td class="selectores3">
+						<label class="etiqueta3" title="EN"><img src="../escucha-activa/public/i/04-TXT-En.png" alt="En">   </label>
+						<select id="enlb" class="select3" name="EN"   tabindex="17">
+							<option class="option" value="Listado" selected="selected">Listado</option>
+							<!--<option disabled>Proximamente más contenido</option>-->
+							<option value="Mapa">Mapa</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+
+		<div id="datawindow"></div>
+		<div id="miMapa"></div>
+		
+		<style>
+		#paginator{
+							display: inline-block;
+							width: 70%;
+			}
+			#datos_terceros{
+							display: inline-block;
+							width: 20%;
+							float: right !important;
+			}
+		</style>
+		
+		<div style="width: 100%;">
+			<div id="paginator"></div>
+		
+			<div id="datos_terceros" class="datos-terceros">
+				<a href="http://opendata.aragon.es/condiciones-utilizacion-social-data" target="_blank"></a>
+			</div>
+		</div>
+		
+	</div>
+</div>
+&nbsp;
+<div style="margin-top: 8%;"></div>
+

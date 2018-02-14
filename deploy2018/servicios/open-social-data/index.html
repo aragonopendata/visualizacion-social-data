@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<head>
+	<title>Social data - ARAGÓN OPEN DATA</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="index, follow" />
+	<meta name="description" content="Aragón Open Data" />
+	<meta name="author" content="Kampal">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+
+	<link rel="favourites icon" href="/static/public/i/favicon.ico" />
+
+	<link rel="stylesheet" type="text/css" href="/static/public/homeV3/prueba.css">
+	<link rel="stylesheet" href="/static/public/themes/aod/style.css" media="screen" type="text/css" />
+	<link rel="stylesheet" href="/static/public/header/header.css">
+	<link rel="stylesheet" href="/static/public/footer/footer.css">
+	<link rel="stylesheet" href="/static/public/themes/aod/tipografia.css" media="screen" type="text/css" />
+	<link rel="stylesheet" href="/static/public/jquery/jquery-ui_1_10_3_smoothness.css">
+	<link rel="stylesheet" href="/static/public/aragopedia/chosen/chosen.css" type="text/css" />
+	<link rel="stylesheet" href="/static/public/aragopedia/chosen/chosenImage.css" type="text/css" />
+
+	<script type="text/javascript">
+		var currentUrl = "/servicios/open-social-data";
+	</script>
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="/static/public/portalAOD_funcs.js"></script>
+
+
+	<style>
+		.mini .banner{top:-7px;}
+	</style>
+
+	<!-- SocialData -->
+	<link href="/static/public/socialdata/css/aosd.css" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link href="/static/public/socialdata/css/bootstrap.aod.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
+	<!-- Bootstrap plugins -->
+	<link href="/static/public/socialdata/vendor/css/datepicker3.css" rel="stylesheet">
+	<link href="/static/public/socialdata/vendor/css/bootstrap-dialog.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- Loading bar -->
+	<link href="/static/public/socialdata/vendor/css/loading-bar.min.css" rel="stylesheet">
+	<!-- D3/C3 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet">
+	
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	
+	<!-- Bootstrap -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<!-- Bootstrap plugins -->
+	<script src="/static/public/socialdata/vendor/js/bootstrap-datepicker.js"></script>
+	<script src="/static/public/socialdata/vendor/js/locales/bootstrap-datepicker.es.js"></script>
+	<script src="/static/public/socialdata/vendor/js/bootstrap-dialog.min.js"></script>
+	<!-- Angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.4.5/angular-locale_es-es.js"></script>	
+	<script src="/static/public/socialdata/vendor/js/ng-scrollto.js"></script>
+	<!-- Loading bar -->
+	<script src="/static/public/socialdata/vendor/js/loading-bar.min.js"></script>
+	<!-- D3/C3 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+	<script src="/static/public/socialdata/vendor/js/c3-angular.min.js"></script>
+	<!-- Highcharts -->
+	<script src="http://code.highcharts.com/highcharts.src.js"></script>
+	<script src="/static/public/socialdata/vendor/js/highcharts-ng.min.js"></script>
+	<!-- Google charts -->
+	<script src="https://www.google.com/jsapi"></script>
+	<script src="/static/public/socialdata/vendor/js/ng-google-charts-resize.js"></script>
+	<!-- Google maps -->
+	<script src="/static/public/socialdata/vendor/js/lodash.underscore.min.js"></script>
+	<script src="/static/public/socialdata/vendor/js/angular-google-maps.js"></script>
+	<!-- Sigma JS -->
+	<script src="/static/public/socialdata/vendor/js/sigma.min.js"></script>
+		
+	
+
+	<style>
+
+		#datawindow {width:982px;}
+		.anchoFila {height:30px;}
+		
+		select{padding:5px 10px 0;}
+		
+		
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+			select {padding:0 10px 0;}
+		}
+		 
+			
+			.select1 {width:267px;height:30px;font-size: 10px;}
+			.select11 {width:267px;height:30px;font-size: 10px;}
+			.select2 {width:250px;height:30px;font-size: 10px;}
+			.select22 {width:215px;height:30px;font-size: 10px;float:left;border:1px solid #76a1b8;margin-bottom:0;text-indent: 0.01px;text-overflow: '';-webkit-appearance: none;-moz-appearance: none;background: url("/static/public/socialdata/escucha-activa/public/i/06-FLECHA-Pequena-Up.png") no-repeat 185px 10px;}
+			.select3 {width:100px;height:30px;font-size: 10px;}
+			.select33 {width:215px;height:30px;font-size: 10px;float:left;border:1px solid #76a1b8;margin-bottom:0;text-indent: 0.01px;text-overflow: '';-webkit-appearance: none;-moz-appearance: none;background: url("/static/public/socialdata/escucha-activa/public/i/06-FLECHA-Pequena-Up.png") no-repeat 185px 10px;}
+			.etiqueta1 {width:153px;height:30px;float:left; line-height:30px; text-align:left}
+		.etiqueta1 img {width:100%;}
+			.etiqueta2 {width:20px;height:26px;float:left; line-height:30px;}
+			.etiqueta3 {width:20px;height:26px;float:left; line-height:30px; }
+			.seccionSelect { width: 990px; height: auto;min-height: 720px; margin: auto; margin-bottom:0;}
+			.selectores {float:left; vertical-align:middle;margin-top:30px;}
+			.selectores1 {float:left; vertical-align:middle;width:430px;height:26px;}
+			.selectores2 {float:left; vertical-align:middle;width:275px;height:26px;}
+			.selectores3 {float:left; vertical-align:middle;width:130px;height:26px;}
+
+			.alignJust { text-align: justify;}
+			.sizeData	{ font-size:12px; }
+			.separadorSelDataset { border-bottom: 1px solid #e5e5e3; clear: both;}
+			#dvLoading{background:#000 url('/static/public/socialdata/escucha-activa/public/i/cargando.gif') no-repeat center center;height:80px;width: 80px;position: fixed;z-index: 1000;left: 50%;top: 50%;margin: -25px 0 0 -25px important!;}
+			.centrar {margin: 0 auto;}
+			.margenImg {margin:10px;}
+			.centraTexto {text-align:center;}
+			.sinEspacios {letter-spacing:0;}
+			.sinEspaciosLineas {line-height:15px;}
+			.huecomasPeq { padding: 1px;}
+			.ImageBorder{border-width: 1px;border-color: #e5e5e3;}
+			.margenDcho{padding-right:10px;}
+			
+		#tablaDatos {padding:25px 0 0 0;}
+		#tablaDatos .colizq{width:60px; padding:5px 30px 0; vertical-align:top;float:left;}
+		#tablaDatos .colizq img{padding: 0 5px 0 0;}
+		#tablaDatos .colder{padding:0 120px 0 0; text-align:left; vertical-align:top;}
+		#tablaDatos .titulo{float:left; width:100%;}
+		#tablaDatos .colder span{color:#333; margin:5px 0 0 0; font-weight:normal;}
+		#tablaDatos .compartirrs{float:left; padding:0 0 0 10px; border-left:1px solid #ccc;}
+		#tablaDatos .compartirrs img {margin: 0 8px -3px 0;}
+		#tablaDatos .abrir{float:left; margin:0 10px 0 0;}
+		
+		#paginator {float:left;width:848px; margin:30px 0;}
+		#paginator .linkactivo {text-decoration:underline;}
+		#paginator ul {width:848px;}
+		#paginator ul li { float:left; border-left:1px solid #76a1b8; padding:0 5px;}
+		
+		.datos-terceros{width:134px; height:18px; float:left; margin:30px 0; background: url(/static/public/socialdata/escucha-activa/datos-terceros-off.png)no-repeat;}
+		.datos-terceros:hover {background: url(/static/public/socialdata/escucha-activa/datos-terceros-on.png)no-repeat;cursor:pointer;}
+		.pagprim {border-left:1px solid #4F7589;}
+		.pagult {border-right:1px solid #4F7589;}
+		
+		.separadorContenidoPaginamenu{position:absolute;left:0; width:100%;border-bottom:1px solid #76a1b8;clear: both; margin:-3px 0 0 0;}	
+		.separadorpaginas {height:2px; background:#76a1b8}	
+		
+			
+		.refrescar {float:right; margin: 0 6px 0 0;}	
+		.bordesocialdata {border-bottom: 1px solid #e5e5e5;}	
+		
+		#mapaDinamico{position:absolute;height: 590px;width: 982px;border: 1px solid #76a1b8;}
+		#mapaDinamico img { max-width:none; }
+		#miMapa {margin-top:30px;}
+		#infoventana { font-size:10px; text-align:left;}	
+	.selectDisabled{
+	-webkit-appearance: none;
+	-moz-appearance: none !important;
+	border: none;
+}
+
+.fixed-top {
+	position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+	</style>
+	
+	<script>
+
+		function hoverButtonMenu() {
+			if($('#nav').attr('class') == 'navbar navbar-toggleable-md navbar-light'){
+				$('#menu').attr('src', '/static/public/header/images/Boton-Menu-Responsive-ON.jpg');
+			}else{
+				if($('#nav').attr('class') == 'navbar navbar-toggleable-md bg-light'){
+					$('#menu').attr('src', '/static/public/header/images/Boton-Menu-Responsive-ON.jpg');
+				}else{
+					$('#menu').attr('src', '/static/public/header/images/Boton-Salir-Menu-Responsive-ON.png');
+				}
+			}
+		}
+		function outButtonMenu() {
+			if($('#nav').attr('class') == 'navbar navbar-toggleable-md navbar-light'){
+				$('#menu').attr('src', '/static/public/header/images/Boton-Menu-Responsive-OFF.png');
+			}else{
+				if($('#nav').attr('class') == 'navbar navbar-toggleable-md bg-light'){
+					$('#menu').attr('src', '/static/public/header/images/Boton-Menu-Responsive-OFF.png');
+				}else{
+					$('#menu').attr('src', '/static/public/header/images/Boton-Salir-Menu-Responsive-OFF.png');
+				}
+			}
+		}
+		
+	</script>
+	<script>
+		function hoverButtonLogin() {
+			if($('#nav').attr('class') == 'navbar navbar-toggleable-md navbar-light'){
+				$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-ON.png');
+			}else{
+				if($('#nav').attr('class') == 'navbar navbar-toggleable-md bg-light'){
+					$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-ON.png');
+				}else{
+					$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-blanco.png');
+				}
+			}
+		}
+		function outButtonLogin() {
+			if($('#nav').attr('class') == 'navbar navbar-toggleable-md navbar-light'){
+				$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-OFF.png');
+			}else{
+				if($('#nav').attr('class') == 'navbar navbar-toggleable-md bg-light'){
+					$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-OFF.png');
+				}else{
+					$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-gris.png');
+				}
+			}
+		}
+	</script>
+	<script>
+		function openNav() {
+			var height_overlay = $('.overlay').height();
+			if(height_overlay == 0){
+				$('.overlay').css('top', $('#header1').height());
+				$('#myNav').height($(window).height() - $('#header1').height());
+				$('#logo').attr('src', '../../../assets/AOD-Logo-Responsive.png');
+				$('#nav').attr('class', 'navbar navbar-toggleable-md bg-inverse');
+				$('#nav').css('background-color', 'rgba(0,0,0, 0.82)');
+				$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-gris.png');
+				$('#menu').attr('src', '/static/public/header/images/Boton-Salir-Menu-Responsive-OFF.png');
+			} else {
+				$('body,html').css('overflow-y', 'auto');
+				$('#myNav').height('0%');
+				$('#nav').attr('class', 'navbar navbar-toggleable-md bg-light');
+				$('#logo').attr('src', '../../../assets/AOD-Logo.png');
+				$('#login').attr('src', '/static/public/header/images/Boton-Acceso-Usuarios-OFF.png');
+				$('#menu').attr('src', '/static/public/header/images/Boton-Menu-Responsive-OFF.png');
+				$('#buscador_header').val('');
+				$('#resultsList').css('visibility', 'hidden');
+			}
+		}
+	</script>
+
+<script>
+		function buscaCkan(){
+			text = document.getElementById("buscador_header").value;
+			openNav();
+    		window.location.href = "/datos/catalogo?texto=" + text;
+    		return false;
+		}
+	</script>
+	<script>
+		$(document).ready(function(){
+    		$(window).resize(function(){
+				$('.overlay').css('top', $('#header1').height());
+				if($('.overlay').height() != 0){
+					$('#myNav').height($(window).height() - $('#header1').height()); 
+				}
+			});
+		});
+	</script>
+	<script>
+		function autocompleteRequest() {
+			if($('#buscador_header').val().length >= 3){
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var json = JSON.parse(JSON.parse(this.responseText));
+						if(json.result.length > 0){
+							$('#resultsList').css('visibility', 'visible');
+							for (i = 0; i < json.result.length; i++) { 
+								document.getElementById('searchResult'+(i+1)).innerHTML = json['result'][i].title;
+								document.getElementById('searchResult'+(i+1)).href = '/datos/catalogo/dataset/' + json['result'][i].name;
+							}
+						}else{
+							$('#resultsList').css('visibility', 'hidden');
+						}
+					}
+				};
+				xhttp.open("GET", "/aod/services/web/datasets/autocomplete?text="
+									+$('#buscador_header').val()+"&limit=4", true);
+				xhttp.send();
+			}else{
+				$('#resultsList').css('visibility', 'hidden');
+			}
+		}
+	</script>
+	<script> 
+		$(function(){
+  			//$("#header").load("/static/public/header/header.html"); 
+  			$("#footer").load("/static/public/footer/footer.html"); 
+		});
+	</script>
+</head>
+<body >
+
+	<!--<div id="header"></div>-->
+
+
+	<div id="header1" class="fixed-top">
+		<div class="relatedHeader container-fluid">
+			<!--<ul class="nav">
+					<button (click)="locale.switchLanguage('en')">Inglés</button>
+					<button (click)="locale.switchLanguage('es')">Español</button>
+				</ul>--> 
+			<div class="row primary nav">
+				<div class="col-xs-2 col-sm-6 "> <img class="img-fluid imgob" id="imgGobAragon" src="/static/public/contenido-general/header/logoDGABlanco.png"  />
+				<img id="imgGobFEDER" class="img-fluid imgob" src="/static/public/contenido-general/header/logoFEDER.png" />
+			</div>            
+			<div class="col-xs-2  col-sm-6">               
+				<a class="nav-link " href="http://transparencia.aragon.es/" target="_blank">TRANSPARENCIA</a>
+				<a class="nav-link " href="http://aragonparticipa.aragon.es" target="_blank">PARTICIPACIÓN CIUDADANA</a>
+				<a class="nav-link active" href="/">OPEN DATA</a>                 
+			</div>
+		</div>     
+	</div>
+		<div class="navbar navbar-toggleable-md navbar-light" id="nav" style="margin-bottom: 0;">
+				
+					<a class="navbar-left logo" href="/">
+						  <img class="navbar-brand" id="logo" src="/static/public/header/images/AOD-Logo.png"  class="d-inline-block align-top"  alt="">
+					  </a>
+					<div id="loginLink" class="nav-item menuLogin" style="margin-top: 30px;">
+						<a class="nav-link aLogin" href="/login">
+							<img id="login" class="aLogin" src="/static/public/header/images/Boton-Acceso-Usuarios-OFF.png"
+							onmouseover="hoverButtonLogin()"
+							onmouseout="outButtonLogin()"
+							 alt="" border="0"/>
+						</a>
+					</div>
+					<div class="navbar-item menu" style="margin-top: 30px;" onclick="openNav()">
+						<a class="nav-link aMenu">
+							<img id="menu" class="aMenu" src="/static/public/header/images/Boton-Menu-Responsive-OFF.png"
+							onmouseover="hoverButtonMenu()"
+							onmouseout="outButtonMenu()"
+							border="0" alt="x"/>
+						</a>
+					</div>
+				</div>
+			
+			<div  id="myNav" class="overlay">
+				<div class="overlay-content">
+					<div id="accordion" role="tablist" aria-multiselectable="true">
+						<div class="card">
+							<div class="card-header" role="tab" id="headingOne">
+								<h5 style="margin-top: 0; margin-bottom: 0;">
+									<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									  Datos
+								  </a>
+								</h5>
+							</div>
+							<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+								<div class="card-block">
+									<ul id="datos">
+										<li><a href="/datos/catalogo" onclick="openNav()">Banco de datos</a></li>
+										<li><a href="/datos/tema" onclick="openNav()">Temas</a></li>
+										<li><a href="/datos/organizacion" onclick="openNav()">Publicadores</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header" role="tab" id="headingTwo">
+								<h5 style="margin-top: 0; margin-bottom: 0;">
+									<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									  Servicios
+								  </a>
+								</h5>
+							</div>
+							<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+								<div class="card-block">
+									<ul id="servicios">
+										<li><a href="/servicios/aragopedia">Aragopedia</a></li>
+										<li><a href="http://presupuesto.aragon.es/">Presupuestos</a></li>
+										<li><a href="/servicios/analytics">Open Analytics Data</a></li>
+										<li><a href="/servicios/open-social-data">Open Social Data</a></li>
+										<li><a href="/servicios/cras">CRAs Aragón</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header" role="tab" id="headingThree">
+								<h5 style="margin-top: 0; margin-bottom: 0;">
+									<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									  Información
+								  </a>
+								</h5>
+							</div>
+							<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+								<div class="card-block">
+									<ul id="info">
+										<li><a href="/informacion/open-data" onclick="openNav()">Información</a></li>
+										<li><a href="/informacion/aplicaciones" onclick="openNav()">Aplicaciones</a></li>
+										<li><a href="/informacion/eventos" onclick="openNav()">Eventos</a></li>
+										<li><a href="/informacion/colabora" onclick="openNav()">Colabora</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header" role="tab" id="headingFour">
+								<h5 style="margin-top: 0; margin-bottom: 0;">
+									<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+										  Herramientas
+									  </a>
+								</h5>
+							</div>
+							<div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+								<div class="card-block">
+									<ul id="tools">
+										<li><a href="/herramientas/campus" onclick="openNav()">AOD Campus</a></li>
+										<li><a href="/herramientas/desarrolladores" onclick="openNav()">Desarrolladores</a></li>
+										<li><a href="/herramientas/apis" onclick="openNav()">APIs</a></li>
+										<li><a href="/herramientas/sparql" onclick="openNav()">SPARQL</a></li>
+										<li><a href="https://github.com/aragonopendata/Aragon-Open-Data-3" target="_blank" onclick="openNav()">GITHUB</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<form class="search" method="post" onsubmit="return buscaCkan()">
+							<input autocomplete="off" id="buscador_header" class="textBox" placeholder="BUSCA DATOS ABIERTOS" type="search" onkeyup='autocompleteRequest()'/>
+							<!--<button type="submit" class="submit"><i aria-hidden="true" class="fa fa-search"></i></button>-->
+							<button type="submit" class="btnSearch">
+									<i aria-hidden="true" class="fa fa-search" style="display: table; vertical-align: middle;"></i>
+								</button>
+							<!--<input autocomplete="off" #searchBox id="searchBox" placeholder="BUSCA DATOS ABIERTOS" type="search" class="textBox" (keyup)="search(searchBox.value)"
+								(keyup.enter)="searchDatasetsByText(searchBox.value); openNav();" />-->
+							<div id="resultsList">
+								<div class="search-result">
+									<a id="searchResult1"></a>
+								</div>
+								<div class="search-result">
+									<a id="searchResult2"></a>
+								</div>
+								<div class="search-result">
+									<a id="searchResult3"></a>
+								</div>
+								<div class="search-result">
+									<a id="searchResult4"></a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
+
+	<div id="contenido" role="main">
+		<div class="huecoInicioPagina"></div>
+		<div class="separadorContenidoPagina"></div>
+		<div class="huecoInicioPagina"></div>
+		<div class="clear"></div>
+	</div>
+	<div ng-app="aosd">
+  		<ng-view onload="loaded()"></ng-view>
+	</div>
+
+	<div id="footer"></div>
+
+	<script src="/static/public/socialdata/js/app.js"></script>
+	<script src="/static/public/socialdata/js/controllers.js"></script>
+	<script src="/static/public/socialdata/js/services.js"></script>
+	<script src="/static/public/socialdata/js/directives.js"></script>
+	<script src="/static/public/socialdata/js/filters.js"></script>
+</body>
+</html>

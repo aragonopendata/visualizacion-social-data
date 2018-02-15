@@ -13,7 +13,7 @@ var app = angular.module('aosd', [
   'highcharts-ng',
 ])
   .constant('settings', {
-    'API_URL': 'http://193.146.116.193:8003',
+    'API_URL': 'https://193.146.116.193:8003',
     'MAX_SUBSCRIPTIONS': 10,
     'MAX_TERMS': 10,
   })

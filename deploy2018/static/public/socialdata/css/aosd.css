@@ -155,7 +155,7 @@
 .aosd-container .inline-formcontrol select,
 .aosd-container .inline-formcontrol input,
 .aosd-container .inline-formcontrol .input-group {
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
 
 .aosd-container .inline-formcontrol .input-group input {

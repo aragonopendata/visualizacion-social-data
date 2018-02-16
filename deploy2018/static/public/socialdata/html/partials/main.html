@@ -13,17 +13,17 @@
 
   <h2>Busca la conversación</h2>
 
-  <div class="aosd-controls">
-    <form name="terms" class="inline-formcontrol form-inline" novalidate>
+  <div class="aosd-controls row">
+    <form name="terms" class="col-12 inline-formcontrol form-inline" novalidate>
       <div class="alert alert-danger" role="alert" ng-show="invalid_dates">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
         {{ invalid_dates }}
       </div>
       <div class="row">
-        <div class="col-12 col-md-4">
-          <label class="col-1" for="region" style="display: inline;">En</label>
-          <select id="region" class="form-control form-region col-11" style="display: inline;" ng-model="region" ng-options="region.id as region.label group by region.tipo for region in regions"></select>
+        <div class="col-12 col-md-4 input-group">
+          <label class="col-2" for="region">En</label>
+          <select id="region" class="form-control form-region col-10" ng-model="region" ng-options="region.id as region.label group by region.tipo for region in regions"></select>
         </div>
         <div class='input-group date input-daterange col-12 col-md-4'>
           <label for="start" class="col-2">Desde</label>

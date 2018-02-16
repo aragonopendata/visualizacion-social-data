@@ -7339,3 +7339,10 @@ button.close
 		width: 33.33333333% !important;
 	}
 }
+
+.input-group-addon{
+	padding: 0px;
+	margin: 0px;
+	border: 1px solid #cccccc !important;
+	border-left: 0px !important;
+}

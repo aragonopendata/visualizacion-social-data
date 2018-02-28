@@ -54,6 +54,34 @@ angular.module('aosd.controllers', [])
       }
     }
 
+    //deberiamos usar la misma search pero simplemente consultar el boton que ha pulsado
+    $scope.search_inst = function() {
+      // Validate
+      if (! $scope.validate_dates() ) {
+        $scope.invalid_dates = 'La fecha de inicio no puede ser mayor que la de fin.';
+        return;
+      }
+
+      selection.region = $scope.region;
+      selection.start = $scope.start;
+      selection.end = $scope.end;
+      selection.terms = [];
+      for (i=0; i<$scope.choices.length; i++) {
+        var q = $scope.choices[i].name ? $scope.choices[i].name : '*';
+        if (selection.terms.indexOf(q) == -1) {
+          selection.terms.push(q);
+        }
+      }
+
+      $location.path('/stats_inst').search({
+        'region': selection.region,
+        'start': selection.start,
+        'end': selection.end,
+        'term': selection.terms,
+        'enlista': true,
+      });
+    }
+
     $scope.search = function() {
       // Validate
       if (! $scope.validate_dates() ) {
@@ -101,13 +129,35 @@ angular.module('aosd.controllers', [])
     }
   })
 
+  /* SideNav Inst controller */
+  .controller('sidenavInstController', function($scope, $location, selection) {
+    $scope.isActive = function(path) {
+      var currentPath = $location.path().split('/')[1];
+      if (currentPath.indexOf('?') !== -1) {
+        currentPath = currentPath.split('?')[0];
+      }
+      return currentPath === path.split('/')[1];
+    }
+
+    $scope.moveTo = function(path) {
+      $location.path(path).search({
+        'region': selection.region,
+        'start': selection.start,
+        'end': selection.end,
+        'term': selection.terms,
+        'enlista': selection.enlista,
+      });
+    }
+  })
+
+  
+
   /* Selection Help controller */
   .controller('selectionHelpController', function($scope, settings, escuchaAPI, selection, drawers, helpers) {
     $scope.region = (selection.region == '*') ? 'Todo Aragón' : selection.region;
     $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
     $scope.end = (selection.end == '') ? helpers.dateToStr(new Date()) : selection.end;
     $scope.terms = selection.terms;
-
     $scope.downloadCSV = function() {
       BootstrapDialog.confirm({
         title: 'Descargar CSV',
@@ -118,7 +168,7 @@ angular.module('aosd.controllers', [])
         callback: function(result) {
           if(result) {
             encodedParams = $.param({
-              'terms': selection.terms,
+              'terms': selection.apiterms,
               'region': selection.region,
               'start': selection.start,
               'end': selection.end
@@ -131,7 +181,7 @@ angular.module('aosd.controllers', [])
 
     $scope.drawTotals = function() {
       if (selection.totals === null) {
-        escuchaAPI.getTotals(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+        escuchaAPI.getTotals(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
           selection.totals = response;
           drawers.drawTotals($scope, selection.totals);
         });
@@ -149,13 +199,13 @@ angular.module('aosd.controllers', [])
     selection.updateFromQueryString($location.search());
 
     $scope.drawEvolution = function() {
-      escuchaAPI.getMultitermEvolution(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+      escuchaAPI.getMultitermEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawMultitermEvolution($scope, response);
       });
     }
 
     $scope.drawEvolutionTotal = function() {
-      escuchaAPI.getEvolution(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+      escuchaAPI.getEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawEvolutionTotal($scope, response);
       });
     }
@@ -278,13 +328,13 @@ angular.module('aosd.controllers', [])
 
     $scope.moreItems = function() {
       $scope.last_items_page = $scope.last_items_page + 1;
-      escuchaAPI.getLastItems(selection.terms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
+      escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
         $scope.last_items = $scope.last_items.concat(response.last_items);
       });
     }
 
     $scope.drawTops = function() {
-      escuchaAPI.getTops(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+      escuchaAPI.getTops(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawHemicycles($scope, response);
         $scope.top_hashtags = response.top_hashtags;
         $scope.top_authors = response.top_authors;
@@ -293,7 +343,7 @@ angular.module('aosd.controllers', [])
     }
 
     $scope.drawLastItems = function() {
-      escuchaAPI.getLastItems(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+      escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         $scope.last_items = response.last_items;
       });
     }
@@ -330,7 +380,7 @@ angular.module('aosd.controllers', [])
     }
 
     $scope.drawPolarity = function() {
-      escuchaAPI.getPolarity(selection.terms, selection.region, selection.start, selection.end).success(function (response) {
+      escuchaAPI.getPolarity(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawPolarity($scope, response);
       });
     }
@@ -451,7 +501,7 @@ angular.module('aosd.controllers', [])
     }
 
     $scope.drawGraph = function() {
-      escuchaAPI.getGraph(selection.terms, selection.region, $scope.start, $scope.end, $scope.numNodes).success(function (response) {
+      escuchaAPI.getGraph(selection.apiterms, selection.region, $scope.start, $scope.end, $scope.numNodes).success(function (response) {
         drawers.drawGraph($scope, response);
       });
     }

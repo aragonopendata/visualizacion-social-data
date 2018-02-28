@@ -222,7 +222,9 @@ angular.module('aosd.services', [])
       start: '',
       end: '',
       terms: [''],
+      enlista: null,
       totals: null,
+      apiterms: null,
     }
 
     selection.updateFromQueryString = function(queryString) {
@@ -234,6 +236,11 @@ angular.module('aosd.services', [])
       } else {
         this.terms = ['*'];
       }
+        this.apiterms=this.terms.slice();
+      if (queryString.enlista == true ) {
+        this.enlista = true;
+        this.apiterms.push('USARLISTA');
+     }
     }
 
     return selection;

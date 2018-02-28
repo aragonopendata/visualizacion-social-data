@@ -83,6 +83,25 @@ angular.module('aosd.directives', [])
     }
   })
 
+    /* Side nav inst menu directive */
+  .directive('sidenavinst', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/sidenavInst.html',
+      controller: 'sidenavInstController',
+    }
+  })
+
+
+  /* Selection help text */
+  .directive('selectionhelpinst', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/selectionHelpInst.html',
+      controller: 'selectionHelpController',
+    }
+  })
+
   /* Selection help text */
   .directive('selectionhelp', function() {
     return {

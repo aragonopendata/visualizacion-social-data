@@ -1,0 +1,250 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ARAGÓN OPEN DATA</title>
+
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Aragón Open Data">
+    <meta name="author" content="Kampal">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link rel="favourites icon" href="http://opendata.aragon.es/public/i/favicon.ico">
+
+    <link rel="alternate" type="application/rss+xml" title="Wolf Default RSS Feed" href="http://opendata.aragon.es/rss.xml">
+
+    <!-- AOSD -->
+    <link rel="stylesheet" href="{% static 'vendor/css/aosd/style.css' %}" media="screen" type="text/css">
+    <link rel="stylesheet" href="{% static 'vendor/css/aosd/chosenImage.css' %}" type="text/css">
+    <style>
+      .mini .banner{top:-7px;}
+    </style>
+    <!-- End AOSD -->
+
+    <link href="{% static 'css/aosd.css' %}" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap plugins -->
+    <link href="{% static 'vendor/css/datepicker3.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/css/bootstrap-dialog.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Loading bar -->
+    <link href="{% static 'vendor/css/loading-bar.min.css' %}" rel="stylesheet">
+    <!-- D3/C3 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet">
+
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <!-- AOSD -->
+    <script type="text/javascript" async="" src="{% static 'vendor/js/aosd/dc.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/aosd/getDataCount.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/aosd/select2.min.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jed/0.5.4/jed.min.js"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/aosd/aod_funcs_editor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'vendor/js/aosd/portalAOD_funcs.js' %}"></script>
+    <script type="text/javascript">
+      var currentUrl = "";
+    </script>
+    <!-- End AOSD -->
+
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- Bootstrap plugins -->
+    <script src="{% static 'vendor/js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'vendor/js/locales/bootstrap-datepicker.es.js' %}"></script>
+    <script src="{% static 'vendor/js/bootstrap-dialog.min.js' %}"></script>
+    <!-- Angular -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.4.5/angular-locale_es-es.js"></script>
+    <script src="{% static 'vendor/js/ng-scrollto.js' %}"></script>
+    <!-- Loading bar -->
+    <script src="{% static 'vendor/js/loading-bar.min.js' %}"></script>
+    <!-- D3/C3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+    <script src="{% static 'vendor/js/c3-angular.min.js' %}"></script>
+    <!-- Highcharts -->
+    <script src="http://code.highcharts.com/highcharts.src.js"></script>
+    <script src="{% static 'vendor/js/highcharts-ng.min.js' %}"></script>
+    <!-- Google charts -->
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="{% static 'vendor/js/ng-google-charts-resize.js' %}"></script>
+    <!-- Google maps -->
+    <script src="{% static 'vendor/js/lodash.underscore.min.js' %}"></script>
+    <script src="{% static 'vendor/js/angular-google-maps.js' %}"></script>
+    <!-- Sigma JS -->
+    <script src="{% static 'vendor/js/sigma.min.js' %}"></script>
+    {% block extra_css %}
+    {% endblock extra_css %}
+  </head>
+  <body>
+    <header>
+      <div id="cabeceraRelacionados">
+        <ul>
+          <li class="clear visible-xs tamCero"></li>
+          <li><a href="http://transparencia.aragon.es/" title="Transparencia" target="_blank">TRANSPARENCIA</a></li>
+          <li><a href="http://aragonparticipa.aragon.es/" title="Participación ciudadana" target="_blank">PARTICIPACIÓN CIUDADANA</a></li>
+          <li class="active"><a href="{% url 'main:index' %}" title="Open data">OPEN DATA</a><p class="clear visible-xs"></p></li>
+        </ul>
+      </div>
+      <div id="cabecera">
+        <ul>
+          <li><img src="{% static 'vendor/img/aosd/logo_aragob.png' %}" width="127" height="28" alt="Gobierno de Aragón" title="Gobierno de Aragón"></li>
+        </ul>
+      </div>
+      <div id="anchoBanner" style="background-color: rgb(118, 161, 184);">
+        <div class="banner">
+          <div class="bannerInline bannerLogo" style="text-align: right;">
+            <a href="{% url 'main:index' %}" title="ARAGÓN OPEN DATA">
+              <img id="idTotal" src="{% static 'vendor/img/aosd/logo_aod.png' %}" alt="ARAGÓN OPEN DATA">
+            </a>
+          </div>
+          <div class="bannerInline bannerBuscador" style="text-align: left;">
+            <form id="cajaBusqBanner" action="http://opendata.aragon.es/catalogo" method="get">
+              <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+              <input id="cajaDeBusqInput" name="q" value="" class="search anchoSearchBanner cajaDeBusqInput ui-autocomplete-input" type="text" autocomplete="off">
+              <button class="btn-search" type="submit">Buscar</button>
+              <a href="http://opendata.aragon.es/catalogo/user/login" title="Iniciar Sesión">
+                <img src="{% static 'vendor/img/aosd/login.jpg' %}" alt="Iniciar Sesión" class="btn-login">
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </header>
+
+    <nav>
+      <div id="navegacion" class="botones botonesSuperiorLista" style="top: 35px;">
+        <ul>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked first&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior first&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver first&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior first&#39;;" onclick="javascript:window.location=&#39;/catalogo&#39;;" class="botonSuperior first" title="Datos">
+            <img src="{% static 'vendor/img/aosd/datos.png' %}" alt="Datos" title="Datos">
+          </li>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked second&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior second&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver second&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior second&#39;;" onclick="javascript:window.location=&#39;/aragopedia&#39;;" class="botonSuperior second" title="AragoPedia">
+            <img src="{% static 'vendor/img/aosd/aragopedia.png' %}" alt="AragoPedia" title="AragoPedia">
+          </li>
+          <li class="clear visible-xs tamCero"></li>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked third&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior third&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver third&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior third&#39;;" onclick="javascript:window.location=&#39;/portal/social-data&#39;;" class="botonSuperior third" title="Social Data">
+            <img src="{% static 'vendor/img/aosd/socialData.png' %}" alt="Social Data" title="Social Data">
+          </li>
+          <li class="clear visible-ms tamCero"></li>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked fourth&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior fourth&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver fourth&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior fourth&#39;;" onclick="javascript:window.location=&#39;/portal/colabora&#39;;" class="botonSuperior fourth" title="Colabora">
+            <img src="{% static 'vendor/img/aosd/colabora.png' %}" alt="Colabora" title="Colabora">
+          </li>
+          <li class="clear visible-xs tamCero"></li>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked fifth&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior fifth&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver fifth&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior fifth&#39;;" onclick="javascript:window.location=&#39;/portal/aplicaciones&#39;;" class="botonSuperior fifth" title="Aplicaciones">
+            <img src="{% static 'vendor/img/aosd/aplicaciones.png' %}" alt="Aplicaciones" title="Aplicaciones">
+          </li>
+          <li onmousedown="javascript:this.className=&#39;botonSuperiorClicked last&#39;;" onmouseup="javascript:this.className=&#39;botonSuperior last&#39;;" onmouseover="javascript:this.className=&#39;botonSuperiorOver last&#39;;" onmouseout="javascript:this.className=&#39;botonSuperior last&#39;;" onclick="javascript:window.location=&#39;/portal/open-data&#39;;" class="botonSuperior last" title="Información sobre Open Data">
+            <img src="{% static 'vendor/img/aosd/infoOpenData.png' %}" alt="Información sobre Open Data" title="Información sobre Open Data">
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="contenido" role="main">
+      <div class="huecoInicioPagina"></div>
+      <div class="separadorContenidoPagina"></div>
+      <div class="huecoInicioPagina"></div>
+      <div class="clear"></div>
+
+      {% block content %}{% endblock content %}
+    </div>
+
+    <footer>
+      <div id="pie">
+        <ul id="pieUL">
+          <li id="pieULLI">
+            <div class="pieInterior">
+              <div class="pieZonaUno">
+                <a title="Home Aragón Open Data" href="{% url 'main:index' %}">
+                  <img src="{% static 'vendor/img/aosd/textoAOD.png' %}" alt="Aragón Open Data" id="pieZonaUnoRoot">
+                </a>
+                <img alt="Flecha" src="{% static 'vendor/img/aosd/flechaFooter.png' %}">
+                <a class="footerLink pieEnlace" title="Home Aragón Open Data" href="{% url 'main:index' %}"> HOME</a>
+              </div>
+              <div class="clear"></div>
+              <div class="pieZonaDos">
+              <ul>
+                <li>
+                  <table>
+                    <tbody><tr><td class="titulo"><img height="9" src="{% static 'vendor/img/aosd/textoAvisoLegal.png' %}" alt="Aviso legal"></td></tr>
+                    <tr><td><a href="http://opendata.aragon.es/terminos" title="Términos de uso"><img src="{% static 'vendor/img/aosd/cajaTerminosUso.jpg' %}" alt="Términos de uso"></a></td></tr>
+                    <tr><td><a href="https://creativecommons.org/licenses/by/4.0/" title="Licencia Creative Commons"><img src="{% static 'vendor/img/aosd/cajaCCconTexto.jpg' %}" alt="Licencia Creative Commons" height="96" width="215"></a></td></tr>
+                    <tr><td><img src="{% static 'vendor/img/aosd/banderaUEconTexto.png' %}" alt="Unión Europea - Fondo Europeo de Desarrollo Regional" class="recuadroPie"></td></tr>
+                    </tbody>
+                  </table>
+                </li>
+                <li class="clear visible-xs tamCero"></li>
+                <li>
+                  <table>
+                    <tbody><tr><td class="titulo"><img height="9" src="{% static 'vendor/img/aosd/textoPoweredBy.png' %}" alt="Powered by"></td></tr>
+                    <tr><td><a href="http://ckan.org/" title="CKAN"><img src="{% static 'vendor/img/aosd/cajaLogoCKAN.jpg' %}" alt="CKAN"></a></td></tr>
+                    <tr><td><a href="http://www.wolfcms.org/" title="Wolf CMS"><img src="{% static 'vendor/img/aosd/cajaLogoWolfCMS.jpg' %}" alt="Wolf CMS"></a></td></tr>
+                    <tr><td><a href="http://www.mediawiki.org/" title="MediaWiki"><img src="{% static 'vendor/img/aosd/cajaLogoMediaWiki.jpg' %}" alt="MediaWiki"></a></td></tr>
+                    <tr><td><a href="http://virtuoso.openlinksw.com/" title="Virtuoso"><img src="{% static 'vendor/img/aosd/cajaLogoVirtuoso.jpg' %}" alt="Virtuoso"></a></td></tr>
+                    </tbody>
+                  </table>
+                </li>
+                <li class="clear visible-xs tamCero"></li>
+                <li class="clear visible-ms tamCero"></li>
+                <li>
+                  <table>
+                    <tbody><tr><td class="titulo"><img src="{% static 'vendor/img/aosd/textoAOD.png' %}" alt="Aragón Open Data"></td></tr>
+                      <tr><td>
+                      <div class="pieZonaEnlaces">
+                      <ul class="styleDiscUL">
+                      <li><a href="http://opendata.aragon.es/catalogo" title="Datos" class="pieEnlace">DATOS</a></li>
+                      <li><a href="http://opendata.aragon.es/aragopedia" title="AragoPedia" class="pieEnlace">ARAGOPEDIA</a></li>
+                      <li><a href="http://opendata.aragon.es/portal/social-data" title="Social Data" class="pieEnlace">SOCIAL DATA</a></li>
+                      <li><a href="http://opendata.aragon.es/portal/colabora" title="Colabora" class="pieEnlace">COLABORA</a></li>
+                      <li><a href="http://opendata.aragon.es/portal/aplicaciones" title="Aplicaciones" class="pieEnlace">APLICACIONES</a></li>
+                      <li><a href="http://opendata.aragon.es/portal/open-data" title="Información Open Data" class="pieEnlace">INFO OPEN DATA</a></li>
+                      </ul>
+                      </div>
+                      </td></tr>
+                    </tbody>
+                  </table>
+                </li>
+                <li class="clear visible-xs tamCero"></li>
+                <li>
+                  <table class="last">
+                    <tbody><tr><td class="titulo"><img height="9" src="{% static 'vendor/img/aosd/textoRedesSociales.png' %}" alt="Redes Sociales"></td></tr>
+                    <tr><td><a href="http://www.facebook.com/observatorio.aragones" title="Facebook"><img src="{% static 'vendor/img/aosd/cajaLogoFacebook.jpg' %}" alt="Facebook"></a></td></tr>
+                    <tr><td><a href="http://www.twitter.com/oasi" title="Twitter"><img src="{% static 'vendor/img/aosd/cajaLogoTwitter.jpg' %}" alt="Twitter"></a></td></tr>
+                    <tr><td><a href="http://www.youtube.com/watch?v=8d409yteTJM&list=PLQ3k0vA0UZvhBVOz_mCq-9Wyn3VCB6QCe" title="YouTube"><img src="{% static 'vendor/img/aosd/cajaLogoYouTube.jpg' %}" alt="YouTube"></a></td></tr>
+                    <tr><td><a href="mailto:opendata@aragon.es" title="Contacto AOD"><img src="{% static 'vendor/img/aosd/cajaCorreoAOD.jpg' %}" alt="Contacto AOD"></a></td></tr>
+                  </tbody></table>
+                </li>
+              </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="pieZonaTres">
+              <ul>
+                <li class="izquierda textoPie">
+                  <p>GOBIERNO DE ARAGÓN</p>
+                  <p>EDIFICIO PIGNATELLI</p>
+                  <address>PASEO MARíA AGUSTíN, 36 50071 ZARAGOZA TEL. 976 714 000</address>
+                </li>
+                <li class="derecha">
+                  <a target="_blank" href="http://www.aragon.es/" title="Gobierno de Aragón"><img width="132" height="28" alt="Gobierno de Aragón" src="{% static 'vendor/img/aosd/logo_aragob_pie.png' %}"></a>
+                </li>
+              </ul>
+            </div>
+            <div class="clear"></div>
+          </li>
+        </ul>
+      </div>
+    </footer>
+
+    {% block extra_javascript %}{% endblock extra_javascript %}
+  </body>
+</html>

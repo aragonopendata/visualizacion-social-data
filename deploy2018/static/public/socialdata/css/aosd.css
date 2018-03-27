@@ -190,7 +190,7 @@
 .aosd-side-nav {
   position: fixed;
   width: 200px;
-  height: 250px;
+  /*height: 250px;*/
   border: none;
   border-radius: 0;
   overflow-x: hidden;

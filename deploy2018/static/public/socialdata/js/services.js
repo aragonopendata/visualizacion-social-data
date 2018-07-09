@@ -564,16 +564,21 @@ angular.module('aosd.services', [])
 
     drawers.drawMap = function(scope, response) {
       var gridData = [];
-      scope.weight_max = (response.geogrid.length > 0) ? 2 : 0;
+      var features = new ol.source.Vector();
+      scope.weight_max = (response.geogrid.length > 0) ? 1 : 0;
       scope.weight_min = null;
       scope.num_items = 0;
       for (i=0; i<response.geogrid.length; i++) {
         var row = response.geogrid[i];
         var weight = (scope.map_weight) ? row.weight.value : row.doc_count;
-        gridData.push({
+        /*gridData.push({
           location: new google.maps.LatLng(row.lat, row.lon),
           weight:weight
-        });
+        });*/
+        features.addFeature(new ol.Feature({
+        	geometry: new ol.geom.Point(ol.proj.transform([row.lon, row.lat], 'EPSG:4326', 'EPSG:3857')),
+		weight:weight
+	}));
         if (weight > scope.weight_max) {
           scope.weight_max = weight;
         }
@@ -586,9 +591,24 @@ angular.module('aosd.services', [])
         scope.weight_min = 0;
       }
 
-      var pointArray = new google.maps.MVCArray(gridData);
-      scope.map.heatLayer.setData(pointArray);
-      scope.map.heatLayer.setOptions({maxIntensity: scope.weight_max*0.1});
+      features.forEachFeature(function(feature) {
+        feature.set('weight',feature.get('weight') / scope.weight_max);
+      });
+
+      //var pointArray = new google.maps.MVCArray(gridData);
+      //scope.map.heatLayer.setData(pointArray);
+      //scope.map.heatLayer.setOptions({maxIntensity: scope.weight_max*0.1});
+      if (scope.map.heatLayer != null) {
+	scope.map.removeLayer(scope.map.heatLayer);
+      }
+      console.log(features);
+      scope.map.heatLayer = new ol.layer.Heatmap({
+          source: features,
+          radius: helpers.heatmapOptions.radius,
+          gradient: helpers.heatmapOptions.gradient,
+      });
+      // add to the map
+      scope.map.addLayer(scope.map.heatLayer);
     }
 
     drawers.drawGraph = function(scope, response) {
@@ -813,7 +833,7 @@ angular.module('aosd.services', [])
     }
 
     helpers.heatmapOptions = {
-      radius: 10,
+      radius: 8,
       dissipating: true,
       gradient : [
         'rgba(0, 0, 225, 0)',

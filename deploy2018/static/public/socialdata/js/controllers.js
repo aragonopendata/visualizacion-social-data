@@ -218,6 +218,19 @@ angular.module('aosd.controllers', [])
   .controller('heatmapController', function($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
+    var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+    })
+
+    var map = new ol.Map({
+        layers: [raster],
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.transform([-0.8833333, 41.6333333], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 5
+        })
+    });
+
     var ALL_TERMS = 'Todos los de la lista'
 
     $scope.change_terms = [ALL_TERMS]
@@ -226,13 +239,16 @@ angular.module('aosd.controllers', [])
 
     $scope.partial_terms = selection.terms;
 
-    $scope.map = {
+    /*$scope.map = {
       center: {latitude: 41.6333333, longitude: -0.8833333},
       zoom: 7,
       showHeat: true
-    };
+    };*/
 
-    $scope.map.heatLayer = null;
+    $scope.map = map;
+    $scope.heatLayer = null;
+
+    //$scope.map.heatLayer = null;
     $scope.markers = [];
     $scope.markers_items = {};
     $scope.markers_active = false;
@@ -306,6 +322,8 @@ angular.module('aosd.controllers', [])
         drawers.drawMap($scope, response);
       });
     }
+    // CALL FOR THE FIRST TIME
+    $scope.drawMap();
 
     $scope.changeHeatmapWeight = function() {
       $scope.drawMap();

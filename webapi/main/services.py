@@ -133,6 +133,8 @@ class RemoteModel(object):
 			terms = [query]
 		else:
 			raise ValueError('Invalid query')
+		if not('USARLISTA' in terms):
+			raise ValueError('Invalid query')
 		for term in terms:
                         if term == 'USARLISTA':
                            payload["query"]["bool"]["filter"]["bool"]["must"].append({

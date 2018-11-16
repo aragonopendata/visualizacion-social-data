@@ -1,0 +1,30 @@
+
+Este ejemplo es excesivamente complicado porque por razones de compatibilidad
+y legacy ofrece http y https sobre el mismo puerto, 8003. A fecha de hoy
+la API deberia funcionar exclusivamente sobre https 
+
+
+server {
+	listen 8003;
+        server_name 193.146.116.193;
+        ssl on;
+        ssl_certificate /etc/ssl/bundleIPDigiCert.crt;
+        ssl_certificate_key /etc/ssl/193.146.116.193_privatekey.pem;
+        error_page 497 =200 @fallback;
+        location @fallback {
+          if ($request_method = 'OPTIONS') {
+               add_header 'X-KampalDebug' 'en options proxy';
+          }
+          proxy_pass http://localhost:8004;
+        }
+	location / {
+        
+	proxy_pass http://localhost:8004;
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+	}
+}
+

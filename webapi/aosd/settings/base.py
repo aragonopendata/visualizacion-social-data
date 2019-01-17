@@ -36,20 +36,20 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    #'corsheaders',
     'main',
 )
 
 MIDDLEWARE_CLASSES = (
-    'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    #'django.middleware.common.CommonMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'aosd.urls'
@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'aosd',
         'USER': 'postgres',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': 'biv-aodback-01.aragon.local',
         'PORT': 5432
     },
     'subscriptions': {
@@ -97,7 +97,8 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['aosd.db_routers.MainRouter']
+#DATABASE_ROUTERS = ['aosd.db_routers.MainRouter']
+#DATABASES = {}
 
 
 # Internationalization
@@ -125,27 +126,30 @@ STATICFILES_DIRS = (
     os.path.join(PARENT_DIR, 'static'),
 )
 
-CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = (
-    'opendata.aragon.es',
-    'preopendata.aragon.es',
-    '193.146.116.193:8003',
-    '193.146.116.193',
-)
+#CORS_ORIGIN_WHITELIST = (
+    #'opendata.aragon.es',
+    #'preopendata.aragon.es',
+    #'localhost:8004',
+    #'127.0.0.1:8004',
+    #'localhost:7030',
+    #'127.0.1:7030',
+    #'localhost'
+#)
 
 # IE cache... (DEFAULT CORS ALLOW HEADERS + ['cache-control', 'pragma'])
-CORS_ALLOW_HEADERS = (
-    'x-requested-with',
-    'content-type',
-    'accept',
-    'origin',
-    'authorization',
-    'x-csrftoken',
-    'jwt-token',
-    'cache-control',
-    'pragma',
-)
+#CORS_ALLOW_HEADERS = (
+ #   'x-requested-with',
+ #   'content-type',
+ #   'accept',
+ #   'origin',
+ #   'authorization',
+ #   'x-csrftoken',
+ #   'jwt-token',
+ #   'cache-control',
+ #   'pragma',
+#)
 
 
 # 128 SECRET KEY

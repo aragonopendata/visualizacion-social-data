@@ -18,8 +18,8 @@ from cStringIO import StringIO
 from django.conf import settings
 
 sys.path.append(os.path.realpath(os.path.join(settings.PARENT_DIR, os.pardir, 'core')))
-import kampalGraph as KG
-import igraph
+#import kampalGraph as KG
+#import igraph
 
 
 REGIONS = [
@@ -65,7 +65,7 @@ def to_epoch(date):
 
 class RemoteModel(object):
 	def __init__(self):
-		self.es = Elasticsearch('http://127.0.0.1:9200', retry_on_timeout=True)
+		self.es = Elasticsearch('http://biv-aodback-01.aragon.local:9200', retry_on_timeout=True)
 
 	def request(self, payload):
                 with open("/tmp/elasticlog.txt",'w+') as f:

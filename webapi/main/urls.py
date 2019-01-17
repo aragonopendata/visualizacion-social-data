@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from main import views, jwtauth
 
-urlpatterns = patterns('',
+urlpatterns = [#'',
 	# Test
 	url(r'^$', views.index, name='index'),
 
@@ -27,4 +27,4 @@ urlpatterns = patterns('',
 	url(r'^subscribe/$', views.subscribe, name='subscribe'),
 	url(r'^get_subscriptions/$', views.get_subscriptions, name='get_subscriptions'),
 	url(r'^cancel_subscription/$', views.cancel_subscription, name='cancel_subscription'),
-)
+]

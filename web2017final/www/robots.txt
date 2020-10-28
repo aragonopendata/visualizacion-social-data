@@ -1,3 +1,0 @@
-Disallow: /escucha-activa/
-Disallow: /opendata/
-Disallow: /opendata/*

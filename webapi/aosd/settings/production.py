@@ -1,4 +1,4 @@
-from aosd.settings.bse import *
+from aosd.settings.base import *
 
 
 DEBUG = True 

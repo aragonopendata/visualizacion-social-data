@@ -14,35 +14,30 @@
   <h2>Busca la conversación</h2>
 
   <div class="aosd-controls row">
-    <form name="terms" class="col-12 inline-formcontrol form-inline" novalidate>
+    <form name="terms" class="col-12 inline-formcontrol" novalidate>
       <div class="alert alert-danger" role="alert" ng-show="invalid_dates">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
         {{ invalid_dates }}
       </div>
       <div class="row">
-        <div class="col-12 col-md-4 input-group">
-          <label class="col-12" for="region">En todo Aragón</label>
-          <!--<select id="region" class="form-control form-region col-10" ng-model="region" ng-options="region.id as region.label group by region.tipo for region in regions"></select>-->
+        <div class='form-group date input-daterange col-md-4 pr-0'>
+          <label for="start" class="align-bottom">Desde</label>
+          <input class="col-9 form-control date-filter-control d-inline align-middle" id="start" ng-model="start" placeholder="dd/mm/yyyy" type="text">
+          <span class="col-1 input-group-addon d-inline p-3"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
-        <div class='input-group date input-daterange col-12 col-md-4'>
-          <label for="start" class="col-2">Desde</label>
-          <input class="col-9 form-control date-filter-control" id="start" ng-model="start" placeholder="dd/mm/yyyy" type="text">
-          <span class="col-1 input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        <div class='form-group date input-daterange col-md-4 pr-0'>
+          <label for="end" class="align-bottom">Hasta</label>
+          <input class="col-9 form-control date-filter-control d-inline align-middle" id="end" ng-model="end" placeholder="dd/mm/yyyy" type="text">
+          <span class="col-1 input-group-addon d-inline p-3"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
-        <div class='input-group date input-daterange col-12 col-md-4'>
-          <label for="end" class="col-2">Hasta</label>
-          <input class="col-9 form-control date-filter-control" id="end" ng-model="end" placeholder="dd/mm/yyyy" type="text">
-          <span class="col-1 input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        <div class="form-group col-md-4 pr-0">
+          <label for="terminos" class="align-bottom">Sobre</label>
+          <input type="text" class="col-10 form-control d-inline align-middle m-0" id="terminos" data-ng-model="termsList" placeholder="Introduce los términos" required>
         </div>
+      </div>
+      <div class="row">
         <div class="col-12">
-          <h3>Sobre</h3>
-          <fieldset class="fieldset-terms" ng-repeat="choice in choices">
-            <input type="text" class="form-control" ng-model="choice.name" placeholder="Introduce un nuevo término" required>
-            <button class="btn btn-default" ng-click="removeChoice($index)" ng-if="choices.length > 1">-</button>
-          </fieldset>
-          <button class="btn btn-default" ng-click="addNewChoice()">Añadir otro término</button>
-          <small><i>Puedes añadir hasta 10 términos</i></small>
           <input type="submit"  class="btn btn-primary" value="Buscar en institucional" ng-click="search_inst()">
         </div>
       </div>

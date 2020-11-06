@@ -1,7 +1,7 @@
 angular.module('aosd.controllers', [])
 
   /* Main controller */
-  .controller('mainController', function($scope, $location, settings, escuchaAPI, selection, helpers) {
+  .controller('mainController', function ($scope, $location, settings, escuchaAPI, selection, helpers) {
     $scope.region = selection.region;
     $scope.regions = [{'id': '*', 'label': 'TODO ARAGÓN'}];
     $scope.start = selection.start;
@@ -16,6 +16,8 @@ angular.module('aosd.controllers', [])
     selection.totals = null;
 
     $scope.invalid_dates = '';
+    $scope.termsList = sessionStorage.getItem('terms') ? sessionStorage.getItem('terms') : $scope.choices[0].name;
+    sessionStorage.removeItem('terms')
 
     $('.input-daterange[readonly!="True"]').datepicker(helpers.dateinputOptions);
 
@@ -30,19 +32,18 @@ angular.module('aosd.controllers', [])
          $scope.regions.push({'id': 'MUN '+response.mun[i], 'label':response.mun[i],'tipo':'municipio'});
        }
     });
+    // $scope.addNewChoice = function() {
+    //   if ($scope.choices.length < settings.MAX_TERMS) {
+    //     var newItemNo = $scope.choices.length+1;
+    //     $scope.choices.push({'id': 'choice'+newItemNo});
+    //   }
+    // };
 
-    $scope.addNewChoice = function() {
-      if ($scope.choices.length < settings.MAX_TERMS) {
-        var newItemNo = $scope.choices.length+1;
-        $scope.choices.push({'id': 'choice'+newItemNo});
-      }
-    };
-
-    $scope.removeChoice = function(idx) {
-      if ($scope.choices.length > 1) {
-        $scope.choices.splice(idx, 1);
-      }
-    };
+    // $scope.removeChoice = function(idx) {
+    //   if ($scope.choices.length > 1) {
+    //     $scope.choices.splice(idx, 1);
+    //   }
+    // };
 
     $scope.validate_dates = function() {
       if ($scope.start == '' || $scope.end == '') {
@@ -62,17 +63,30 @@ angular.module('aosd.controllers', [])
         return;
       }
 
+      $scope.choices = $scope.termsList ? $scope.termsList.split(" ") : "";
+
       selection.region = $scope.region;
       selection.start = $scope.start;
       selection.end = $scope.end;
       selection.terms = [];
       for (i=0; i<$scope.choices.length; i++) {
-        var q = $scope.choices[i].name ? $scope.choices[i].name : '*';
+        var q = $scope.choices[i] ? $scope.choices[i] : '*';
         if (selection.terms.indexOf(q) == -1) {
           selection.terms.push(q);
         }
       }
 
+      var termsFormated = "";
+      for (i=0; i<selection.terms.length; i++) {
+        if (i == selection.terms.length - 1){
+          termsFormated += selection.terms[i];
+        }else{
+        termsFormated += selection.terms[i] + ' ';
+        }
+      }
+
+      sessionStorage.setItem('terms', termsFormated);
+      
       $location.path('/stats_inst').search({
         'region': selection.region,
         'start': selection.start,
@@ -89,12 +103,14 @@ angular.module('aosd.controllers', [])
         return;
       }
 
+      $scope.choices = $scope.termsList ? $scope.termsList.split(" ") : "";
+
       selection.region = $scope.region;
       selection.start = $scope.start;
       selection.end = $scope.end;
       selection.terms = [];
       for (i=0; i<$scope.choices.length; i++) {
-        var q = $scope.choices[i].name ? $scope.choices[i].name : '*';
+        var q = $scope.choices[i] ? $scope.choices[i] : '*';
         if (selection.terms.indexOf(q) == -1) {
           selection.terms.push(q);
         }
@@ -110,8 +126,8 @@ angular.module('aosd.controllers', [])
   })
 
   /* SideNav controller */
-  .controller('sidenavController', function($scope, $location, selection) {
-    $scope.isActive = function(path) {
+  .controller('sidenavController', function ($scope, $location, selection) {
+    $scope.isActive = function (path) {
       var currentPath = $location.path().split('/')[1];
       if (currentPath.indexOf('?') !== -1) {
         currentPath = currentPath.split('?')[0];
@@ -119,7 +135,7 @@ angular.module('aosd.controllers', [])
       return currentPath === path.split('/')[1];
     }
 
-    $scope.moveTo = function(path) {
+    $scope.moveTo = function (path) {
       $location.path(path).search({
         'region': selection.region,
         'start': selection.start,
@@ -130,8 +146,8 @@ angular.module('aosd.controllers', [])
   })
 
   /* SideNav Inst controller */
-  .controller('sidenavInstController', function($scope, $location, selection) {
-    $scope.isActive = function(path) {
+  .controller('sidenavInstController', function ($scope, $location, selection) {
+    $scope.isActive = function (path) {
       var currentPath = $location.path().split('/')[1];
       if (currentPath.indexOf('?') !== -1) {
         currentPath = currentPath.split('?')[0];
@@ -139,7 +155,7 @@ angular.module('aosd.controllers', [])
       return currentPath === path.split('/')[1];
     }
 
-    $scope.moveTo = function(path) {
+    $scope.moveTo = function (path) {
       $location.path(path).search({
         'region': selection.region,
         'start': selection.start,
@@ -150,23 +166,23 @@ angular.module('aosd.controllers', [])
     }
   })
 
-  
+
 
   /* Selection Help controller */
-  .controller('selectionHelpController', function($scope, settings, escuchaAPI, selection, drawers, helpers) {
+  .controller('selectionHelpController', function ($scope, settings, escuchaAPI, selection, drawers, helpers) {
     $scope.region = (selection.region == '*') ? 'Todo Aragón' : selection.region;
     $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
     $scope.end = (selection.end == '') ? helpers.dateToStr(new Date()) : selection.end;
     $scope.terms = selection.terms;
-    $scope.downloadCSV = function() {
+    $scope.downloadCSV = function () {
       BootstrapDialog.confirm({
         title: 'Descargar CSV',
         message: 'Se descargarán los últimos mensajes que coinciden con su selección hasta un máximo de 20.000 mensajes.\n\n<b>Nota:</b> la generación del CSV puede tardar unos segundos.',
         type: BootstrapDialog.TYPE_INFO,
         btnCancelLabel: 'Cancelar',
         btnOKLabel: 'Aceptar',
-        callback: function(result) {
-          if(result) {
+        callback: function (result) {
+          if (result) {
             encodedParams = $.param({
               'terms': selection.apiterms,
               'region': selection.region,
@@ -179,7 +195,7 @@ angular.module('aosd.controllers', [])
       });
     }
 
-    $scope.drawTotals = function() {
+    $scope.drawTotals = function () {
       if (selection.totals === null) {
         escuchaAPI.getTotals(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
           selection.totals = response;
@@ -195,16 +211,16 @@ angular.module('aosd.controllers', [])
   })
 
   /* Evolution controller */
-  .controller('evolutionController', function($scope, $location, escuchaAPI, selection, drawers, helpers) {
+  .controller('evolutionController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
-    $scope.drawEvolution = function() {
+    $scope.drawEvolution = function () {
       escuchaAPI.getMultitermEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawMultitermEvolution($scope, response);
       });
     }
 
-    $scope.drawEvolutionTotal = function() {
+    $scope.drawEvolutionTotal = function () {
       escuchaAPI.getEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawEvolutionTotal($scope, response);
       });
@@ -215,20 +231,20 @@ angular.module('aosd.controllers', [])
   })
 
   /* Heatmap controller */
-  .controller('heatmapController', function($scope, $location, escuchaAPI, selection, drawers, helpers) {
+  .controller('heatmapController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
     var raster = new ol.layer.Tile({
-        source: new ol.source.OSM()
+      source: new ol.source.OSM()
     })
 
     var map = new ol.Map({
-        layers: [raster],
-        target: 'map',
-        view: new ol.View({
-            center: ol.proj.transform([-0.8833333, 41.6333333], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 5
-        })
+      layers: [raster],
+      target: 'map',
+      view: new ol.View({
+        center: ol.proj.transform([-0.8833333, 41.6333333], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 5
+      })
     });
 
     var ALL_TERMS = 'Todos los de la lista'
@@ -259,7 +275,7 @@ angular.module('aosd.controllers', [])
     $scope.weight_max = 0;
     $scope.num_items = 0;
 
-    $scope.changeSelection = function() {
+    $scope.changeSelection = function () {
       if ($scope.change_terms_selected == ALL_TERMS) {
         $scope.partial_terms = selection.terms;
       } else {
@@ -268,7 +284,7 @@ angular.module('aosd.controllers', [])
       $scope.drawMap()
     }
 
-    $scope.showLastItems = function() {
+    $scope.showLastItems = function () {
       if ($scope.markers_active) {
         $scope.markers = [];
         $scope.markers_items = {};
@@ -276,7 +292,7 @@ angular.module('aosd.controllers', [])
         escuchaAPI.getLastItems($scope.partial_terms, selection.region, selection.start, selection.end, 0, true).success(function (response) {
           $scope.markers = [];
           $scope.markers_items = {};
-          for (i=0; i<response.last_items.length; i++) {
+          for (i = 0; i < response.last_items.length; i++) {
             var item = response.last_items[i];
             var marker = {
               id: item.id,
@@ -300,24 +316,24 @@ angular.module('aosd.controllers', [])
           }
         });
       }
-      $scope.markers_active = ! $scope.markers_active;
+      $scope.markers_active = !$scope.markers_active;
     }
 
-    $scope.showMessage = function(item_id) {
+    $scope.showMessage = function (item_id) {
       var item = $scope.markers_items[item_id];
       BootstrapDialog.alert({
-          title: 'Mensaje del usuario <b>' + item.author + '</b> en <b>' + helpers.titleCase(item.source) + '</b>',
-          message: ((item.title === null) ? '' : item.title + '\n\n') + item.description + '\n\n<small><i>' + item.published_on + '</i></small>'
-        });
+        title: 'Mensaje del usuario <b>' + item.author + '</b> en <b>' + helpers.titleCase(item.source) + '</b>',
+        message: ((item.title === null) ? '' : item.title + '\n\n') + item.description + '\n\n<small><i>' + item.published_on + '</i></small>'
+      });
     }
 
-    $scope.map.heatLayerCallback = function(heatLayer) {
+    $scope.map.heatLayerCallback = function (heatLayer) {
       heatLayer.setOptions(helpers.heatmapOptions);
       $scope.map.heatLayer = heatLayer;
       $scope.drawMap();
     }
 
-    $scope.drawMap = function() {
+    $scope.drawMap = function () {
       escuchaAPI.getGeogrid($scope.partial_terms, selection.region, selection.start, selection.end, $scope.map_weight).success(function (response) {
         drawers.drawMap($scope, response);
       });
@@ -325,13 +341,13 @@ angular.module('aosd.controllers', [])
     // CALL FOR THE FIRST TIME
     $scope.drawMap();
 
-    $scope.changeHeatmapWeight = function() {
+    $scope.changeHeatmapWeight = function () {
       $scope.drawMap();
     }
   })
 
   /* Stats controller */
-  .controller('statsController', function($scope, $location, escuchaAPI, selection, drawers, helpers) {
+  .controller('statsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
     $scope.top_hashtags = [];
@@ -341,17 +357,17 @@ angular.module('aosd.controllers', [])
     $scope.last_items = [];
     $scope.last_items_page = 0;
 
-    $scope.hemicycle_hashtags = {'title': {'text': ''}};
-    $scope.hemicycle_mentions = {'title': {'text': ''}};
+    $scope.hemicycle_hashtags = { 'title': { 'text': '' } };
+    $scope.hemicycle_mentions = { 'title': { 'text': '' } };
 
-    $scope.moreItems = function() {
+    $scope.moreItems = function () {
       $scope.last_items_page = $scope.last_items_page + 1;
       escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
         $scope.last_items = $scope.last_items.concat(response.last_items);
       });
     }
 
-    $scope.drawTops = function() {
+    $scope.drawTops = function () {
       escuchaAPI.getTops(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawHemicycles($scope, response);
         $scope.top_hashtags = response.top_hashtags;
@@ -360,7 +376,7 @@ angular.module('aosd.controllers', [])
       });
     }
 
-    $scope.drawLastItems = function() {
+    $scope.drawLastItems = function () {
       escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         $scope.last_items = response.last_items;
       });
@@ -371,18 +387,18 @@ angular.module('aosd.controllers', [])
   })
 
   /* Polarity controller */
-  .controller('polarityController', function($scope, $location, escuchaAPI, selection, drawers, helpers) {
+  .controller('polarityController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
-    $scope.polarity_pos = [{'Nivel': 0}];
-    $scope.polarity_pos_cols = [{'id': 'Nivel', 'type': 'gauge'}];
+    $scope.polarity_pos = [{ 'Nivel': 0 }];
+    $scope.polarity_pos_cols = [{ 'id': 'Nivel', 'type': 'gauge' }];
 
-    $scope.polarity_neg = [{'Nivel': -1}];
-    $scope.polarity_neg_cols = [{'id': 'Nivel', 'type': 'gauge'}];
+    $scope.polarity_neg = [{ 'Nivel': -1 }];
+    $scope.polarity_neg_cols = [{ 'id': 'Nivel', 'type': 'gauge' }];
 
     $scope.terms_polarity = [];
 
-    $scope.polarityColor = function(color, d) {
+    $scope.polarityColor = function (color, d) {
       if (d.value) {
         if (d.value == 0)
           return '#F97600';
@@ -397,7 +413,7 @@ angular.module('aosd.controllers', [])
       return "Nivel de polaridad";
     }
 
-    $scope.drawPolarity = function() {
+    $scope.drawPolarity = function () {
       escuchaAPI.getPolarity(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
         drawers.drawPolarity($scope, response);
       });
@@ -407,7 +423,7 @@ angular.module('aosd.controllers', [])
   })
 
   /* Communities controller */
-  .controller('communitiesController', function($scope, $location, escuchaAPI, selection, sigmaSingleton, drawers, helpers) {
+  .controller('communitiesController', function ($scope, $location, escuchaAPI, selection, sigmaSingleton, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
     $scope.start = selection.start;
@@ -417,7 +433,7 @@ angular.module('aosd.controllers', [])
       nodes: [],
       edges: []
     }
-    $scope.zoomMin = 1/32;
+    $scope.zoomMin = 1 / 32;
     $scope.numNodes = 1000;
 
     $scope.searched = '';
@@ -427,18 +443,18 @@ angular.module('aosd.controllers', [])
 
     $('.input-daterange[readonly!="True"]').datepicker(helpers.dateinputOptions);
 
-    $scope.showNodesDropdown = function($event) {
+    $scope.showNodesDropdown = function ($event) {
       $('.dropdown-toggle').dropdown()
       $event.preventDefault();
     }
 
-    $scope.searchUser = function() {
+    $scope.searchUser = function () {
       $scope.search_results = [];
       $scope.search_index = 0;
 
       if ($scope.searched != '') {
         var nodes = sigmaSingleton.instance.graph.nodes();
-        for (var i=0; i<nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
           if (nodes[i].label.match(helpers.make_pattern($scope.searched))) {
             $scope.search_results.push(nodes[i]);
           }
@@ -465,8 +481,8 @@ angular.module('aosd.controllers', [])
       }
     }
 
-    $scope.changeFocus = function(inc) {
-      if ($scope.search_index+inc >= 0 && $scope.search_index+inc < $scope.search_results.length) {
+    $scope.changeFocus = function (inc) {
+      if ($scope.search_index + inc >= 0 && $scope.search_index + inc < $scope.search_results.length) {
         $scope.search_index += inc;
 
         sigmaSingleton.instance.camera.goTo({
@@ -475,13 +491,13 @@ angular.module('aosd.controllers', [])
           ratio: $scope.zoomMin,
         });
         if ($scope.search_results.length > 1) {
-          $scope.search_result_text = ($scope.search_index+1) + " de " + $scope.search_results.length + " resultados";
+          $scope.search_result_text = ($scope.search_index + 1) + " de " + $scope.search_results.length + " resultados";
         }
       }
     }
 
-    $scope.toggleEdges = function() {
-      sigmaSingleton.instance.graph.edges().forEach(function(e){
+    $scope.toggleEdges = function () {
+      sigmaSingleton.instance.graph.edges().forEach(function (e) {
         e.hidden = !e.hidden;
       })
       window.dispatchEvent(new Event('resize'));
@@ -493,7 +509,7 @@ angular.module('aosd.controllers', [])
       $('#show_links_button').blur();
     }
 
-    $scope.toggleFullscreen = function() {
+    $scope.toggleFullscreen = function () {
       $("#graph").toggleClass("fullscreen");
       $("#graph-container").toggleClass("fullscreen");
 
@@ -509,16 +525,16 @@ angular.module('aosd.controllers', [])
       }
     }
 
-    $scope.changeStartDate = function() {
+    $scope.changeStartDate = function () {
       $scope.drawGraph();
     }
 
-    $scope.changeNumNodes = function(numNodes) {
+    $scope.changeNumNodes = function (numNodes) {
       $scope.numNodes = numNodes;
       $scope.drawGraph();
     }
 
-    $scope.drawGraph = function() {
+    $scope.drawGraph = function () {
       escuchaAPI.getGraph(selection.apiterms, selection.region, $scope.start, $scope.end, $scope.numNodes).success(function (response) {
         drawers.drawGraph($scope, response);
       });
@@ -527,9 +543,30 @@ angular.module('aosd.controllers', [])
     $scope.drawGraph();
   })
 
+  /* Historics controller */
+  .controller('historicsController', function ($scope, $location, escuchaAPI, selection, sigmaSingleton, drawers, helpers) {
+    selection.updateFromQueryString($location.search());
+
+    $scope.start = selection.start;
+    $scope.end = selection.end;
+
+    $scope.drawWeeklyCloud = function () {
+      /* This function has to be uncommented once the backend is implemented */
+      // escuchaAPI.getWeeklyCloud(selection.terms, selection.region, $scope.start, $scope.end).success(function (response) {
+      //   drawers.drawWeeklyCloud($scope, response);
+      // });
+      
+      /* This funtions have to be removed once the backend is implemented */
+      response = escuchaAPI.getWeeklyCloud(selection.terms, selection.region, $scope.start, $scope.end);
+      drawers.drawWeeklyCloud($scope, response);
+    }
+
+    $scope.drawWeeklyCloud()
+  })
+
   /* Subscription controller */
-  .controller('subscribeController', function($scope, $location, settings, escuchaAPI, subscriptionsAPI, selection) {
-    $scope.regions = [{'id': '*', 'label': 'TODO ARAGÓN'}];
+  .controller('subscribeController', function ($scope, $location, settings, escuchaAPI, subscriptionsAPI, selection) {
+    $scope.regions = [{ 'id': '*', 'label': 'TODO ARAGÓN' }];
     $scope.email = '';
     $scope.password = '';
     $scope.password2 = '';
@@ -541,14 +578,14 @@ angular.module('aosd.controllers', [])
       $scope.subscriptions = response.subscriptions;
       if ($location.search().fromSearch == 1) {
         // Add the current search
-        $scope.subscriptions.push({'name': '', 'region': selection.region, 'terms': selection.terms})
+        $scope.subscriptions.push({ 'name': '', 'region': selection.region, 'terms': selection.terms })
       }
     }).error(function (response) {
       BootstrapDialog.alert({
         title: 'Sucedió un error',
         message: 'No ha sido posible recoger la información de tus suscripciones.',
         type: BootstrapDialog.TYPE_DANGER,
-        callback: function() {
+        callback: function () {
           $location.path('/main');
           $scope.$apply(); // Bootstrap modal delay
         }
@@ -556,48 +593,48 @@ angular.module('aosd.controllers', [])
     });
 
     escuchaAPI.getMetadata().success(function (response) {
-      for (i=0; i<response.regions.length; i++) {
-        $scope.regions.push({'id': response.regions[i], 'label': response.regions[i]});
+      for (i = 0; i < response.regions.length; i++) {
+        $scope.regions.push({ 'id': response.regions[i], 'label': response.regions[i] });
       }
     });
 
-    $scope.addTerm = function(idx) {
+    $scope.addTerm = function (idx) {
       var subs = $scope.subscriptions[idx];
       if (subs.terms.length < 10) {
         subs.terms.push('');
       }
     };
 
-    $scope.removeTerm = function(idx, tidx) {
+    $scope.removeTerm = function (idx, tidx) {
       var subs = $scope.subscriptions[idx];
       if (subs.terms.length > 1) {
         subs.terms.splice(tidx, 1);
       }
     };
 
-    $scope.addSubscription = function() {
+    $scope.addSubscription = function () {
       if ($scope.subscriptions.length < settings.MAX_SUBSCRIPTIONS) {
-        $scope.subscriptions.push({'name': '', 'region': '*', 'terms': ['']});
+        $scope.subscriptions.push({ 'name': '', 'region': '*', 'terms': [''] });
       }
     }
 
-    $scope.removeSubscription = function(idx) {
+    $scope.removeSubscription = function (idx) {
       if ($scope.subscriptions.length > 0) {
         $scope.subscriptions.splice(idx, 1);
       }
     }
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/main');
     }
 
-    $scope.subscribe = function() {
+    $scope.subscribe = function () {
       subscriptionsAPI.subscribe($scope.subscriptions)
         .success(function (response) {
           BootstrapDialog.alert({
             title: 'Suscripciones guardada',
             message: 'Suscripciones guardadas con éxito.',
-            callback: function() {
+            callback: function () {
               $location.path('/main');
               $scope.$apply(); // Bootstrap modal delay
             }
@@ -608,30 +645,30 @@ angular.module('aosd.controllers', [])
         });
     }
 
-    $scope.passwordChange = function() {
+    $scope.passwordChange = function () {
       $location.path('/password_change');
     }
 
-    $scope.logout = function() {
+    $scope.logout = function () {
       subscriptionsAPI.logout();
       $location.path('/main');
     }
 
-    $scope.cancelSubscription = function() {
+    $scope.cancelSubscription = function () {
       BootstrapDialog.confirm({
         title: 'Cancelar suscripción',
         message: '¿Estás seguro de que deseas cancelar tu suscripción a los informes de Aragón Open SocialData?',
         type: BootstrapDialog.TYPE_WARNING,
         btnCancelLabel: 'Cancelar',
         btnOKLabel: 'Aceptar',
-        callback: function(result) {
-          if(result) {
+        callback: function (result) {
+          if (result) {
             subscriptionsAPI.cancel_subscription()
               .success(function (response) {
                 BootstrapDialog.alert({
                   title: 'Suscripción cancelada',
                   message: 'Suscripción cancelada con éxito.',
-                  callback: function() {
+                  callback: function () {
                     $location.path('/main');
                     $scope.$apply(); // Bootstrap modal delay
                   }
@@ -647,7 +684,7 @@ angular.module('aosd.controllers', [])
   })
 
   /* Login controller */
-  .controller('loginController', function($scope, $location, subscriptionsAPI) {
+  .controller('loginController', function ($scope, $location, subscriptionsAPI) {
     $scope.email = '';
     $scope.password = '';
 
@@ -658,11 +695,11 @@ angular.module('aosd.controllers', [])
       $location.path('/subscribe');
     }
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/main');
     }
 
-    $scope.login = function() {
+    $scope.login = function () {
       subscriptionsAPI.login($scope.email, $scope.password)
         .success(function (response) {
           $location.path('/subscribe');
@@ -674,7 +711,7 @@ angular.module('aosd.controllers', [])
   })
 
   /* Register controller */
-  .controller('registerController', function($scope, $location, subscriptionsAPI) {
+  .controller('registerController', function ($scope, $location, subscriptionsAPI) {
     $scope.email = '';
     $scope.password = '';
     $scope.password2 = '';
@@ -686,11 +723,11 @@ angular.module('aosd.controllers', [])
       $location.path('/subscribe');
     }
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/main');
     }
 
-    $scope.register = function() {
+    $scope.register = function () {
       if ($scope.password != $scope.password2) {
         $scope.error = 'Las contraseñas no coinciden';
         return;
@@ -700,7 +737,7 @@ angular.module('aosd.controllers', [])
           BootstrapDialog.alert({
             title: 'Registro completado',
             message: 'Te has registrado con éxito.',
-            callback: function() {
+            callback: function () {
               $location.path('/login');
               $scope.$apply(); // Bootstrap modal delay
             }
@@ -713,18 +750,18 @@ angular.module('aosd.controllers', [])
   })
 
   /* Password change controller */
-  .controller('passwordChangeController', function($scope, $location, subscriptionsAPI) {
+  .controller('passwordChangeController', function ($scope, $location, subscriptionsAPI) {
     $scope.old_password = '';
     $scope.new_password = '';
     $scope.new_password2 = '';
 
     $scope.error = '';
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/subscribe');
     }
 
-    $scope.change = function() {
+    $scope.change = function () {
       if ($scope.new_password != $scope.new_password2) {
         $scope.error = 'Las contraseñas no coinciden';
         return;
@@ -734,7 +771,7 @@ angular.module('aosd.controllers', [])
           BootstrapDialog.alert({
             title: 'Contraseña cambiada',
             message: 'Contraseña cambiada con éxito.',
-            callback: function() {
+            callback: function () {
               $location.path('/subscribe');
               $scope.$apply(); // Bootstrap modal delay
             }
@@ -747,7 +784,7 @@ angular.module('aosd.controllers', [])
   })
 
   /* Password reset controller */
-  .controller('passwordResetController', function($scope, $location, subscriptionsAPI) {
+  .controller('passwordResetController', function ($scope, $location, subscriptionsAPI) {
     $scope.email = '';
 
     $scope.error = '';
@@ -757,17 +794,17 @@ angular.module('aosd.controllers', [])
       $location.path('/subscribe');
     }
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/login');
     }
 
-    $scope.submit = function() {
+    $scope.submit = function () {
       subscriptionsAPI.passwordReset($scope.email)
         .success(function (response) {
           BootstrapDialog.alert({
             title: 'Mensaje enviado',
             message: 'Se le ha enviado un correo electrónico con las indicaciones a seguir para cambiar su contraseña.',
-            callback: function() {
+            callback: function () {
               $location.path('/main');
               $scope.$apply(); // Bootstrap modal delay
             }
@@ -780,7 +817,7 @@ angular.module('aosd.controllers', [])
   })
 
   /* Password reset confirm controller */
-  .controller('passwordResetConfirmController', function($scope, $location, subscriptionsAPI) {
+  .controller('passwordResetConfirmController', function ($scope, $location, subscriptionsAPI) {
     $scope.new_password = '';
     $scope.new_password2 = '';
 
@@ -793,11 +830,11 @@ angular.module('aosd.controllers', [])
 
     $scope.t = ($location.search().t !== undefined) ? $location.search().t : '';
 
-    $scope.goBack = function() {
+    $scope.goBack = function () {
       $location.path('/login');
     }
 
-    $scope.change = function() {
+    $scope.change = function () {
       if ($scope.new_password != $scope.new_password2) {
         $scope.error = 'Las contraseñas no coinciden';
         return;

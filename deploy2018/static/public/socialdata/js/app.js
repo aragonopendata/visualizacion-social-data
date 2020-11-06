@@ -38,6 +38,7 @@ var app = angular.module('aosd', [
       .when("/stats", {templateUrl: "/static/public/socialdata/html/partials/stats.html", controller: "statsController"})
       .when("/polarity", {templateUrl: "/static/public/socialdata/html/partials/polarity.html", controller: "polarityController"})
       .when("/communities", {templateUrl: "/static/public/socialdata/html/partials/communities.html", controller: "communitiesController"})
+      .when("/historics_inst", {templateUrl: "/static/public/socialdata/html/partials/histoInst.html", controller: "historicsController"})
       .when("/evolution_inst", {templateUrl: "/static/public/socialdata/html/partials/evoInst.html", controller: "evolutionController"})
       .when("/heatmap_inst", {templateUrl: "/static/public/socialdata/html/partials/heatInst.html", controller: "heatmapController"})
       .when("/stats_inst", {templateUrl: "/static/public/socialdata/html/partials/statsInst.html", controller: "statsController"})

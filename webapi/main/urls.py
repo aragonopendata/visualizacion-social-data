@@ -9,6 +9,7 @@ urlpatterns = [#'',
 	# Data
 	url(r'^get_metadata/$', views.get_metadata, name='get_metadata'),
 	url(r'^get_evol/$', views.get_evol, name='get_evol'),
+	url(r'^get_hist_cloud/$', views.get_hist_cloud, name='get_hist_cloud'),
 	url(r'^get_totals/$', views.get_totals, name='get_totals'),
 	url(r'^get_tops/$', views.get_tops, name='get_tops'),
 	url(r'^get_polarity/$', views.get_polarity, name='get_polarity'),

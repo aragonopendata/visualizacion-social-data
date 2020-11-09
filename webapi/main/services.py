@@ -17,9 +17,10 @@ from cStringIO import StringIO
 
 from django.conf import settings
 
-sys.path.append(os.path.realpath(os.path.join(settings.PARENT_DIR, os.pardir, 'core')))
-#import kampalGraph as KG
-#import igraph
+sys.path.append(os.path.realpath(os.path.join(
+    settings.PARENT_DIR, os.pardir, 'core')))
+# import kampalGraph as KG
+# import igraph
 
 
 REGIONS = [
@@ -57,7 +58,9 @@ REGIONS = [
 	'Valdejalón',
 	'Zaragoza',
 ]
-provincia={'PROV HUESCA':'huesca','PROV TERUEL':'teruel','PROV ZARAGOZA':'zaragoza'}
+provincia = {'PROV HUESCA': 'huesca',
+    'PROV TERUEL': 'teruel', 'PROV ZARAGOZA': 'zaragoza'}
+
 
 def to_epoch(date):
 	return calendar.timegm(date.timetuple()) * 1000
@@ -65,11 +68,12 @@ def to_epoch(date):
 
 class RemoteModel(object):
 	def __init__(self):
-		self.es = Elasticsearch('http://biv-aodback-01.aragon.local:9200', retry_on_timeout=True)
+		self.es = Elasticsearch(
+		    'http://biv-aodback-01.aragon.local:9200', retry_on_timeout=True)
 
 	def request(self, payload):
-                with open("/tmp/elasticlog.txt",'w+') as f:
-                   print >>f, "ELASTIC",payload
+                with open("/tmp/elasticlog.txt", 'w+') as f:
+                   print >>f, "ELASTIC", payload
 		return self.es.search(index="escucha", doc_type="data_items", body=payload)
 
         def count_values(self, field):
@@ -86,13 +90,17 @@ class RemoteModel(object):
                     "total": {
                       "terms": {
                         "field": field,
-                        "size":1000
+                        "size": 1000
                       }
                     }
                   }
                 }
                 return self.request(payload)['aggregations']['total']['buckets']
- 
+
+ 	def request2(self, payload):
+                with open("/tmp/elasticlog.txt", 'w+') as f:
+                   print >>f, "ELASTIC_2", payload
+		return self.es.search(index="weekly_hashtags", doc_type="weekly_hashtags_items", body=payload)
 
 	def _add_region(self, payload, region):
 		if region != '*':
@@ -100,11 +108,11 @@ class RemoteModel(object):
                         payload['query']['bool']['filter']['bool']['must'].append(
                                 {
                         "term": {
-                                "province": provincia[region.upper()] 
+                                "province": provincia[region.upper()]
                         }
                     }
                         )
-                    elif region.upper().startswith('MUN ' ):
+                    elif region.upper().startswith('MUN '):
                         payload['query']['bool']['filter']['bool']['must'].append(
                                 {
                         "term": {
@@ -139,7 +147,7 @@ class RemoteModel(object):
                         if term == 'USARLISTA':
                            payload["query"]["bool"]["filter"]["bool"]["must"].append({
                                 "match": {
-                                     "author_in_list":{
+                                     "author_in_list": {
                                         "query": True,
                                          }
                                 #        "analyze_wildcard": True
@@ -155,7 +163,6 @@ class RemoteModel(object):
 					"analyze_wildcard": True
 				}
 			})
-
 
 	@property
 	def _default_min_published_on(self):
@@ -182,7 +189,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": { "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -209,11 +216,10 @@ class RemoteModel(object):
 		  }
 		}
 		if allow_zeros:
-			payload["aggs"]["evolution"]["date_histogram"]["min_doc_count"] =  0
+			payload["aggs"]["evolution"]["date_histogram"]["min_doc_count"] = 0
 		self._add_theme(payload, query)
 		self._add_region(payload, region)
 		return self.request(payload)
-
 
 	def total_by_field(self, field, query='*', region='*', min_published_on=None, max_published_on=None):
 		payload = {
@@ -232,7 +238,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -276,7 +282,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -310,7 +316,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -349,7 +355,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -403,7 +409,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -461,7 +467,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -512,7 +518,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -556,7 +562,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -600,7 +606,7 @@ class RemoteModel(object):
 		          "must": [
 		            {
 		              "range": {
-		                "published_on": {  "format": "epoch_millis",
+		                "published_on": {"format": "epoch_millis",
 		                  "gte": min_published_on or self._default_min_published_on,
 		                  "lte": max_published_on or self._default_max_published_on
 		                }
@@ -626,6 +632,34 @@ class RemoteModel(object):
 			item['id'] = hit['_id']
 			results.append(item)
 		return results
+
+	def historics_cloud(self, query='*', region='*', min_published_on=None, max_published_on=None, size=1):
+		payload = {
+			"size": size,
+			"sort":{
+				"_id":{
+					"order":"asc"
+				}
+			},
+			"query": {
+				"bool": {
+					"filter": {
+						"bool": {
+							"must": [{
+								"range": {
+									"start_week": {
+										"format": "epoch_millis",
+										"gte": min_published_on or self._default_min_published_on,
+										"lte": max_published_on or self._default_max_published_on
+									}
+								}
+							}]
+						}
+					}
+				}
+			}
+		}
+		return self.request2(payload)['hits']['hits']
 
 
 def generate_graph(es_search):

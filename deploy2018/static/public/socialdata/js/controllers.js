@@ -547,8 +547,12 @@ angular.module('aosd.controllers', [])
   .controller('historicsController', function ($scope, $location, escuchaAPI, selection, sigmaSingleton, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
-    $scope.start = selection.start;
-    $scope.end = selection.end;
+    // $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
+    $scope.start = '01/12/2013'
+    // $scope.end = (selection.end == '') ? helpers.dateToStr(new Date()) : selection.end;
+    $scope.end = '31/12/2018'
+    $scope.terms = selection.terms;
+    $scope.region = selection.region;
 
     $scope.drawWeeklyCloud = function () {
       /* This function has to be uncommented once the backend is implemented */
@@ -557,8 +561,8 @@ angular.module('aosd.controllers', [])
       // });
       
       /* This funtions have to be removed once the backend is implemented */
-      response = escuchaAPI.getWeeklyCloud(selection.terms, selection.region, $scope.start, $scope.end);
-      drawers.drawWeeklyCloud($scope, response);
+      response = escuchaAPI.getWeeklyCloud($scope.terms, $scope.region, $scope.start, $scope.end);
+      drawers.drawWeeklyCloud($scope, response, escuchaAPI);
     }
 
     $scope.drawWeeklyCloud()

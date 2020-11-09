@@ -77,18 +77,20 @@ angular.module('aosd.services', [])
       });
     }
 
+    escuchaAPI.getHistCloud = function (terms, region, start, end, size) {
+      return $http({
+        method: 'POST',
+        url: settings.API_URL + '/get_hist_cloud/',
+        data: { 'terms': terms, 'region': region, 'start': start, 'end': end, 'size': size }
+      });
+    }
+
     escuchaAPI.getWeeklyCloud = function (terms, region, start, end) {
-      /* All this function will be handled by the backend with the http call, remove when its implemented*/
-      start = '10/3/2017'
-      end = '10/25/2020'
-      start = new Date(start)
-      end = new Date(end)
-      var loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-      var arrayLoremIpsum = loremIpsum.split(' ')
-      console.log(arrayLoremIpsum)
+      start = new Date(start.replace(/^(\d{1,2}\/)(\d{1,2}\/)(\d{4})$/, "$2$1$3"))
+      end = new Date(end.replace(/^(\d{1,2}\/)(\d{1,2}\/)(\d{4})$/, "$2$1$3"))
       var returnArray = {}
       for (let year = start.getFullYear(); year <= end.getFullYear(); year++) {
-        returnArray[year] = {}
+        returnArray[year] = []
       }
       start.getDay() == 0 ? start = new Date(start.setDate(start.getDate() - 6)) : start = new Date(start.setDate(start.getDate() - start.getDay() + 1))
       end.getDay() != 0 ? end = new Date(end.setDate(end.getDate() + 7 - end.getDay())) : end = end
@@ -97,27 +99,14 @@ angular.module('aosd.services', [])
       var diffCompleteWeeks = (diffDays + 1) / 7
       var startWeek = new Date(start)
       var endWeek = new Date(start.setDate(start.getDate() + 6))
-      for (let week = 0; week <= diffCompleteWeeks; week++) {
+      for (let week = 0; week < diffCompleteWeeks; week++) {
         var year = startWeek.getFullYear()
-        var weekName = startWeek.getDate() + "/" + (startWeek.getMonth() + 1) + "-" + endWeek.getDate() + "/" + (endWeek.getMonth() + 1)
-        returnArray[year][weekName] = []
-        var inicio = Math.round(Math.random() * 37)
-        var longitud = Math.round(Math.random() * (15 - 7) + 7)
-        var words = arrayLoremIpsum.slice(inicio, inicio + longitud)
-        words.forEach(element => {
-          returnArray[year][weekName].push({ text: element, weight: Math.round(Math.random() * 14 + 1), link: '#/stats_inst?region=*&start=&end=&term=' + element + '&enlista'})
-        });
+        var weekName = startWeek.getDate().toString().padStart(2, 0) + "/" + (startWeek.getMonth() + 1).toString().padStart(2, 0) + "-" + endWeek.getDate().toString().padStart(2, 0) + "/" + (endWeek.getMonth() + 1).toString().padStart(2, 0)
+        returnArray[year].push(weekName)
         startWeek = new Date(startWeek.setDate(startWeek.getDate() + 7))
         endWeek = new Date(endWeek.setDate(endWeek.getDate() + 7))
       }
       return returnArray
-
-      /* Uncomment when the backend is implemented*/
-      // return $http({
-      //   method: 'POST',
-      //   url: settings.API_URL + '/get_weekly_cloud/',
-      //   data: {'terms': terms, 'region': region, 'start': start, 'end': end}
-      // });
     }
 
     return escuchaAPI;
@@ -683,7 +672,7 @@ angular.module('aosd.services', [])
       }
     }
 
-    drawers.drawWeeklyCloud = function (scope, response) {
+    drawers.drawWeeklyCloud = function (scope, response, escuchaAPI) {
       // Create the timeline 
       scope.timelineSwiper = new Swiper(".timeline .swiper-container-y", {
         direction: "vertical",
@@ -754,17 +743,54 @@ angular.module('aosd.services', [])
               direction: "horizontal"
             }
           },
-          onSlideChangeStart: function () {
+          onSlideChangeStart: function (swiper) {
             scope['timelineSwiper' + year].updatePagination()
+            // console.log(swiper.slides[swiper.activeIndex])
+            var week = swiper.slides[swiper.activeIndex].getAttribute('data-week')
+            var weekFormat = week.replaceAll('/', '_')
+            var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
+            var mondayFormated = week.substring(0, 5) +"/"+ year
+            var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })    
+            escuchaAPI.getHistCloud(scope.terms, scope.region, mondayFormated, saturdayFormated, 1).success(function (response) {
+              var words = []
+              response.historics_cloud[0]._source.hashtags.forEach(element => {
+                if(element.hashtag.substring(0,1)=="#"){
+                  var hashtagText = element.hashtag.substring(1,element.hashtag.lenght)
+                }else{
+                  var hashtagText = element.hashtag
+                }
+                words.push({ text: element.hashtag, weight: element.count, link: '#/stats_inst?region=*&start=&end=&term=' + hashtagText + '&enlista'})
+              });
+              $(`#cloud${weekFormat}`).jQCloud(words, {
+                autoResize: true
+              });
+            });
           }
         })
-        Object.keys(response[year]).forEach(week => {
+        for (index = 0; index < response[year].length; ++index) {
+          var week = response[year][index]
           var weekFormat = week.replaceAll('/', '_')
           scope['timelineSwiper' + year].appendSlide(
             `<div class="swiper-slide swiper-slide-${year}" data-week="${week}">
               <div id="cloud${weekFormat}" class="swiper-container-cloud"></div>
             </div>`)
-          $(`#cloud${weekFormat}`).jQCloud(response[year][week], {
+        }
+        var week = scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].getAttribute('data-week')
+        var weekFormat = week.replaceAll('/', '_')
+        var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
+        var mondayFormated = week.substring(0, 5) +"/"+ year
+        var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })
+        escuchaAPI.getHistCloud(scope.terms, scope.region, mondayFormated, saturdayFormated, 1).success(function (response) {
+          var words = []
+          response.historics_cloud[0]._source.hashtags.forEach(element => {
+            if(element.hashtag.substring(0,1)=="#"){
+              var hashtagText = element.hashtag.substring(1,element.hashtag.lenght)
+            }else{
+              var hashtagText = element.hashtag
+            }
+            words.push({ text: element.hashtag, weight: element.count, link: '#/stats_inst?region=*&start=&end=&term=' + hashtagText + '&enlista'})
+          });
+          $(`#cloud${weekFormat}`).jQCloud(words, {
             autoResize: true
           });
         });

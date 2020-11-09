@@ -128,6 +128,15 @@ def multiterm_evolution(request, terms, region, start, end):
 
 @require_http_methods(['POST'])
 @parse_params
+def get_hist_cloud(request, terms, region, start, end):
+	response = {
+		'historics_cloud': remote.historics_cloud(terms, region, start, end),
+	}
+	return JsonResponse(response)
+
+
+@require_http_methods(['POST'])
+@parse_params
 def get_graph(request, terms, region, start, end):
 	params = json.loads(request.body) if request.body else {}
 	num_nodes = params.get('num_nodes', 1000)

@@ -44,13 +44,14 @@ var app = angular.module('aosd', [
       .when("/stats_inst", {templateUrl: "/static/public/socialdata/html/partials/statsInst.html", controller: "statsController"})
       .when("/polarity_inst", {templateUrl: "/static/public/socialdata/html/partials/polInst.html", controller: "polarityController"})
       .when("/communities_inst", {templateUrl: "/static/public/socialdata/html/partials/commInst.html", controller: "communitiesController"})
+      .when("/about", {templateUrl: "/static/public/socialdata/html/partials/about.html", controller: "mainController"})
       .when("/subscribe", {templateUrl: "/static/public/socialdata/html/partials/subscribe.html", controller: "subscribeController"})
       .when("/login", {templateUrl: "/static/public/socialdata/html/partials/login.html", controller: "loginController"})
       .when("/register", {templateUrl: "/static/public/socialdata/html/partials/register.html", controller: "registerController"})
       .when("/password_change", {templateUrl: "/static/public/socialdata/html/partials/password_change.html", controller: "passwordChangeController"})
       .when("/password_reset", {templateUrl: "/static/public/socialdata/html/partials/password_reset.html", controller: "passwordResetController"})
       .when("/password_reset_confirm", {templateUrl: "/static/public/socialdata/html/partials/password_reset_confirm.html", controller: "passwordResetConfirmController"})
-      .otherwise({redirectTo: '/main'});
+      .otherwise({redirectTo: '/stats_inst'});
 
     cfpLoadingBarProvider.includeSpinner = false;
 

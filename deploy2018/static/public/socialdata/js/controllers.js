@@ -8,10 +8,11 @@ angular.module('aosd.controllers', [])
     $scope.end = selection.end;
 
     $scope.choices = [];
+
     for (i=0; i<selection.terms.length; i++) {
       $scope.choices.push({'id': i+1, 'name': selection.terms[i]});
     }
-
+    if(!selection.terms.length) $scope.choices.push({'id':1, 'name':'*'})
     // Reset the last search
     selection.totals = null;
 
@@ -86,8 +87,9 @@ angular.module('aosd.controllers', [])
       }
 
       sessionStorage.setItem('terms', termsFormated);
-      
-      $location.path('/stats_inst').search({
+
+      // $location.path('/stats_inst').search({    // Default url for every search
+      $location.path($location.path()).search({
         'region': selection.region,
         'start': selection.start,
         'end': selection.end,
@@ -214,11 +216,11 @@ angular.module('aosd.controllers', [])
   .controller('evolutionController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
 
-    $scope.drawEvolution = function () {
-      escuchaAPI.getMultitermEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
-        drawers.drawMultitermEvolution($scope, response);
-      });
-    }
+    // $scope.drawEvolution = function () {
+    //   escuchaAPI.getMultitermEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
+    //     drawers.drawMultitermEvolution($scope, response);
+    //   });
+    // }
 
     $scope.drawEvolutionTotal = function () {
       escuchaAPI.getEvolution(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
@@ -226,7 +228,7 @@ angular.module('aosd.controllers', [])
       });
     }
 
-    $scope.drawEvolution();
+    // $scope.drawEvolution();
     $scope.drawEvolutionTotal();
   })
 
@@ -349,7 +351,16 @@ angular.module('aosd.controllers', [])
   /* Stats controller */
   .controller('statsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
-
+    if(_.isEmpty($location.search())) {
+      $location.path('/stats_inst').search({
+        'region': "*",
+        'start': "",
+        'end': "",
+        'term': "*",
+        'enlista': true,
+      });
+      return
+    }
     $scope.top_hashtags = [];
     $scope.top_authors = [];
     $scope.top_mentions = [];

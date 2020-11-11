@@ -718,7 +718,7 @@ angular.module('aosd.services', [])
               <div class="swiper-wrapper"></div>
               <div class="swiper-button-prev swiper-button-prev-${year}"></div>
               <div class="swiper-button-next swiper-button-next-${year}"></div>
-              <div class="swiper-pagination swiper-pagination-${year}"></div>
+              <div class="swiper-pagination swiper-pagination-dynamic swiper-pagination-${year}"></div>
               <div class="swiper-scrollbar swiper-scrollbar-${year}"></div>
             </div>
           </div>`
@@ -778,6 +778,18 @@ angular.module('aosd.services', [])
               });
               swiper.slides[swiper.activeIndex].setAttribute("loaded", true)
             });
+          },
+          // This onSetTranslate makes the active bullet follow the scrollbar in the pagination
+          onSetTranslate: function (swiper, event) {
+            if(event == 0){
+              var percentageScroll = 0
+            } else{
+              var percentageScroll = (((-event)*100)/(swiper.size*(swiper.slidesGrid.length-1)))/100
+            }
+            var top = 125 //px
+            var bottom = 475 //px
+            var scrollbar = ((bottom-top)*percentageScroll) + top
+            $('.swiper-pagination-dynamic').css("top",scrollbar+"px")
           },
         })
         for (index = 0; index < response[year].length; ++index) {

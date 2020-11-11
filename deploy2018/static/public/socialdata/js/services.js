@@ -683,16 +683,22 @@ angular.module('aosd.services', [])
         paginationBulletRender: function (swiper, index, className) {
           var activeIndex = 0;
           if (swiper.activeIndex) { activeIndex = swiper.activeIndex }
-          if (index < (activeIndex - 3) || index > (activeIndex + 3)) {
-            return "<span hidden>" + year + "</span>";
-          }
+          
+          // if (index < (activeIndex - 3) || index > (activeIndex + 3)) {
+          //   return "<span hidden>" + year + "</span>";
+          // }
           if (!$(".swiper-slide-y")[index]) { return }
           var year = $(".swiper-slide-y")
           [index].getAttribute("data-year");
           if (activeIndex == index) { return '<span class="' + className + ' swiper-pagination-bullet-active">' + year + "</span>" }
-          return '<span class="' + className + '">' + year + "</span>";
+          return '<span class="' + className + ' swiper-pagination-bullet-shown">' + year + "</span>";
         },
         paginationClickable: true,
+        simulateTouch: false,
+        // freeMode: true,
+        //  scrollbarDraggable:true,
+        //  scrollbarHide:false,
+        //  scrollbar:".swiper-scrollbar-y",
         nextButton: ".swiper-button-next-y",
         prevButton: ".swiper-button-prev-y",
         breakpoints: {
@@ -709,11 +715,11 @@ angular.module('aosd.services', [])
         scope.timelineSwiper.appendSlide(
           `<div class="swiper-slide swiper-slide-y" data-year="${year}">
             <div class="swiper-container swiper-container-w swiper-container-${year}">
-              <div class="swiper-wrapper">
-            </div>
-            <div class="swiper-button-prev swiper-button-prev-${year}"></div>
-            <div class="swiper-button-next swiper-button-next-${year}"></div>
+              <div class="swiper-wrapper"></div>
+              <div class="swiper-button-prev swiper-button-prev-${year}"></div>
+              <div class="swiper-button-next swiper-button-next-${year}"></div>
               <div class="swiper-pagination swiper-pagination-${year}"></div>
+              <div class="swiper-scrollbar swiper-scrollbar-${year}"></div>
             </div>
           </div>`
         );
@@ -726,9 +732,9 @@ angular.module('aosd.services', [])
           paginationBulletRender: function (swiper, index, className) {
             var activeIndex = 0;
             if (swiper.activeIndex) { activeIndex = swiper.activeIndex }
-            if (index < (activeIndex - 3) || index > (activeIndex + 3)) {
-              return "<span hidden></span>";
-            }
+            // if (index < (activeIndex - 3) || index > (activeIndex + 3)) {
+            //   return '<span class="' + className + ' swiper-pagination-bullet-active">' + week + "</span>" ;
+            // }
             if (!$(".swiper-slide-" + year)[index]) { return }
             var week = $(".swiper-slide-" + year)
             [index].getAttribute("data-week");
@@ -736,6 +742,12 @@ angular.module('aosd.services', [])
             return '<span class="' + className + '">' + week + "</span>";
           },
           paginationClickable: true,
+          simulateTouch: false,
+          freeMode: true,
+          scrollbarDraggable:true,
+          scrollbarHide:false,
+          scrollbarSnapOnRelease: true,
+          scrollbar:".swiper-scrollbar-" + year,
           nextButton: ".swiper-button-next-" + year,
           prevButton: ".swiper-button-prev-" + year,
           breakpoints: {
@@ -743,11 +755,11 @@ angular.module('aosd.services', [])
               direction: "horizontal"
             }
           },
-          onSlideChangeStart: function (swiper) {
-            scope['timelineSwiper' + year].updatePagination()
-            // console.log(swiper.slides[swiper.activeIndex])
+          onTransitionStart: function (swiper) {
             var week = swiper.slides[swiper.activeIndex].getAttribute('data-week')
             var weekFormat = week.replaceAll('/', '_')
+            if(swiper.slides[swiper.activeIndex].getAttribute("loaded")) return
+            console.log(week)  
             var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
             var mondayFormated = week.substring(0, 5) +"/"+ year
             var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })    
@@ -764,8 +776,9 @@ angular.module('aosd.services', [])
               $(`#cloud${weekFormat}`).jQCloud(words, {
                 autoResize: true
               });
+              swiper.slides[swiper.activeIndex].setAttribute("loaded", true)
             });
-          }
+          },
         })
         for (index = 0; index < response[year].length; ++index) {
           var week = response[year][index]
@@ -793,6 +806,7 @@ angular.module('aosd.services', [])
           $(`#cloud${weekFormat}`).jQCloud(words, {
             autoResize: true
           });
+          scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].setAttribute("loaded", true)
         });
       });
     }

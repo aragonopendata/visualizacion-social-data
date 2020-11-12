@@ -170,6 +170,7 @@ body {
 
 .swiper-container-vertical
   > .swiper-pagination-bullets
+  .swiper-pagination-bullet-active, .swiper-pagination-bullets
   .swiper-pagination-bullet-active {
   display: block !important;
 }

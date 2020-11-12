@@ -361,7 +361,7 @@ a:hover {
 .active {
     color:#ffffff !important;
     font-weight:bold;
-    border-bottom: 3px solid #76a1b8;
+    /* border-bottom: 3px solid #76a1b8; */
     text-align: center;
 }
   @include media-breakpoint-up(sm) {

@@ -109,4 +109,78 @@ angular.module('aosd.directives', [])
       templateUrl: '/static/public/socialdata/html/partials/selectionHelp.html',
       controller: 'selectionHelpController',
     }
+  })
+
+/* NEW STRUCTURE */
+  /* Side nav inst menu directive */
+  .directive('sidenavinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/sidenavInstSect.html',
+      controller: 'sidenavInstController',
+    }
+  })
+
+
+  /* Selection the statistics institutional section */
+  .directive('statsinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/statsInstSect.html',
+      controller: 'statsController',
+    }
+  })
+
+  /* Evolution institutional section */
+  .directive('evoinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/evoInstSect.html',
+      controller: 'evolutionController',
+    }
+  })
+  
+  /* Heat map institutional section */
+  .directive('heatinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/heatInstSect.html',
+      controller: 'heatmapController',
+    }
+  })
+  
+  /* Polarity institutional section */
+  .directive('polinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/polInstSect.html',
+      controller: 'polarityController',
+    }
+  })
+  
+  /* Search section */
+  .directive('searchsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/searchSect.html',
+      controller: 'searchController',
+    }
+  })
+
+  /* Search charts section */
+  .directive('searchinfosect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/searchInfoSect.html',
+      // controller: 'searchInfoController',
+    }
+  })
+  
+  /* Search charts section */
+  .directive('searchchartsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/searchChartSect.html',
+      controller: 'searchChartController',
+    }
   });

@@ -31,27 +31,28 @@ var app = angular.module('aosd', [
     $httpProvider.defaults.headers.common['Pragma'] = 'no-cache';
 
     $routeProvider
-      .when("/main", {templateUrl: "/static/public/socialdata/html/partials/main.html", controller: "mainController"})
-      .when("/report", {templateUrl: "/static/public/socialdata/html/partials/report.html", controller: "reportController"})
-      .when("/evolution", {templateUrl: "/static/public/socialdata/html/partials/evolution.html", controller: "evolutionController"})
-      .when("/heatmap", {templateUrl: "/static/public/socialdata/html/partials/heatmap.html", controller: "heatmapController"})
-      .when("/stats", {templateUrl: "/static/public/socialdata/html/partials/stats.html", controller: "statsController"})
-      .when("/polarity", {templateUrl: "/static/public/socialdata/html/partials/polarity.html", controller: "polarityController"})
-      .when("/communities", {templateUrl: "/static/public/socialdata/html/partials/communities.html", controller: "communitiesController"})
+      // .when("/main", {templateUrl: "/static/public/socialdata/html/partials/main.html", controller: "mainController"})
+       .when("/general_inst", {templateUrl: "/static/public/socialdata/html/partials/genInst.html", controller: "generalController"})
+      // .when("/report", {templateUrl: "/static/public/socialdata/html/partials/report.html", controller: "reportController"})
+      // .when("/evolution", {templateUrl: "/static/public/socialdata/html/partials/evolution.html", controller: "evolutionController"})
+      // .when("/heatmap", {templateUrl: "/static/public/socialdata/html/partials/heatmap.html", controller: "heatmapController"})
+      // .when("/stats", {templateUrl: "/static/public/socialdata/html/partials/stats.html", controller: "statsController"})
+      // .when("/polarity", {templateUrl: "/static/public/socialdata/html/partials/polarity.html", controller: "polarityController"})
+      // .when("/communities", {templateUrl: "/static/public/socialdata/html/partials/communities.html", controller: "communitiesController"})
       .when("/historics_inst", {templateUrl: "/static/public/socialdata/html/partials/histoInst.html", controller: "historicsController"})
-      .when("/evolution_inst", {templateUrl: "/static/public/socialdata/html/partials/evoInst.html", controller: "evolutionController"})
-      .when("/heatmap_inst", {templateUrl: "/static/public/socialdata/html/partials/heatInst.html", controller: "heatmapController"})
-      .when("/stats_inst", {templateUrl: "/static/public/socialdata/html/partials/statsInst.html", controller: "statsController"})
+      // .when("/evolution_inst", {templateUrl: "/static/public/socialdata/html/partials/evoInst.html", controller: "evolutionController"})
+      // .when("/heatmap_inst", {templateUrl: "/static/public/socialdata/html/partials/heatInst.html", controller: "heatmapController"})
+      // .when("/stats_inst", {templateUrl: "/static/public/socialdata/html/partials/statsInst.html", controller: "statsController"})
       .when("/polarity_inst", {templateUrl: "/static/public/socialdata/html/partials/polInst.html", controller: "polarityController"})
-      .when("/communities_inst", {templateUrl: "/static/public/socialdata/html/partials/commInst.html", controller: "communitiesController"})
+      // .when("/communities_inst", {templateUrl: "/static/public/socialdata/html/partials/commInst.html", controller: "communitiesController"})
       .when("/about", {templateUrl: "/static/public/socialdata/html/partials/about.html", controller: "mainController"})
-      .when("/subscribe", {templateUrl: "/static/public/socialdata/html/partials/subscribe.html", controller: "subscribeController"})
-      .when("/login", {templateUrl: "/static/public/socialdata/html/partials/login.html", controller: "loginController"})
-      .when("/register", {templateUrl: "/static/public/socialdata/html/partials/register.html", controller: "registerController"})
-      .when("/password_change", {templateUrl: "/static/public/socialdata/html/partials/password_change.html", controller: "passwordChangeController"})
-      .when("/password_reset", {templateUrl: "/static/public/socialdata/html/partials/password_reset.html", controller: "passwordResetController"})
-      .when("/password_reset_confirm", {templateUrl: "/static/public/socialdata/html/partials/password_reset_confirm.html", controller: "passwordResetConfirmController"})
-      .otherwise({redirectTo: '/stats_inst'});
+      // .when("/subscribe", {templateUrl: "/static/public/socialdata/html/partials/subscribe.html", controller: "subscribeController"})
+      // .when("/login", {templateUrl: "/static/public/socialdata/html/partials/login.html", controller: "loginController"})
+      // .when("/register", {templateUrl: "/static/public/socialdata/html/partials/register.html", controller: "registerController"})
+      // .when("/password_change", {templateUrl: "/static/public/socialdata/html/partials/password_change.html", controller: "passwordChangeController"})
+      // .when("/password_reset", {templateUrl: "/static/public/socialdata/html/partials/password_reset.html", controller: "passwordResetController"})
+      // .when("/password_reset_confirm", {templateUrl: "/static/public/socialdata/html/partials/password_reset_confirm.html", controller: "passwordResetConfirmController"})
+      .otherwise({redirectTo: '/general_inst'});
 
     cfpLoadingBarProvider.includeSpinner = false;
 

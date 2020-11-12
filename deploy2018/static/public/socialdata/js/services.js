@@ -672,7 +672,7 @@ angular.module('aosd.services', [])
       }
     }
 
-    drawers.drawWeeklyCloud = function (scope, response, escuchaAPI) {
+    drawers.drawWeeklyCloud = function (scope, response, escuchaAPI, helpers) {
       // Create the timeline 
       scope.timelineSwiper = new Swiper(".timeline .swiper-container-y", {
         direction: "vertical",
@@ -756,41 +756,20 @@ angular.module('aosd.services', [])
             }
           },
           onTransitionStart: function (swiper) {
-            var week = swiper.slides[swiper.activeIndex].getAttribute('data-week')
-            var weekFormat = week.replaceAll('/', '_')
-            if(swiper.slides[swiper.activeIndex].getAttribute("loaded")) return
-            console.log(week)  
-            var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
-            var mondayFormated = week.substring(0, 5) +"/"+ year
-            var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })    
-            escuchaAPI.getHistCloud(scope.terms, scope.region, mondayFormated, saturdayFormated, 1).success(function (response) {
-              var words = []
-              response.historics_cloud[0]._source.hashtags.forEach(element => {
-                if(element.hashtag.substring(0,1)=="#"){
-                  var hashtagText = element.hashtag.substring(1,element.hashtag.lenght)
-                }else{
-                  var hashtagText = element.hashtag
-                }
-                words.push({ text: element.hashtag, weight: element.count, link: '#/stats_inst?region=*&start=&end=&term=' + hashtagText + '&enlista'})
-              });
-              $(`#cloud${weekFormat}`).jQCloud(words, {
-                autoResize: true
-              });
-              swiper.slides[swiper.activeIndex].setAttribute("loaded", true)
-            });
+            helpers.createCloud(scope, week, year, escuchaAPI)   
           },
           // This onSetTranslate makes the active bullet follow the scrollbar in the pagination
-          onSetTranslate: function (swiper, event) {
-            if(event == 0){
-              var percentageScroll = 0
-            } else{
-              var percentageScroll = (((-event)*100)/(swiper.size*(swiper.slidesGrid.length-1)))/100
-            }
-            var top = 125 //px
-            var bottom = 475 //px
-            var scrollbar = ((bottom-top)*percentageScroll) + top
-            $('.swiper-pagination-dynamic').css("top",scrollbar+"px")
-          },
+          // onSetTranslate: function (swiper, event) {
+          //   if(event == 0){
+          //     var percentageScroll = 0
+          //   } else{
+          //     var percentageScroll = (((-event)*100)/(swiper.size*(swiper.slidesGrid.length-1)))/100
+          //   }
+          //   var top = 125 //px
+          //   var bottom = 475 //px
+          //   var scrollbar = ((bottom-top)*percentageScroll) + top
+          //   $('.swiper-pagination-dynamic').css("top",scrollbar+"px")
+          // },
         })
         for (index = 0; index < response[year].length; ++index) {
           var week = response[year][index]
@@ -798,28 +777,16 @@ angular.module('aosd.services', [])
           scope['timelineSwiper' + year].appendSlide(
             `<div class="swiper-slide swiper-slide-${year}" data-week="${week}">
               <div id="cloud${weekFormat}" class="swiper-container-cloud"></div>
+              <table id="table${weekFormat}" class="swiper-container-table" style="display:none;">
+                <tr id=""table${weekFormat}_head">
+                  <th>Hashtag</th>
+                  <th>Número de veces</th> 
+                  <th>Link</th>
+                </tr>
+              </table>
             </div>`)
         }
-        var week = scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].getAttribute('data-week')
-        var weekFormat = week.replaceAll('/', '_')
-        var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
-        var mondayFormated = week.substring(0, 5) +"/"+ year
-        var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })
-        escuchaAPI.getHistCloud(scope.terms, scope.region, mondayFormated, saturdayFormated, 1).success(function (response) {
-          var words = []
-          response.historics_cloud[0]._source.hashtags.forEach(element => {
-            if(element.hashtag.substring(0,1)=="#"){
-              var hashtagText = element.hashtag.substring(1,element.hashtag.lenght)
-            }else{
-              var hashtagText = element.hashtag
-            }
-            words.push({ text: element.hashtag, weight: element.count, link: '#/stats_inst?region=*&start=&end=&term=' + hashtagText + '&enlista'})
-          });
-          $(`#cloud${weekFormat}`).jQCloud(words, {
-            autoResize: true
-          });
-          scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].setAttribute("loaded", true)
-        });
+        helpers.createCloud(scope, week, year, escuchaAPI) 
       });
     }
 
@@ -1037,6 +1004,56 @@ angular.module('aosd.services', [])
       autoclose: true,
       language: "es"
     };
+
+    helpers.createCloud = function (scope, week, year, escuchaAPI) {
+      var week = scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].getAttribute('data-week')
+      var weekFormat = week.replaceAll('/', '_')
+      var monday = week.substring(3, 5) +"/"+week.substring(0, 2)+"/"+ year
+      var mondayFormated = week.substring(0, 5) +"/"+ year
+      var saturdayFormated = new Date(new Date(monday).setDate(new Date(monday).getDate() + parseInt(6))).toLocaleString('en-GB',{ year: "numeric", month: "numeric", day: "numeric" })
+      $("#start").val(mondayFormated)
+      $("#end").val(saturdayFormated)
+      scope.start = mondayFormated
+      $("#terms2").addClass("ng-dirty ng-valid-parse").removeClass("ng-pristine")
+      if(scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].getAttribute("loaded")) return
+      escuchaAPI.getHistCloud(scope.terms, scope.region, mondayFormated, saturdayFormated, 1).success(function (response) {
+      var words = []
+      response.historics_cloud[0]._source.hashtags.forEach(element => {
+        if(element.hashtag.substring(0,1)=="#"){
+          var hashtagText = element.hashtag.substring(1,element.hashtag.lenght)
+        }else{
+          var hashtagText = element.hashtag
+        }
+        var link = `#/general_inst?region=*&start=${mondayFormated}&end=${saturdayFormated}&term=${hashtagText}&enlista`
+        words.push({ 
+          text: element.hashtag, 
+          weight: element.count,
+          link: link,
+          handlers: {
+            mouseover: function(event) {
+              $(`#${event.target.id}`).attr('alt', hashtagText)
+            }
+          }
+        })
+        var row = `
+          <tr>
+            <td>${element.hashtag}</td>
+            <td>${element.count}</td>
+            <td>${link}</td>
+          </tr>
+        `
+        $(`#table${weekFormat}`).append(row);
+
+      });
+      $(`#cloud${weekFormat}`).jQCloud(words, {
+        autoResize: true
+      });
+    
+      
+      
+      scope['timelineSwiper' + year].slides[scope['timelineSwiper' + year].activeIndex].setAttribute("loaded", true)
+    });
+  }
 
     return helpers;
   });

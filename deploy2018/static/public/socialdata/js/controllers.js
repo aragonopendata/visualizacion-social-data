@@ -1,5 +1,29 @@
 angular.module('aosd.controllers', [])
 
+  .controller('generalController', function ($scope, $location, settings, escuchaAPI, selection, helpers) {
+  })
+  .controller('searchController', function ($scope, settings, escuchaAPI, selection, drawers, helpers) {
+    $scope.region = (selection.region == '*') ? 'Todo Aragón' : selection.region;
+    $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
+    $scope.end = (selection.end == '') ? helpers.dateToStr(new Date()) : selection.end;
+    $scope.terms = selection.terms;
+  })
+  .controller('searchChartController', function ($scope, settings, escuchaAPI, selection, drawers, helpers) {
+    $scope.drawTotals = function () {
+      if (selection.totals === null) {
+        escuchaAPI.getTotals(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
+          selection.totals = response;
+          drawers.drawTotals($scope, selection.totals);
+        });
+      } else {
+        drawers.drawTotals($scope, selection.totals);
+      }
+
+    }
+
+    $scope.drawTotals();
+  })
+  
   /* Main controller */
   .controller('mainController', function ($scope, $location, settings, escuchaAPI, selection, helpers) {
     $scope.region = selection.region;
@@ -58,12 +82,13 @@ angular.module('aosd.controllers', [])
 
     //deberiamos usar la misma search pero simplemente consultar el boton que ha pulsado
     $scope.search_inst = function() {
+
       // Validate
       if (! $scope.validate_dates() ) {
         $scope.invalid_dates = 'La fecha de inicio no puede ser mayor que la de fin.';
         return;
       }
-
+      
       $scope.choices = $scope.termsList ? $scope.termsList.split(" ") : "";
 
       selection.region = $scope.region;
@@ -76,7 +101,8 @@ angular.module('aosd.controllers', [])
           selection.terms.push(q);
         }
       }
-
+      console.log($scope)
+      console.log(selection)
       var termsFormated = "";
       for (i=0; i<selection.terms.length; i++) {
         if (i == selection.terms.length - 1){
@@ -87,7 +113,7 @@ angular.module('aosd.controllers', [])
       }
 
       sessionStorage.setItem('terms', termsFormated);
-
+      
       // $location.path('/stats_inst').search({    // Default url for every search
       $location.path($location.path()).search({
         'region': selection.region,
@@ -165,6 +191,11 @@ angular.module('aosd.controllers', [])
         'term': selection.terms,
         'enlista': selection.enlista,
       });
+    }
+
+    $scope.scrollTo = function(id) {
+      $location.hash(id);
+      // $anchorScroll();
     }
   })
 
@@ -351,8 +382,9 @@ angular.module('aosd.controllers', [])
   /* Stats controller */
   .controller('statsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     selection.updateFromQueryString($location.search());
+
     if(_.isEmpty($location.search())) {
-      $location.path('/stats_inst').search({
+      $location.path('/general_inst').search({
         'region': "*",
         'start': "",
         'end': "",
@@ -573,10 +605,29 @@ angular.module('aosd.controllers', [])
       
       /* This funtions have to be removed once the backend is implemented */
       response = escuchaAPI.getWeeklyCloud($scope.terms, $scope.region, $scope.start, $scope.end);
-      drawers.drawWeeklyCloud($scope, response, escuchaAPI);
+      drawers.drawWeeklyCloud($scope, response, escuchaAPI, helpers);
     }
 
     $scope.drawWeeklyCloud()
+
+    $scope.cloudType = function(type) {console.log(type)
+    switch (type) {
+      case 'color':
+          $(".swiper-container-cloud").css("filter", 'grayscale(0)' ).css("display","flex")
+          $(".swiper-container-table").css("display","none")
+          
+        break;
+      case 'grayscale':
+          $(".swiper-container-cloud").css("filter", 'grayscale(1)').css("display","flex")
+        break;
+      case 'table':
+          $(".swiper-container-cloud").css("display","none")
+          $(".swiper-container-table").css("display","table-caption")
+        break;
+    
+      default:
+        break;
+    }}
   })
 
   /* Subscription controller */

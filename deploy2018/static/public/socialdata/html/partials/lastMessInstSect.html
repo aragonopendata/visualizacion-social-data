@@ -1,7 +1,9 @@
-<div class="row">
+<div class="row aosd-section">
   <div class="col-sm-12">
+    <hr class="aosd-section-separator" />
     <h2>Últimos mensajes</h2>
-    <hr/>
+  </div>
+  <div class="col-sm-12 last-messages">
     <div ng-repeat="item in last_items" class="item">
       <h5>{{ item.title | trim }}</h5>
       <pre>{{ item.description | trim }}</pre>
@@ -12,7 +14,7 @@
           <a href="{{ item.url }}" target="_blank">Detalles</a>
         </small>
       </i>
-      <hr/>
+      <hr />
     </div>
     <button class="btn btn-default" ng-click="moreItems()">
       Mostrar más mensajes

@@ -1,7 +1,19 @@
 angular.module('aosd.controllers', [])
 
-  // .controller('generalController', function ($scope, $location, settings, escuchaAPI, selection, helpers) {
-  // })
+  .controller('generalController', function ($scope, $location, settings, escuchaAPI, selection, helpers) {
+    selection.updateFromQueryString($location.search());
+
+    if(_.isEmpty($location.search())) {
+      $location.path('/general_inst').search({
+        'region': "*",
+        'start': "",
+        'end': "",
+        'term': "*",
+        'enlista': true,
+      });
+      return
+    }
+  })
   .controller('searchController', function ($scope, settings, escuchaAPI, selection, drawers, helpers) {
     $scope.region = (selection.region == '*') ? 'Todo Aragón' : selection.region;
     $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
@@ -365,37 +377,61 @@ angular.module('aosd.controllers', [])
       $scope.drawMap();
     }
   })
+/* Stats controller */
+  // .controller('statsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
+  //   selection.updateFromQueryString($location.search());
 
-  /* Stats controller */
-  .controller('statsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
-    selection.updateFromQueryString($location.search());
+  //   if(_.isEmpty($location.search())) {
+  //     $location.path('/general_inst').search({
+  //       'region': "*",
+  //       'start': "",
+  //       'end': "",
+  //       'term': "*",
+  //       'enlista': true,
+  //     });
+  //     return
+  //   }
+  //   $scope.top_hashtags = [];
+  //   $scope.top_authors = [];
+  //   $scope.top_mentions = [];
 
-    if(_.isEmpty($location.search())) {
-      $location.path('/general_inst').search({
-        'region': "*",
-        'start': "",
-        'end': "",
-        'term': "*",
-        'enlista': true,
-      });
-      return
-    }
+  //   $scope.last_items = [];
+  //   $scope.last_items_page = 0;
+
+  //   $scope.hemicycle_hashtags = { 'title': { 'text': '' } };
+  //   $scope.hemicycle_mentions = { 'title': { 'text': '' } };
+
+  //   $scope.moreItems = function () {
+  //     $scope.last_items_page = $scope.last_items_page + 1;
+  //     escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
+  //       $scope.last_items = $scope.last_items.concat(response.last_items);
+  //     });
+  //   }
+
+  //   $scope.drawTops = function () {
+  //     escuchaAPI.getTops(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
+  //       drawers.drawHemicycles($scope, response);
+  //       $scope.top_hashtags = response.top_hashtags;
+  //       $scope.top_authors = response.top_authors;
+  //       $scope.top_mentions = response.top_mentions;
+  //     });
+  //   }
+
+  //   $scope.drawLastItems = function () {
+  //     escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
+  //       $scope.last_items = response.last_items;
+  //     });
+  //   }
+
+  //   $scope.drawTops();
+  //   $scope.drawLastItems();
+  // })
+  /* Top Hashtags controller */
+  .controller('topHashtagsController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {
     $scope.top_hashtags = [];
     $scope.top_authors = [];
     $scope.top_mentions = [];
 
-    $scope.last_items = [];
-    $scope.last_items_page = 0;
-
-    $scope.hemicycle_hashtags = { 'title': { 'text': '' } };
-    $scope.hemicycle_mentions = { 'title': { 'text': '' } };
-
-    $scope.moreItems = function () {
-      $scope.last_items_page = $scope.last_items_page + 1;
-      escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
-        $scope.last_items = $scope.last_items.concat(response.last_items);
-      });
-    }
 
     $scope.drawTops = function () {
       escuchaAPI.getTops(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
@@ -406,15 +442,31 @@ angular.module('aosd.controllers', [])
       });
     }
 
-    $scope.drawLastItems = function () {
-      escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
-        $scope.last_items = response.last_items;
-      });
-    }
-
     $scope.drawTops();
-    $scope.drawLastItems();
   })
+
+  .controller('lastMessagesController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {  
+      $scope.last_items = [];
+      $scope.last_items_page = 0;
+  
+      $scope.hemicycle_hashtags = { 'title': { 'text': '' } };
+      $scope.hemicycle_mentions = { 'title': { 'text': '' } };
+  
+      $scope.moreItems = function () {
+        $scope.last_items_page = $scope.last_items_page + 1;
+        escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end, $scope.last_items_page).success(function (response) {
+          $scope.last_items = $scope.last_items.concat(response.last_items);
+        });
+      }
+  
+      $scope.drawLastItems = function () {
+        escuchaAPI.getLastItems(selection.apiterms, selection.region, selection.start, selection.end).success(function (response) {
+          $scope.last_items = response.last_items;
+        });
+      }
+  
+     $scope.drawLastItems();
+    })
 
   /* Polarity controller */
   .controller('polarityController', function ($scope, $location, escuchaAPI, selection, drawers, helpers) {

@@ -130,6 +130,30 @@ angular.module('aosd.directives', [])
       controller: 'statsController',
     }
   })
+   /* Selection the top hashtags institutional section */
+   .directive('tophashinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/topHashInstSect.html',
+      controller: 'topHashtagsController',
+    }
+  })
+   /* Selection the hashtags institutional section */
+   .directive('hashinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/hashInstSect.html',
+      controller: 'topHashtagsController',
+    }
+  })
+   /* Selection the last messages institutional section */
+   .directive('lastmessinstsect', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/static/public/socialdata/html/partials/lastMessInstSect.html',
+      controller: 'lastMessagesController',
+    }
+  })
 
   /* Evolution institutional section */
   .directive('evoinstsect', function() {

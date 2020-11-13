@@ -32,7 +32,7 @@ var app = angular.module('aosd', [
 
     $routeProvider
       // .when("/main", {templateUrl: "/static/public/socialdata/html/partials/main.html", controller: "mainController"})
-      .when("/general_inst", {templateUrl: "/static/public/socialdata/html/partials/genInst.html" /*,controller: "generalController"*/})
+      .when("/general_inst", {templateUrl: "/static/public/socialdata/html/partials/genInst.html" ,controller: "generalController"})
       // .when("/report", {templateUrl: "/static/public/socialdata/html/partials/report.html", controller: "reportController"})
       // .when("/evolution", {templateUrl: "/static/public/socialdata/html/partials/evolution.html", controller: "evolutionController"})
       // .when("/heatmap", {templateUrl: "/static/public/socialdata/html/partials/heatmap.html", controller: "heatmapController"})

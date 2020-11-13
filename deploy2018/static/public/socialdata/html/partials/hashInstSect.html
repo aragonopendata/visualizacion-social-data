@@ -1,5 +1,5 @@
 <div class="row">
- <div class="col-sm-12">
+  <div class="col-sm-12">
     <h2>Hashtags y menciones</h2>
   </div>
   <div class="col-lg-4">
@@ -14,9 +14,17 @@
         </thead>
         <tbody>
           <tr ng-repeat="hashtag in top_hashtags">
-            <td><a href="https://twitter.com/hashtag/{{ hashtag.key | removeTwitterChar }}" target="_blank">#</a> <a
-                   href="#/stats_inst?enlista&region={{ (region == 'Todo Aragón') ? '*' : region }}&start={{ start }}&end={{ end }}&term={{ hashtag.key | removeTwitterChar }}">{{ hashtag.key | removeTwitterChar }}
-                </a></td>
+            <td>
+              <a
+                href="https://twitter.com/hashtag/{{ hashtag.key | removeTwitterChar }}"
+                target="_blank"
+                >#</a
+              >
+              <a
+                href="#/stats_inst?enlista&region={{ (region == 'Todo Aragón') ? '*' : region }}&start={{ start }}&end={{ end }}&term={{ hashtag.key | removeTwitterChar }}"
+                >{{ hashtag.key | removeTwitterChar }}
+              </a>
+            </td>
             <td>{{ hashtag.doc_count | number }}</td>
           </tr>
         </tbody>
@@ -54,7 +62,13 @@
         </thead>
         <tbody>
           <tr ng-repeat="mention in top_mentions">
-            <td><a href="https://twitter.com/{{ mention.key | removeTwitterChar }}" target="_blank">{{ mention.key }}</a></td>
+            <td>
+              <a
+                href="https://twitter.com/{{ mention.key | removeTwitterChar }}"
+                target="_blank"
+                >{{ mention.key }}</a
+              >
+            </td>
             <td>{{ mention.doc_count | number }}</td>
           </tr>
         </tbody>

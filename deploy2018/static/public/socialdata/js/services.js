@@ -1337,11 +1337,9 @@ angular
         day: "numeric",
       });
       $("#start").val(mondayFormated);
+      $('.input-daterange[readonly!="True"] #start').datepicker("update");
       $("#end").val(saturdayFormated);
-      scope.start = mondayFormated;
-      $("#terms2")
-        .addClass("ng-dirty ng-valid-parse")
-        .removeClass("ng-pristine");
+      $('.input-daterange[readonly!="True"] #end').datepicker("update");
       if (
         scope["timelineSwiper" + year].slides[
           scope["timelineSwiper" + year].activeIndex

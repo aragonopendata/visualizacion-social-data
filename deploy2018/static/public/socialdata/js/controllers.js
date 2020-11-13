@@ -108,7 +108,7 @@ angular
 
       sessionStorage.setItem("terms", termsFormated);
 
-      $location.path($location.path()).search({
+      $location.path('/general_inst').search({
         region: selection.region,
         start: selection.start,
         end: selection.end,
@@ -130,7 +130,7 @@ angular
     selection.updateFromQueryString($location.search());
 
     if (_.isEmpty($location.search())) {
-      $location.path("/general_inst").search({
+      $location.path("/general_inst").hash("").search({
         region: "*",
         start: "",
         end: "",
@@ -198,7 +198,7 @@ angular
     };
 
     $scope.moveTo = function (path) {
-      $location.path(path).search({
+      $location.path(path).hash("").search({
         region: selection.region,
         start: selection.start,
         end: selection.end,
@@ -552,7 +552,6 @@ angular
     $scope.drawWeeklyCloud();
 
     $scope.cloudType = function (type) {
-      console.log(type);
       switch (type) {
         case "color":
           $(".swiper-container-cloud")

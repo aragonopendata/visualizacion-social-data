@@ -520,8 +520,8 @@ angular
     $scope.drawPolarity();
   })
 
-  /* Historics controller */
-  .controller("historicsController", function (
+  /* Historics cloud controller */
+  .controller("cloudController", function (
     $scope,
     $location,
     escuchaAPI,

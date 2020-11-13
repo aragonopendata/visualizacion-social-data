@@ -73,6 +73,15 @@ angular
     };
   })
 
+  /* Polarity institutional section */
+  .directive("cloudinstsect", function () {
+    return {
+      restrict: "E",
+      templateUrl: "/static/public/socialdata/html/partials/cloudInstSect.html",
+      controller: "cloudController",
+    };
+  })
+
   /* Search section */
   .directive("searchsect", function () {
     return {
@@ -101,3 +110,5 @@ angular
       controller: "searchChartController",
     };
   });
+
+

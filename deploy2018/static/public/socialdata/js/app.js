@@ -44,15 +44,11 @@ var app = angular
       })
       .when("/historics_inst", {
         templateUrl: "/static/public/socialdata/html/partials/histoInst.html",
-        controller: "historicsController",
-      })
-      .when("/polarity_inst", {
-        templateUrl: "/static/public/socialdata/html/partials/polInst.html",
-        controller: "polarityController",
+        // controller: "historicsController",
       })
       .when("/about", {
-        templateUrl:
-          "/static/public/socialdata/html/partials/about.html" /*, controller: "aboutController"*/,
+        templateUrl: "/static/public/socialdata/html/partials/about.html",
+        // controller: "aboutController",
       })
       .otherwise({ redirectTo: "/general_inst" });
 

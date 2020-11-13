@@ -567,7 +567,7 @@ angular
           break;
         case "table":
           $(".swiper-container-cloud").css("display", "none");
-          $(".swiper-container-table").css("display", "table-caption");
+          $(".swiper-container-table").css("display", "list-item");
           break;
 
         default:

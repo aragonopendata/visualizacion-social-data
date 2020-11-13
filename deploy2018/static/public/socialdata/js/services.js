@@ -820,8 +820,12 @@ angular
           },
         },
         nested: true,
-        onSlideChangeStart: function () {
-          scope.timelineSwiper.updatePagination();
+        onSlideChangeStart: function (swiper) {
+          var year = $(".swiper-slide-y")[swiper.activeIndex].getAttribute(
+            "data-year"
+          );
+          // scope.timelineSwiper.updatePagination();
+          helpers.createCloud(scope, year, escuchaAPI);
         },
       });
       Object.keys(response).forEach((year) => {
@@ -884,7 +888,7 @@ angular
               },
             },
             onTransitionStart: function (swiper) {
-              helpers.createCloud(scope, week, year, escuchaAPI);
+              helpers.createCloud(scope, year, escuchaAPI);
             },
             // This onSetTranslate makes the active bullet follow the scrollbar in the pagination
             // onSetTranslate: function (swiper, event) {
@@ -906,18 +910,15 @@ angular
           scope["timelineSwiper" + year].appendSlide(
             `<div class="swiper-slide swiper-slide-${year}" data-week="${week}">
               <div id="cloud${weekFormat}" class="swiper-container-cloud"></div>
-              <table id="table${weekFormat}" class="swiper-container-table" style="display:none;">
-                <tr id=""table${weekFormat}_head">
-                  <th>Hashtag</th>
-                  <th>Número de veces</th> 
-                  <th>Link</th>
-                </tr>
-              </table>
+              <ul id="table${weekFormat}" class="swiper-container-table" style="display:none;">
+                
+              </ul>
             </div>`
           );
         }
-        helpers.createCloud(scope, week, year, escuchaAPI);
       });
+
+      helpers.createCloud(scope, Object.keys(response)[0], escuchaAPI);
     };
 
     return drawers;
@@ -1321,10 +1322,11 @@ angular
       language: "es",
     };
 
-    helpers.createCloud = function (scope, week, year, escuchaAPI) {
+    helpers.createCloud = function (scope, year, escuchaAPI) {
       var week = scope["timelineSwiper" + year].slides[
         scope["timelineSwiper" + year].activeIndex
       ].getAttribute("data-week");
+
       var weekFormat = week.replaceAll("/", "_");
       var monday =
         week.substring(3, 5) + "/" + week.substring(0, 2) + "/" + year;
@@ -1376,15 +1378,10 @@ angular
                 },
               },
             });
-            var row = `
-          <tr>
-            <td>${element.hashtag}</td>
-            <td>${element.count}</td>
-            <td>${link}</td>
-          </tr>
-        `;
+            var row = `<li>${element.hashtag}</li>`;
             $(`#table${weekFormat}`).append(row);
           });
+
           $(`#cloud${weekFormat}`).jQCloud(words, {
             autoResize: true,
           });

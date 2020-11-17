@@ -1,9 +1,19 @@
 <div class="row aosd-section">
   <div class="col-sm-12">
     <hr class="aosd-section-separator" />
-    <h2>Mapa de calor</h2>
+    <h2>
+      Mapa de calor
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('heatmap')"
+        id="heatmap-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
   </div>
-  <div class="col-sm-12">
+  <div class="col-sm-12 heatmap-dropdown">
     <div class="map-canvas">
       <!--ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
             <ui-gmap-layer namespace="visualization" type="HeatmapLayer" show="map.showHeat" options="map.heatLayerOptions" onCreated="map.heatLayerCallback"></ui-gmap-layer>

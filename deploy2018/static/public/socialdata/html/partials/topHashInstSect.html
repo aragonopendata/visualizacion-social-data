@@ -1,15 +1,29 @@
+<!-- <div
+  class="row aosd-section"
+  ng-if="hemicycle_hashtags.series[0].data.length || hemicycle_mentions.series[0].data.length"
+> -->
 <div class="row aosd-section">
   <div class="col-sm-12">
     <hr class="aosd-section-separator" />
-    <h2>Top hashtags y menciones</h2>
+    <h2>
+      Top hashtags y menciones
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('top-hashtags')"
+        id="top-hashtags-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
   </div>
-  <div class="col-lg-6 hemicycle-container">
+  <div class="col-lg-6 hemicycle-container top-hashtags-dropdown">
     <highchart
       id="chart_hemicycle_hashtags"
       config="hemicycle_hashtags"
     ></highchart>
   </div>
-  <div class="col-lg-6 hemicycle-container">
+  <div class="col-lg-6 hemicycle-container top-hashtags-dropdown">
     <highchart
       id="chart_hemicycle_mentions"
       config="hemicycle_mentions"

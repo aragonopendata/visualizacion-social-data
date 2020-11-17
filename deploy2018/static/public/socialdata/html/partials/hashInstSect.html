@@ -1,9 +1,19 @@
 <div class="row aosd-section">
   <div class="col-sm-12">
     <hr class="aosd-section-separator" />
-    <h2>Hashtags y menciones</h2>
+    <h2>
+      Hashtags y menciones
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('hashtags')"
+        id="hashtags-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 hashtags-dropdown">
     <div class="panel panel-default">
       <div class="panel-heading">Hashtags más usados</div>
       <table class="table">
@@ -32,7 +42,7 @@
       </table>
     </div>
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 hashtags-dropdown">
     <div class="panel panel-default">
       <div class="panel-heading">Autores más activos</div>
       <table class="table">
@@ -51,7 +61,7 @@
       </table>
     </div>
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-4 hashtags-dropdown">
     <div class="panel panel-default">
       <div class="panel-heading">Autores más mencionados</div>
       <table class="table">

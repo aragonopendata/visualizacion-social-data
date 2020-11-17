@@ -1,9 +1,19 @@
 <div class="row aosd-section">
   <div class="col-sm-12">
     <hr class="aosd-section-separator" />
-    <h2>Evolución</h2>
+    <h2>
+      Evolución
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('evolution')"
+        id="evolution-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
   </div>
-  <div class="col-sm-12">
+  <div class="col-sm-12 evolution-dropdown">
     <div
       google-chart
       chart="evolution_total"

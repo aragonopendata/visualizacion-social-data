@@ -108,7 +108,7 @@ angular
 
       sessionStorage.setItem("terms", termsFormated);
 
-      $location.path('/general_inst').search({
+      $location.path("/general_inst").search({
         region: selection.region,
         start: selection.start,
         end: selection.end,
@@ -139,6 +139,16 @@ angular
       });
       return;
     }
+
+    $scope.toggleDropdown = function (dropdown) {
+      if ($(`.${dropdown}-dropdown`).css("display") == "block") {
+        $(`.${dropdown}-dropdown`).css("display", "none");
+        $(`#${dropdown}-dropdown-button`).text("Mostrar");
+      } else {
+        $(`.${dropdown}-dropdown`).css("display", "block");
+        $(`#${dropdown}-dropdown-button`).text("Ocultar");
+      }
+    };
   })
 
   /* Controller for the search bar and info */
@@ -208,7 +218,17 @@ angular
     };
 
     $scope.scrollTo = function (id) {
-      $location.hash(id);
+      // .hash works but reload the page
+      // $location.hash(id);
+
+      // Percentaje of margin needed for the logo
+      var perc = 12;
+      var newTop = $("#" + id).offset().top - ($(window).height() * perc) / 100;
+
+      window.scroll({
+        top: newTop,
+        behavior: "smooth",
+      });
       // $anchorScroll();
     };
   })

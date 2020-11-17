@@ -245,6 +245,10 @@ li.aosd-nav-section a{
   padding: 0px 0px 0px 30px !important
 }
 
+.aosd-dropdown-button{
+  float:right
+}
+
 @media(max-width: 700px) {
   .aosd-side-nav {
     position: static;

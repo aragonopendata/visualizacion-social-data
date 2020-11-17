@@ -1,6 +1,14 @@
 angular
   .module("aosd.directives", [])
-
+  
+  /* Logo */
+  .directive("logo", function () {
+    return {
+      restrict: "E",
+      templateUrl: "/static/public/socialdata/html/partials/logo.html",
+    };
+  })
+  
   /* Side nav inst menu directive */
   .directive("sidenavinstsect", function () {
     return {
@@ -110,5 +118,3 @@ angular
       controller: "searchChartController",
     };
   });
-
-

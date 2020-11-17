@@ -1383,7 +1383,7 @@ angular
                 },
               },
             });
-            var row = `<li>${element.hashtag}</li>`;
+            var row = `<li alt="${hashtagText}"=>${element.hashtag}</li>`;
             $(`#table${weekFormat}`).append(row);
           });
 

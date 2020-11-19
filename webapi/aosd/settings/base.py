@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     #os.path.join(PARENT_DIR, 'static'),
-    os.path.join(GREATPARENT_DIR, 'deploy2018/static'),
+    os.path.join(GREATPARENT_DIR, 'deploy2020/static'),
 )
 
 print("usando para /static/ los DIRS:", STATICFILES_DIRS)

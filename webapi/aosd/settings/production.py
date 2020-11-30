@@ -8,6 +8,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '193.146.116.193',
+    '172.27.38.119',
+    'miv-aodfront-01.aragon.local'
 ]
 
 ADMINS = (

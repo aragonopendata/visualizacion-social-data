@@ -43,10 +43,24 @@ INSTALLED_APPS = (
     'aosd',
 )
 
+
+# ADDED THE ALLOWED HOST HERE BECAUSE PROBLEMS FOR PRODUCTION
+ALLOWED_HOSTS = [
+             '127.0.0.1',
+             'localhost',
+             '193.146.116.193',
+             'miv-aodfront-01.aragon.local',
+             '193.146.116.204',
+             '172.27.38.119'
+         ]
+
+
+
+
 MIDDLEWARE_CLASSES = (
-    #'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware', # UNCOMENT FOR PRODUCTION 
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.common.CommonMiddleware',
+    #'django.middleware.common.CommonMiddleware', # UNCOMENT FOR PRODUCTION 
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -131,32 +145,35 @@ STATICFILES_DIRS = (
 
 print("usando para /static/ los DIRS:", STATICFILES_DIRS)
 
+# UNCOMENT FOR PRODUCTION START
+# CORS_ORIGIN_ALLOW_ALL = True
 
-#CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#     'opendata.aragon.es',
+#     'preopendata.aragon.es',
+#     'localhost:8004',
+#     '127.0.0.1:8004',
+#     'localhost:7030',
+#     '127.0.1:7030',
+#     'miv-aodfront-01.aragon.local:7030',
+#     'miv-aodfront-01.aragon.local:8004',
+#     'miv-aodfront-01.aragon.local',
+#     'localhost'
+# )
 
-#CORS_ORIGIN_WHITELIST = (
-    #'opendata.aragon.es',
-    #'preopendata.aragon.es',
-    #'localhost:8004',
-    #'127.0.0.1:8004',
-    #'localhost:7030',
-    #'127.0.1:7030',
-    #'localhost'
-#)
-
-# IE cache... (DEFAULT CORS ALLOW HEADERS + ['cache-control', 'pragma'])
-#CORS_ALLOW_HEADERS = (
- #   'x-requested-with',
- #   'content-type',
- #   'accept',
- #   'origin',
- #   'authorization',
- #   'x-csrftoken',
- #   'jwt-token',
- #   'cache-control',
- #   'pragma',
-#)
-
+# # IE cache... (DEFAULT CORS ALLOW HEADERS + ['cache-control', 'pragma'])
+# CORS_ALLOW_HEADERS = (
+#     'x-requested-with',
+#     'content-type',
+#     'accept',
+#     'origin',
+#     'authorization',
+#     'x-csrftoken',
+#     'jwt-token',
+#     'cache-control',
+#     'pragma',
+# )
+# UNCOMENT FOR PRODUCTION END
 
 # 128 SECRET KEY
 JWT_SECRET_KEY = ''

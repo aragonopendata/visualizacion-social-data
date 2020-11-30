@@ -284,7 +284,7 @@ angular
           "EPSG:4326",
           "EPSG:3857"
         ),
-        zoom: 5,
+        zoom: 7,
       }),
     });
 
@@ -553,7 +553,7 @@ angular
     selection.updateFromQueryString($location.search());
 
     // $scope.start = (selection.start == '') ? '1/12/2013' : selection.start;
-    $scope.start = "01/12/2013";
+    $scope.start = "03/12/2013";
     // $scope.end = (selection.end == '') ? helpers.dateToStr(new Date()) : selection.end;
     $scope.end = "31/12/2018";
     $scope.terms = selection.terms;

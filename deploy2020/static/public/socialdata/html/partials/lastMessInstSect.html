@@ -30,8 +30,14 @@
       </i>
       <hr />
     </div>
-    <button class="btn btn-default" ng-click="moreItems()">
-      Mostrar más mensajes
-    </button>
+    <div ng-if="item">
+
+      <button class="btn btn-default" ng-click="moreItems()">
+        Mostrar más mensajes
+      </button>
+    </div>
+    <div ng-if="!item">
+      <h5>No hay mensajes institucionales con el hashtag y rango seleccionados</h5>
+    </div>
   </div>
 </div>

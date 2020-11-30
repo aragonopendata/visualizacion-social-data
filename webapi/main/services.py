@@ -97,10 +97,15 @@ class RemoteModel(object):
                 }
                 return self.request(payload)['aggregations']['total']['buckets']
 
- 	def request2(self, payload):
+ 	def request_cloud(self, payload):
                 with open("/tmp/elasticlog.txt", 'w+') as f:
-                   print >>f, "ELASTIC_2", payload
+                   print >>f, "ELASTIC_CLOUD", payload
 		return self.es.search(index="weekly_hashtags", doc_type="weekly_hashtags_items", body=payload)
+	
+	def request_anom(self, payload):
+                with open("/tmp/elasticlog.txt", 'w+') as f:
+                   print >>f, "ELASTIC_ANOM", payload
+		return self.es.search(index="anom_escucha", doc_type="anom_data_items", body=payload)
 
 	def _add_region(self, payload, region):
 		if region != '*':
@@ -163,6 +168,42 @@ class RemoteModel(object):
 					"analyze_wildcard": True
 				}
 			})
+
+	def _add_theme_anom(self, payload, query):
+		payload['query']['bool']['must'] = {
+			"bool": {
+				"should": []
+			}
+		}
+		if isinstance(query, list):
+			terms = query
+		elif isinstance(query, basestring):
+			terms = [query]
+		else:
+			raise ValueError('Invalid query')
+		# if not('USARLISTA' in terms):
+		# 	raise ValueError('Invalid query')
+		for term in terms:
+                        # if term == 'USARLISTA':
+                        #    payload["query"]["bool"]["filter"]["bool"]["must"].append({
+                        #         "match": {
+                        #              "author_in_list": {
+                        #                 "query": True,
+                        #                  }
+                        #         #        "analyze_wildcard": True
+                        #         }
+                        #    })
+                        #    continue
+			if term != '*':
+				term = '"' + term + '"'
+			payload["query"]["bool"]["must"]["bool"]["should"].append({
+				"query_string": {
+					# "fields": ["title", "description"],
+					"query": term,
+					"analyze_wildcard": True
+				}
+			})
+
 
 	@property
 	def _default_min_published_on(self):
@@ -392,6 +433,60 @@ class RemoteModel(object):
 			row['lon'] = lon
 		return geogrid
 
+	def geogrid_anom(self, query='*', region='*', min_published_on=None, max_published_on=None, weight=False):
+		payload = {
+		  "size": 1000,
+		  "query": {
+		    "bool": {
+		      "must": {
+		        "query_string": {
+		          "fields": ["title", "description"],
+		          "query": "*",
+		          "analyze_wildcard": True
+		        }
+		      },
+		      "filter": {
+		        "bool": {
+		          "must": [
+		            {
+		              "range": {
+		                "published_on": {"format": "epoch_millis",
+		                  "gte": min_published_on or self._default_min_published_on,
+		                  "lte": max_published_on or self._default_max_published_on
+		                }
+		              }
+		            }
+		          ]
+		        }
+		      }
+		    }
+		  },
+		  "aggs": {
+		    "geogrid": {
+		      "geohash_grid": {
+		        "field": "geo",
+		        "precision": 6
+		      }
+		    }
+		  }
+		}
+		if weight:
+			payload['aggs']['geogrid']['aggs'] = {
+			  "weight": {
+			    "sum": {
+			      "field": "geoweight"
+			    }
+			  }
+			}
+		self._add_theme_anom(payload, query)
+		self._add_region(payload, region)
+		geogrid = self.request_anom(payload)
+		for row in geogrid['aggregations']['geogrid']['buckets']:
+			lat, lon, _, _ = Geohash.decode_exactly(row['key'])
+			row['lat'] = lat
+			row['lon'] = lon
+		return geogrid
+
 	def polarity(self, query='*', region='*', min_published_on=None, max_published_on=None):
 		payload = {
 		  "size": 1000,
@@ -496,6 +591,115 @@ class RemoteModel(object):
 		self._add_theme(payload, query)
 		self._add_region(payload, region)
 		res = self.request(payload)
+		if res["hits"]["total"] > 0:
+			return float(res["aggregations"]["sum_vals"]["value"]) / float(res["hits"]["total"])
+		else:
+			return 0.0
+
+	def polarity_anom(self, query='*', region='*', min_published_on=None, max_published_on=None):
+		payload = {
+		  "size": 1000,
+		  "query": {
+		    "bool": {
+		      "must": {
+		        "query_string": {
+		          "fields": ["title", "description"],
+		          "query": "*",
+		          "analyze_wildcard": True
+		        }
+		      },
+		      "filter": {
+		        "bool": {
+		          "must": [
+		            {
+		              "range": {
+		                "published_on": {"format": "epoch_millis",
+		                  "gte": min_published_on or self._default_min_published_on,
+		                  "lte": max_published_on or self._default_max_published_on
+		                }
+		              }
+		            }
+		          ]
+		        }
+		      }
+		    }
+		  },
+		  "aggs": {
+		    "polarity": {
+		      "range": {
+		        "field": "polarity",
+		        "ranges": [
+		          {
+		            "key": "negative",
+		            "from": -1,
+		            "to": -0.1
+		          },
+		          {
+		            "key": "neutral",
+		            "from": -0.1,
+		            "to": 0.1
+		          },
+		          {
+		            "key": "positive",
+		            "from": 0.1,
+		            "to": 1
+		          }
+		        ],
+		        "keyed": True
+		      }
+		    }
+		  }
+		}
+		self._add_theme_anom(payload, query)
+		self._add_region(payload, region)
+		return self.request_anom(payload)
+
+	def polarity_mean_anom(self, query='*', region='*', min_published_on=None, max_published_on=None, min_val=None, max_val=None):
+		payload = {
+		  "size": 1000,
+		  "query": {
+		    "bool": {
+		      "must": {
+		        "query_string": {
+		        #   "fields": ["title", "description"],
+		          "query": "*",
+		          "analyze_wildcard": True
+		        }
+		      },
+		      "filter": {
+		        "bool": {
+		          "must": [
+		            {
+		              "range": {
+		                "published_on": {"format": "epoch_millis",
+		                  "gte": min_published_on or self._default_min_published_on,
+		                  "lte": max_published_on or self._default_max_published_on
+		                }
+		              }
+		            }
+		          ]
+		        }
+		      }
+		    }
+		  },
+		  "aggs": {
+		    "sum_vals": {
+		      "sum": {
+		        "field": "polarity"
+		      }
+		    }
+		  }
+		}
+		if min_val is not None or max_val is not None:
+			range_polarity = {"range": {"polarity": {}}}
+			if min_val is not None:
+				range_polarity["range"]["polarity"]["gt"] = min_val
+			if max_val is not None:
+				range_polarity["range"]["polarity"]["lt"] = max_val
+			payload["query"]["bool"]["filter"]["bool"]["must"].append(range_polarity)
+		self._add_theme_anom(payload, query)
+		self._add_region(payload, region)
+		res = self.request_anom(payload)
 		if res["hits"]["total"] > 0:
 			return float(res["aggregations"]["sum_vals"]["value"]) / float(res["hits"]["total"])
 		else:
@@ -659,7 +863,7 @@ class RemoteModel(object):
 				}
 			}
 		}
-		return self.request2(payload)['hits']['hits']
+		return self.request_cloud(payload)['hits']['hits']
 
 
 def generate_graph(es_search):

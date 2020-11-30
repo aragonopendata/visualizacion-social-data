@@ -2,9 +2,10 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 
 import datetime
+import json
 
 """
-curl -XPUT 'http://localhost:9200/weekly_hashtags'  -H "Content-Type: application/json"  -d '{
+curl -XPUT 'http://biv-aodback-01.aragon.local:9200/weekly_hashtags'  -H "Content-Type: application/json"  -d '{
   "settings": {
     "analysis": {
       "analyzer": {
@@ -46,20 +47,23 @@ class RemoteModel(object):
     def request_weekly(self, payload):
         return self.es.search(index="weekly_hashtags", doc_type="weekly_hashtags_items", body=payload, request_timeout=30)
 
-    def get_escucha(self, interval):
-        if interval != 'w' and interval != 'd':  # w if you want the week interval, d for day interval
-            return []
-
+    def get_escucha(self):
         payload = {
             "size": 1000,
             "query": {
                 "bool": {
                     "must": {
                         "query_string": {
-                            "fields": ["title", "description"],
+                            # "fields": ["title", "description"],
                             "query": "*",
                             "analyze_wildcard": True
-                        }
+                        },
+                        # "match": {
+                        #     "author_in_list": {
+                        #         "query": True,
+                        #     }
+                        #     #        "analyze_wildcard": True
+                        # }
                     },
                     "filter": {
                         "bool": {
@@ -81,7 +85,7 @@ class RemoteModel(object):
                 "interval": {
                     "date_histogram": {
                         "field": "published_on",
-                        "interval": "1" + interval,
+                        "interval": "1w",
                         "time_zone": "+02:00",
                         "min_doc_count": 1,
                     },
@@ -93,16 +97,37 @@ class RemoteModel(object):
                                 "order": {
                                     "_count": "desc"
                                 }
+                            },
+                            "aggs": {
+
+                                "weight_global": {
+                                    "value_count": {"field": "author"}
+                                },
+                                "weight_in_list": {
+                                    "value_count": {"field": "author_in_list"}
+                                },
+                                # "weight_total": {
+                                #     "sum": {
+                                #         "script": {
+                                #             "source": "doc._count.value"
+                                #         }
+                                #     }
+                                # }
                             }
-                        }
+
+                        },
+
                     }
                 },
             }
         }
-        return self.request(payload)['aggregations']['interval']['buckets']
+        with open('test.json', 'w') as outfile:
+            json.dump(self.request(payload)[
+                      'aggregations']['interval']['buckets'], outfile, indent=4)
+        # return self.request(payload)['aggregations']['interval']['buckets']
 
     def format_group_week(self):
-        data = self.get_escucha('w')
+        data = self.get_escucha()
         actions = []
         for week in data:
             hashtags = week['total_by_hashtag']['buckets']
@@ -125,55 +150,35 @@ class RemoteModel(object):
         # print(actions)
         helpers.bulk(self.es, actions)
 
-    def format_group_day(self):
-        # Rompe la base de datos si no se intenta agrupar por dias
-        data = self.get_escucha('w')
-        actions = []
-        for day in data:
-            hashtags = day['total_by_hashtag']['buckets']
-            for hashtag in hashtags:
-                item = {'day': day['key_as_string'],
-                        'hashtag': hashtag['key'], 'count': hashtag['doc_count']}
-            action = {
-                "_index": "daily_hashtags",
-                "_type": "daily_hashtags_items",
-                "_id": "%06d" % (len(actions),),
-                "_source": item
-            }
-            actions.append(action)
-        print(actions)
-        # helpers.bulk(self.es, actions)
-
     def get_from_weekly_hashtags(self):
         payload = {
-            "size": 1000,
+            "size": 1,
             # "sort": {
             #     "_id": "asc"
             # },
-            "query": {
-                "bool": {
-                    "filter": {
-                        "bool": {
-                            "must": [{
-                                "range": {
-                                    "start_week": {
-                                        "format": "epoch_millis",
-                                        "gte": 1515970800000, #15/01/2018
-                                        "lte": 1517266800000 #30/01/2018
-                                    }
-                                }
-                            }]
-                        }
-                    }
-                }
-            }
+            # "query": {
+            #     "bool": {
+            #         "filter": {
+            #             "bool": {
+            #                 "must": [{
+            #                     "range": {
+            #                         "start_week": {
+            #                             "format": "epoch_millis",
+            #                              "gte": 1515970800000, #15/01/2018
+            #                              "lte": 1517266800000 #30/01/2018
+            #                         }
+            #                     }
+            #                 }]
+            #             }
+            #         }
+            #     }
+            # }
         }
 
         print(self.request_weekly(payload)['hits']['hits'])
 
     def sync_weekly_hashtags(self):
-        # self.format_group_week()  # En teoria ya creado el indice
-        self.format_group_day()
+        self.format_group_week()  # En teoria ya creado el indice
         # self.get_from_weekly_hashtags()
 
 

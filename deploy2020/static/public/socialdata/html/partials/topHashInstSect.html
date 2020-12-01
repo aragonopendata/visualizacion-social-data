@@ -17,20 +17,34 @@
       </a>
     </h2>
   </div>
-  <div class="col-lg-6 hemicycle-container top-hashtags-dropdown">
+  <div
+    ng-if="hemicycle_hashtags.series[0].data.length"
+    class="col-lg-6 hemicycle-container top-hashtags-dropdown"
+  >
     <highchart
-      ng-if="hemicycle_hashtags.series[0].data.length"
       id="chart_hemicycle_hashtags"
       config="hemicycle_hashtags"
     ></highchart>
-    <h5 ng-if="!hemicycle_hashtags.series[0].data.length">No hay hashtags relacionados con el término en rango seleccionados</h5>
   </div>
-  <div class="col-lg-6 hemicycle-container top-hashtags-dropdown">
+  <div
+    ng-if="!hemicycle_hashtags.series[0].data.length"
+    class="col-lg-6 hemicycle-container-info top-hashtags-dropdown"
+  >
+    <h5>No hay hashtags relacionados con el término en rango seleccionados</h5>
+  </div>
+  <div
+    ng-if="hemicycle_mentions.series[0].data.length"
+    class="col-lg-6 hemicycle-container top-hashtags-dropdown"
+  >
     <highchart
-      ng-if="hemicycle_mentions.series[0].data.length"
       id="chart_hemicycle_mentions"
       config="hemicycle_mentions"
     ></highchart>
-    <h5 ng-if="!hemicycle_mentions.series[0].data.length">No hay menciones relacionados con el término en rango seleccionados</h5>
+  </div>
+  <div
+    ng-if="!hemicycle_mentions.series[0].data.length"
+    class="col-lg-6 hemicycle-container-info top-hashtags-dropdown"
+  >
+    <h5>No hay menciones relacionadas con el término en rango seleccionados</h5>
   </div>
 </div>

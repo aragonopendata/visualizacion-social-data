@@ -11,6 +11,10 @@
 }
 
 
+a {
+  color: unset !important;
+}
+
 /* bootstrap centered columns styles */
 
 .row-centered {
@@ -299,6 +303,11 @@ li.aosd-nav-section a{
 
 .aosd-report .hemicycle-container {
   margin-bottom: 30px;
+}
+
+.aosd-report .hemicycle-container-info {
+  display: flex;
+  align-items: center;
 }
 
 .aosd-report #graph {

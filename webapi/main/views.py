@@ -84,12 +84,14 @@ def get_polarity(request, terms, region, start, end):
 	if not isinstance(terms, list):
 		terms = [terms]
 	for term in terms:
+		if term == 'USARLISTA':
+			continue
 		polarities.append({
 			'term': term,
-			'polarity': remote.polarity_anom(term, region, start, end)['aggregations']['polarity']['buckets'],
-			'polarity_pos': remote.polarity_mean_anom(term, region, start, end, min_val=0),
-			'polarity_neg': -remote.polarity_mean_anom(term, region, start, end, max_val=0),
-			'polarity_total': remote.polarity_mean_anom(term, region, start, end),
+			'polarity': remote.polarity(term, region, start, end)['aggregations']['polarity']['buckets'],
+			'polarity_pos': remote.polarity_mean(term, region, start, end, min_val=0),
+			'polarity_neg': -remote.polarity_mean(term, region, start, end, max_val=0),
+			'polarity_total': remote.polarity_mean(term, region, start, end),
 		})
 	response = {
 		'polarities': polarities
@@ -103,7 +105,7 @@ def geogrid(request, terms, region, start, end):
 	params = json.loads(request.body) if request.body else {}
 	weight = params.get('weight', False)
 	response = {
-		'geogrid': remote.geogrid_anom(terms, region, start, end, weight)['aggregations']['geogrid']['buckets'],
+		'geogrid': remote.geogrid(terms, region, start, end, weight)['aggregations']['geogrid']['buckets'],
 	}
 	return JsonResponse(response)
 

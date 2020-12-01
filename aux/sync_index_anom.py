@@ -5,7 +5,7 @@ import datetime
 import json
 
 """
-curl -XPUT 'http://localhost:9200/anom_escucha'  -H "Content-Type: application/json"  -d '{
+curl -XPUT 'http://biv-aodback-01.aragon.local:9200/anom_escucha'  -H "Content-Type: application/json"  -d '{
   "settings": {
     "analysis": {
       "analyzer": {
@@ -169,9 +169,25 @@ class RemoteModel(object):
                     gte += 1
                     polarity = None
                     length_response = size_query
-                    
+
+                # for record in data:
+                #     hashtags = record["_source"]["hashtags"]
+                #     if hashtags:
+                #         record["_source"]["serialized_hashtags"] = ""
+                #         for hashtag in hashtags:
+                #             record["_source"]["serialized_hashtags"] += hashtag + " "
+
+                #     mentions = record["_source"]["mentions"]
+                #     if mentions:
+                #         record["_source"]["serialized_mentions"] = ""
+                #         for mention in mentions:
+                #             record["_source"]["serialized_mentions"] += mention + " "
+
             # response = self.get_escucha(size_query, gte)
-            # data = map(self.map_response, response)
+            # data = map(self.map_response, response
+
+            # with open('get_escucha'+str(gte)+'.json', 'w') as outfile:
+            #     json.dump(data, outfile, indent=4)
             helpers.bulk(self.es, data)
             print(i, ' --> published_on: ', data[length_array-1]
                   ['_source']['published_on'], ',  polarity: ', data[length_array-1]

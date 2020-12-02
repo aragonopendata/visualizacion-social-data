@@ -86,9 +86,12 @@ def get_polarity(request, terms, region, start, end):
 	for term in terms:
 		if term == 'USARLISTA':
 			continue
+		polarity_info = remote.polarity(term, region, start, end)
+
 		polarities.append({
 			'term': term,
-			'polarity': remote.polarity(term, region, start, end)['aggregations']['polarity']['buckets'],
+			'polarity': polarity_info['aggregations']['polarity']['buckets'],
+			'polarity_stats': polarity_info['aggregations']['polarity_stats'],
 			'polarity_pos': remote.polarity_mean(term, region, start, end, min_val=0),
 			'polarity_neg': -remote.polarity_mean(term, region, start, end, max_val=0),
 			'polarity_total': remote.polarity_mean(term, region, start, end),

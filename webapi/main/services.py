@@ -205,7 +205,7 @@ class RemoteModel(object):
                     "analyze_wildcard": True
                 }
             })
-            
+
     @property
     def _default_min_published_on(self):
         return 1385856000000
@@ -549,9 +549,11 @@ class RemoteModel(object):
                         ],
                         "keyed": True
                     }
-                }
+                },
+                "polarity_stats": {"extended_stats": {"field": "polarity"}}
             }
         }
+
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)

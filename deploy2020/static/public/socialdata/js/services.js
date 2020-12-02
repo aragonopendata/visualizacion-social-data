@@ -1373,16 +1373,21 @@ angular
               var hashtagText = element.hashtag;
             }
             var link = `#/general_inst?region=*&start=${mondayFormated}&end=${saturdayFormated}&term=${hashtagText}&enlista`;
-            words.push({
+
+            var newWord = {
               text: element.hashtag,
-              weight: element.count,
+              weight: element.weight_total,
               link: link,
               handlers: {
                 mouseover: function (event) {
                   $(`#${event.target.id}`).attr("alt", hashtagText);
                 },
               },
-            });
+            }
+            if(element.weight_in_list) newWord.color = "#f1c832"
+
+            words.push(newWord);
+
             var row = `<li alt="${hashtagText}"=>${element.hashtag}</li>`;
             $(`#table${weekFormat}`).append(row);
           });

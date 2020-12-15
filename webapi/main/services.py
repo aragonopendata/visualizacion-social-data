@@ -547,10 +547,13 @@ class RemoteModel(object):
                                 "to": 1
                             }
                         ],
+
                         "keyed": True
-                    }
+                    }, 
+                    "aggs": {
+                        "stats": {"extended_stats": {"field": "polarity"}}
+                    },
                 },
-                "polarity_stats": {"extended_stats": {"field": "polarity"}}
             }
         }
 

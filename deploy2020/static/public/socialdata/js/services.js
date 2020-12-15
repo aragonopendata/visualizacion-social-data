@@ -617,6 +617,7 @@ angular
     };
 
     drawers.drawPolarity = function (scope, response) {
+      
       // Polarity
       total_positive = 0;
       total_negative = 0;
@@ -667,23 +668,43 @@ angular
         displayed: true,
       };
 
-      // Polarity positive
-      scope.polarity_pos = [{ Nivel: positive_level }];
-      scope.polarity_pos_cols = [{ id: "Nivel", type: "gauge" }];
+      // // Polarity positive
+      // scope.polarity_pos = [{ Start: 0 },{ End: positive_level }];
+      // scope.polarity_pos_cols = [{ id: "End", type: "gauge" },{ id: "Start", type: "gauge" }];
 
-      // Polarity negative
-      scope.polarity_neg = [{ Nivel: negative_level }];
-      scope.polarity_neg_cols = [{ id: "Nivel", type: "gauge" }];
+      // // Polarity negative
+      // scope.polarity_neg = [{ Nivel: negative_level }];
+      // scope.polarity_neg_cols = [{ id: "Nivel", type: "gauge" }];
 
-      // Polarity by term
-      scope.terms_polarity = [];
-      for (i = 0; i < response.polarities.length; i++) {
-        scope.terms_polarity.push({
-          term: response.polarities[i].term,
-          polarity: [{ polaridad: response.polarities[i].polarity_total }],
-          polarity_cols: [{ id: "polaridad", type: "bar" }],
-        });
-      }
+      // // Polarity by term
+      // scope.terms_polarity = [];
+      // for (i = 0; i < response.polarities.length; i++) {
+      //   scope.terms_polarity.push({
+      //     term: response.polarities[i].term,
+      //     polarity: [{ polaridad: response.polarities[i].polarity_total }],
+      //     polarity_cols: [{ id: "polaridad", type: "bar" }],
+      //   });
+      // }
+
+      var positiveInfo = response.polarities[0].polarity.positive
+      var negativeInfo = response.polarities[0].polarity.negative
+      var neutralInfo = response.polarities[0].polarity.neutral
+      var totalTwits = positiveInfo.doc_count + negativeInfo.doc_count + neutralInfo.doc_count
+      var positiveTransparency = Math.round((positiveInfo.doc_count/totalTwits)*100*0.8 + 20)
+      var negativeTransparency = Math.round((negativeInfo.doc_count/totalTwits)*100*0.8 + 20)
+
+      scope.polarity_pos = {
+        color: `rgb(25 172 32 / ${positiveTransparency}%)`,
+        start_value: positiveInfo.stats.avg - positiveInfo.stats.std_deviation,
+        end_value: positiveInfo.stats.avg + positiveInfo.stats.std_deviation,
+        muestreo: 'positividad'
+      };
+      scope.polarity_neg = {
+        color: `rgb(255 0 0 / ${negativeTransparency}%)`,
+        start_value: negativeInfo.stats.avg - negativeInfo.stats.std_deviation,
+        end_value: negativeInfo.stats.avg + negativeInfo.stats.std_deviation,
+        muestreo: 'negatividad'
+      };
     };
 
     drawers.drawMap = function (scope, response) {
@@ -890,11 +911,13 @@ angular
             onTransitionStart: function (swiper) {
               helpers.createCloud(scope, year, escuchaAPI);
             },
-            onSetTranslate: function (swiper, event){
-              $(window).unbind("mouseup").one('mouseup',function(e) {
-                helpers.createCloud(scope, year, escuchaAPI);
-              });
-            }
+            onSetTranslate: function (swiper, event) {
+              $(window)
+                .unbind("mouseup")
+                .one("mouseup", function (e) {
+                  helpers.createCloud(scope, year, escuchaAPI);
+                });
+            },
             // This onSetTranslate makes the active bullet follow the scrollbar in the pagination
             // onSetTranslate: function (swiper, event) {
             //   if(event == 0){
@@ -1383,8 +1406,8 @@ angular
                   $(`#${event.target.id}`).attr("alt", hashtagText);
                 },
               },
-            }
-            if(element.weight_in_list) newWord.color = "#f1c832"
+            };
+            if (element.weight_in_list) newWord.color = "#f1c832";
 
             words.push(newWord);
 

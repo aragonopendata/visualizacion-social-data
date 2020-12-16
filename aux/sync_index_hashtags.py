@@ -23,7 +23,9 @@ curl -XPUT 'http://biv-aodback-01.aragon.local:9200/weekly_hashtags'  -H "Conten
         "hashtags": {
           "properties": {
             "hashtag": {"type": "keyword"},
-            "count": {"type": "integer"}
+            "weight_global": { "type": "integer" },
+            "weight_in_list": { "type": "integer" },
+            "weight_total": { "type": "integer" }
           }
         }
       }
@@ -47,23 +49,21 @@ class RemoteModel(object):
     def request_weekly(self, payload):
         return self.es.search(index="weekly_hashtags", doc_type="weekly_hashtags_items", body=payload, request_timeout=30)
 
-    def get_escucha(self):
+    def get_escucha(self, inst=False):
+        size = 50
+        if inst:
+            size = 10
+
         payload = {
             "size": 1000,
             "query": {
                 "bool": {
-                    "must": {
+                    "must":                         {
                         "query_string": {
                             # "fields": ["title", "description"],
                             "query": "*",
                             "analyze_wildcard": True
                         },
-                        # "match": {
-                        #     "author_in_list": {
-                        #         "query": True,
-                        #     }
-                        #     #        "analyze_wildcard": True
-                        # }
                     },
                     "filter": {
                         "bool": {
@@ -93,16 +93,16 @@ class RemoteModel(object):
                         "total_by_hashtag": {
                             "terms": {
                                 "field": "hashtags",
-                                "size": 50,
+                                "size": size,
                                 "order": {
                                     "_count": "desc"
                                 }
                             },
                             "aggs": {
 
-                                "weight_global": {
-                                    "value_count": {"field": "author"}
-                                },
+                                # "weight_global": {
+                                #     "value_count": {"field": "author"}
+                                # },
                                 "weight_in_list": {
                                     "value_count": {"field": "author_in_list"}
                                 },
@@ -121,33 +121,72 @@ class RemoteModel(object):
                 },
             }
         }
-        with open('test.json', 'w') as outfile:
-            json.dump(self.request(payload)[
-                      'aggregations']['interval']['buckets'], outfile, indent=4)
-        # return self.request(payload)['aggregations']['interval']['buckets']
+        if inst:
+            payload['query']['bool']['must'] = {
+                "bool": {
+                    "should": []
+                }
+            }
+            payload["query"]["bool"]["must"]["bool"]["should"].append({
+                "match": {
+                    "author_in_list": {
+                        "query": True,
+                    },
+                    # "analyze_wildcard": True
+                }
+            })
+
+        # with open('test.json', 'w') as outfile:
+        #     json.dump(self.request(payload)[
+        #               'aggregations']['interval']['buckets'], outfile, indent=4)
+        return self.request(payload)['aggregations']['interval']
 
     def format_group_week(self):
-        data = self.get_escucha()
+        data = self.get_escucha()['buckets']
         actions = []
+        data_inst = self.get_escucha(True)['buckets']
+
         for week in data:
+            hashtags_inst =[]
+            for week_inst in data_inst:
+                if week['key_as_string'] == week_inst['key_as_string']:
+                    hashtags_inst = week_inst['total_by_hashtag']['buckets']
+            # print week['key']
             hashtags = week['total_by_hashtag']['buckets']
             hastags_formated = []
+            for hashtag_inst in hashtags_inst:
+                if not any(x['key'] == hashtag_inst['key'] for x in hashtags):
+                    hashtags.append(hashtag_inst)
+                    # print('anadir ' + hashtag_inst['key'] + ' a la semana ' + week['key_as_string'] )
+
             for hashtag in hashtags:
+                weight_total = hashtag['doc_count'] + \
+                    3 * hashtag['weight_in_list']['value']
                 hastags_formated.append(
-                    {'hashtag': hashtag['key'], 'count': hashtag['doc_count']})
+                    {'hashtag': hashtag['key'], 'weight_global': hashtag['doc_count'], 'weight_in_list': hashtag['weight_in_list']['value'], 'weight_total': weight_total})
+                # hastags_formated.append(
+                #     {'hashtag': hashtag['key'], 'count': hashtag['doc_count']})
 
             item = {'start_week': week['key_as_string'],
                     'hashtags': hastags_formated}
             action = {
                 "_index": "weekly_hashtags",
                 "_type": "weekly_hashtags_items",
-                "_id": len(actions),
+                "_id": format(len(actions), '05'),
                 # "_id": "%06d" % (len(actions),),
                 "_source": item
             }
 
             actions.append(action)
-        # print(actions)
+        
+
+        # with open('test.json', 'w') as outfile:
+        #     json.dump(actions, outfile, indent=4)
+        # with open('test1.json', 'w') as outfile:
+        #     json.dump(data, outfile, indent=4)
+        # with open('test2.json', 'w') as outfile:
+        #     json.dump(data_inst, outfile, indent=4)
+
         helpers.bulk(self.es, actions)
 
     def get_from_weekly_hashtags(self):

@@ -147,21 +147,33 @@ class RemoteModel(object):
         gte = 1385855999999
         i = 0
         polarity = None
+        outfile = open('error_create_anom.txt', 'w')
 
-        # with open('get_escucha'+str(gte)+'.json', 'w') as outfile:
-        #     json.dump(data, outfile, indent=4)
         while length_response == size_query or polarity != None:
+            gte += 7200000 #Difference apparently of two hours between the shown date and the processed # Only for production
+
             response = self.get_escucha(size_query, gte, polarity)
             data = map(self.map_response, response)
             length_response = (len(data))
             length_array = length_response
-            # print(length_response, size_query, polarity)
+
             if length_response == size_query or polarity != None:
                 gte = int(datetime.datetime.strptime(
                     data[length_response-1]['_source']['published_on'], '%Y-%m-%d %H:%M:%S').strftime('%s')) * 1000
 
                 if(data[0]['_source']['published_on'] == data[length_response-1]['_source']['published_on']):
                     polarity = data[length_response-1]['_source']['polarity']
+                    outfile.write(
+                        "Repeat at " + data[length_array-1]['_source']['published_on'] + "\n")
+                    if(data[0]['_source']['polarity'] == data[length_response-1]['_source']['polarity']):
+                        outfile.write(
+                            "Overflow at " + data[length_array-1]['_source']['published_on'] +
+                            " with polarity equals to" + data[length_array-1]
+                            ['_source']['polarity'] + "\n")
+                        gte += 1
+                        polarity = None
+                        length_response = size_query
+
                 else:
                     polarity = None
 
@@ -193,6 +205,8 @@ class RemoteModel(object):
                   ['_source']['published_on'], ',  polarity: ', data[length_array-1]
                   ['_source']['polarity'], '|| NOW ', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             i += 1
+
+        print(end)
 
 
 RemoteModel().create_anom_escucha()

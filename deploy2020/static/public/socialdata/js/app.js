@@ -14,8 +14,8 @@ var app = angular
     "highcharts-ng",
   ])
   .constant("settings", {
-    API_URL: "http://193.146.116.204:8003/aosd", // COMENT FOR PRODUCTION
-    // API_URL: "http://miv-aodfront-01.aragon.local:8004/aosd", // UNCOMENT FOR PRODUCTION
+    // API_URL: "http://193.146.116.204:8003/aosd", // COMENT FOR PRODUCTION
+    API_URL: "http://miv-aodfront-01.aragon.local:8004/aosd", // UNCOMENT FOR PRODUCTION
     MAX_SUBSCRIPTIONS: 10,
     MAX_TERMS: 10,
   })

@@ -912,11 +912,11 @@ angular
               helpers.createCloud(scope, year, escuchaAPI);
             },
             onSetTranslate: function (swiper, event) {
-              $(window)
-                .unbind("mouseup")
-                .one("mouseup", function (e) {
-                  helpers.createCloud(scope, year, escuchaAPI);
-                });
+              // $(window)
+              //   .unbind("mouseup")
+              //   .one("mouseup", function (e) {
+              //     helpers.createCloud(scope, year, escuchaAPI);
+              //   });
             },
             // This onSetTranslate makes the active bullet follow the scrollbar in the pagination
             // onSetTranslate: function (swiper, event) {

@@ -63,7 +63,19 @@
   </form>
 </div>
 
-<!-- Needed for the update of the week with the week selected in the cloud -->
+
 <script>
+  // Needed for the update of the week with the week selected in the cloud
   $(window).trigger("mouseup");
+  
+  // Needed because for some reason this only sometimes in the controller
+  $('.input-daterange[readonly!="True"]').datepicker(
+    {
+      format: "dd/mm/yyyy",
+      weekStart: 1,
+      todayHighlight: true,
+      autoclose: true,
+      language: "es",
+    }
+    );
 </script>

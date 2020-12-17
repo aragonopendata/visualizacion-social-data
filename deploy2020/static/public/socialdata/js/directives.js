@@ -154,6 +154,7 @@ angular
           Highcharts.chart(element[0], {
             chart: {
               type: "solidgauge",
+              height: 400, // Necesary to work on firefox
             },
 
             title: null,

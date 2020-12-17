@@ -604,11 +604,11 @@ class RemoteModel(object):
                 }
             }
         }
-        # self._add_theme(payload, query)
-        self._add_theme_anom(payload, query)
+        self._add_theme(payload, query)
+        # self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)
-        return self.request_anom(payload)
+        return self.request(payload)
+        # return self.request_anom(payload)
 
     def count_by_field(self, field, query='*', region='*', min_published_on=None, max_published_on=None):
         payload = {

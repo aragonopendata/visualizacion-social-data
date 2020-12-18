@@ -558,7 +558,6 @@ angular
     $scope.end = "31/12/2018";
     $scope.terms = selection.terms;
     $scope.region = selection.region;
-
     $scope.drawWeeklyCloud = function () {
       response = escuchaAPI.getWeeklyCloud(
         $scope.terms,
@@ -566,7 +565,9 @@ angular
         $scope.start,
         $scope.end
       );
-      drawers.drawWeeklyCloud($scope, response, escuchaAPI, helpers);
+      setTimeout(() => {  drawers.drawWeeklyCloud($scope, response, escuchaAPI, helpers); }, 50);
+
+      
     };
 
     $scope.drawWeeklyCloud();

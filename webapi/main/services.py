@@ -103,10 +103,10 @@ class RemoteModel(object):
             print >>f, "ELASTIC_CLOUD", payload
         return self.es.search(index="weekly_hashtags", doc_type="weekly_hashtags_items", body=payload)
 
-    def request_anom(self, payload):
-        with open(TMPLOGFILE, 'w+') as f:
-            print >>f, "ELASTIC_ANOM", payload
-        return self.es.search(index="anom_escucha", doc_type="anom_data_items", body=payload)
+    # def request_anom(self, payload):
+    #     with open(TMPLOGFILE, 'w+') as f:
+    #         print >>f, "ELASTIC_ANOM", payload
+    #     return self.es.search(index="anom_escucha", doc_type="anom_data_items", body=payload)
 
     def _add_region(self, payload, region):
         if region != '*':
@@ -262,8 +262,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)
-        return self.request_anom(payload)
+        return self.request(payload)
+        # return self.request_anom(payload)
 
     def total_by_field(self, field, query='*', region='*', min_published_on=None, max_published_on=None):
         payload = {
@@ -308,8 +308,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)
-        return self.request_anom(payload)
+        return self.request(payload)
+        # return self.request_anom(payload)
 
     def count(self, query='*', region='*', min_published_on=None, max_published_on=None):
         payload = {
@@ -344,8 +344,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)['hits']['total']
-        return self.request_anom(payload)['hits']['total']
+        return self.request(payload)['hits']['total']
+        # return self.request_anom(payload)['hits']['total']
 
     def count_geo(self, query='*', region='*', min_published_on=None, max_published_on=None):
         payload = {
@@ -385,8 +385,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)['hits']['total']
-        return self.request_anom(payload)['hits']['total']
+        return self.request(payload)['hits']['total']
+        # return self.request_anom(payload)['hits']['total']
 
     def geogrid(self, query='*', region='*', min_published_on=None, max_published_on=None, weight=False):
         payload = {
@@ -436,8 +436,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # geogrid = self.request(payload)
-        geogrid = self.request_anom(payload)
+        geogrid = self.request(payload)
+        # geogrid = self.request_anom(payload)
         for row in geogrid['aggregations']['geogrid']['buckets']:
             lat, lon, _, _ = Geohash.decode_exactly(row['key'])
             row['lat'] = lat
@@ -506,8 +506,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)
-        return self.request_anom(payload)
+        return self.request(payload)
+        # return self.request_anom(payload)
 
     def polarity_mean(self, query='*', region='*', min_published_on=None, max_published_on=None, min_val=None, max_val=None):
         payload = {
@@ -556,8 +556,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # res = self.request(payload)
-        res = self.request_anom(payload)
+        res = self.request(payload)
+        # res = self.request_anom(payload)
 
         if res["hits"]["total"] > 0:
             return float(res["aggregations"]["sum_vals"]["value"]) / float(res["hits"]["total"])
@@ -649,8 +649,8 @@ class RemoteModel(object):
         # self._add_theme(payload, query)
         self._add_theme_anom(payload, query)
         self._add_region(payload, region)
-        # return self.request(payload)['aggregations']['total']['value']
-        return self.request_anom(payload)['aggregations']['total']['value']
+        return self.request(payload)['aggregations']['total']['value']
+        # return self.request_anom(payload)['aggregations']['total']['value']
 
     def get_last_items(self, query='*', region='*', min_published_on=None, max_published_on=None, is_geo=False, offset=0, size=50):
         payload = {

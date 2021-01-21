@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<head>
+	<title>Social data - ARAGÓN OPEN DATA</title>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="index, follow" />
+	<meta name="description" content="Aragón Open Data" />
+	<meta name="author" content="Kampal">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+
+	<link rel="favourites icon" href="/static/public/i/favicon.ico" />
+
+	<link rel="stylesheet" type="text/css" href="/static/public/homeV3/prueba.css">
+	<link rel="stylesheet" href="/static/public/themes/aod/style.css" media="screen" type="text/css" />
+	<link rel="stylesheet" href="/static/public/header/header.css">
+	<link rel="stylesheet" href="/static/public/footer/footer.css">
+	<link rel="stylesheet" href="/static/public/themes/aod/tipografia.css" media="screen" type="text/css" />
+	<link rel="stylesheet" href="/static/public/jquery/jquery-ui_1_10_3_smoothness.css">
+	<link rel="stylesheet" href="/static/public/aragopedia/chosen/chosen.css" type="text/css" />
+	<link rel="stylesheet" href="/static/public/aragopedia/chosen/chosenImage.css" type="text/css" />
+
+	<script type="text/javascript">
+		var currentUrl = "/servicios/open-social-data";
+	</script>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="/static/public/portalAOD_funcs.js"></script>
+
+
+	<style>
+		.mini .banner {
+			top: -7px;
+		}
+	</style>
+
+	<!-- SocialData -->
+	<link href="/static/public/socialdata/css/aosd.css" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link href="/static/public/socialdata/css/bootstrap.aod.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+		integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<!-- Bootstrap plugins -->
+	<link href="/static/public/socialdata/vendor/css/datepicker3.css" rel="stylesheet">
+	<link href="/static/public/socialdata/vendor/css/bootstrap-dialog.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- Loading bar -->
+	<link href="/static/public/socialdata/vendor/css/loading-bar.min.css" rel="stylesheet">
+	<!-- D3/C3 -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet">
+	<!-- Timeline -->
+	<link href="/static/public/socialdata/vendor/css/timeline.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
+	<!-- Cloud -->
+	<link href="/static/public/socialdata/vendor/css/jqcloud.css" rel="stylesheet">
+
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+	<!-- Bootstrap -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+		integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+		crossorigin="anonymous"></script>
+	<!-- script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
+	<!-- Bootstrap plugins -->
+	<script src="/static/public/socialdata/vendor/js/bootstrap-datepicker.js"></script>
+	<script src="/static/public/socialdata/vendor/js/locales/bootstrap-datepicker.es.js"></script>
+	<script src="/static/public/socialdata/vendor/js/bootstrap-dialog.min.js"></script>
+	<!-- Angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.4.5/angular-locale_es-es.js"></script>
+	<script src="/static/public/socialdata/vendor/js/ng-scrollto.js"></script>
+	<!-- Loading bar -->
+	<script src="/static/public/socialdata/vendor/js/loading-bar.min.js"></script>
+	<!-- D3/C3 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+	<script src="/static/public/socialdata/vendor/js/c3-angular.min.js"></script>
+	<!-- Highcharts -->
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/highcharts-more.js"></script>
+	<script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+	<!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
+	<!-- <script src="https://code.highcharts.com/modules/export-data.js"></script> -->
+	<!-- <script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
+	<script src="/static/public/socialdata/vendor/js/highcharts-ng.min.js"></script>
+	<!-- Google charts -->
+	<script src="https://www.google.com/jsapi"></script>
+	<script src="/static/public/socialdata/vendor/js/ng-google-charts-resize.js"></script>
+	<!-- Google maps -->
+	<script src="/static/public/socialdata/vendor/js/lodash.underscore.min.js"></script>
+	<script src="/static/public/socialdata/vendor/js/angular-google-maps.js"></script>
+	<!-- Sigma JS -->
+	<script src="/static/public/socialdata/vendor/js/sigma.min.js"></script>
+	<!-- TimeLine JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.min.js"></script>
+	<!-- Cloud JS -->
+	<script src="/static/public/socialdata/vendor/js/jqcloud.min.js"></script>
+
+	<!-- OpenLayers -->
+	<link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+	<!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+	<script
+		src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+	<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+
+
+
+	<style>
+		#datawindow {
+			width: 982px;
+		}
+
+		.anchoFila {
+			height: 30px;
+		}
+
+		select {
+			padding: 5px 10px 0;
+		}
+
+
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+			select {
+				padding: 0 10px 0;
+			}
+		}
+
+
+		.select1 {
+			width: 267px;
+			height: 30px;
+			font-size: 10px;
+		}
+
+		.select11 {
+			width: 267px;
+			height: 30px;
+			font-size: 10px;
+		}
+
+		.select2 {
+			width: 250px;
+			height: 30px;
+			font-size: 10px;
+		}
+
+		.select22 {
+			width: 215px;
+			height: 30px;
+			font-size: 10px;
+			float: left;
+			border: 1px solid #76a1b8;
+			margin-bottom: 0;
+			text-indent: 0.01px;
+			text-overflow: '';
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			background: url("/static/public/socialdata/escucha-activa/public/i/06-FLECHA-Pequena-Up.png") no-repeat 185px 10px;
+		}
+
+		.select3 {
+			width: 100px;
+			height: 30px;
+			font-size: 10px;
+		}
+
+		.select33 {
+			width: 215px;
+			height: 30px;
+			font-size: 10px;
+			float: left;
+			border: 1px solid #76a1b8;
+			margin-bottom: 0;
+			text-indent: 0.01px;
+			text-overflow: '';
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			background: url("/static/public/socialdata/escucha-activa/public/i/06-FLECHA-Pequena-Up.png") no-repeat 185px 10px;
+		}
+
+		.etiqueta1 {
+			width: 153px;
+			height: 30px;
+			float: left;
+			line-height: 30px;
+			text-align: left
+		}
+
+		.etiqueta1 img {
+			width: 100%;
+		}
+
+		.etiqueta2 {
+			width: 20px;
+			height: 26px;
+			float: left;
+			line-height: 30px;
+		}
+
+		.etiqueta3 {
+			width: 20px;
+			height: 26px;
+			float: left;
+			line-height: 30px;
+		}
+
+		.seccionSelect {
+			width: 990px;
+			height: auto;
+			min-height: 720px;
+			margin: auto;
+			margin-bottom: 0;
+		}
+
+		.selectores {
+			float: left;
+			vertical-align: middle;
+			margin-top: 30px;
+		}
+
+		.selectores1 {
+			float: left;
+			vertical-align: middle;
+			width: 430px;
+			height: 26px;
+		}
+
+		.selectores2 {
+			float: left;
+			vertical-align: middle;
+			width: 275px;
+			height: 26px;
+		}
+
+		.selectores3 {
+			float: left;
+			vertical-align: middle;
+			width: 130px;
+			height: 26px;
+		}
+
+		.alignJust {
+			text-align: justify;
+		}
+
+		.sizeData {
+			font-size: 12px;
+		}
+
+		.separadorSelDataset {
+			border-bottom: 1px solid #e5e5e3;
+			clear: both;
+		}
+
+		#dvLoading {
+			background: #000 url('/static/public/socialdata/escucha-activa/public/i/cargando.gif') no-repeat center center;
+			height: 80px;
+			width: 80px;
+			position: fixed;
+			z-index: 1000;
+			left: 50%;
+			top: 50%;
+			margin: -25px 0 0 -25px important !;
+		}
+
+		.centrar {
+			margin: 0 auto;
+		}
+
+		.margenImg {
+			margin: 10px;
+		}
+
+		.centraTexto {
+			text-align: center;
+		}
+
+		.sinEspacios {
+			letter-spacing: 0;
+		}
+
+		.sinEspaciosLineas {
+			line-height: 15px;
+		}
+
+		.huecomasPeq {
+			padding: 1px;
+		}
+
+		.ImageBorder {
+			border-width: 1px;
+			border-color: #e5e5e3;
+		}
+
+		.margenDcho {
+			padding-right: 10px;
+		}
+
+		#tablaDatos {
+			padding: 25px 0 0 0;
+		}
+
+		#tablaDatos .colizq {
+			width: 60px;
+			padding: 5px 30px 0;
+			vertical-align: top;
+			float: left;
+		}
+
+		#tablaDatos .colizq img {
+			padding: 0 5px 0 0;
+		}
+
+		#tablaDatos .colder {
+			padding: 0 120px 0 0;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		#tablaDatos .titulo {
+			float: left;
+			width: 100%;
+		}
+
+		#tablaDatos .colder span {
+			color: #333;
+			margin: 5px 0 0 0;
+			font-weight: normal;
+		}
+
+		#tablaDatos .compartirrs {
+			float: left;
+			padding: 0 0 0 10px;
+			border-left: 1px solid #ccc;
+		}
+
+		#tablaDatos .compartirrs img {
+			margin: 0 8px -3px 0;
+		}
+
+		#tablaDatos .abrir {
+			float: left;
+			margin: 0 10px 0 0;
+		}
+
+		#paginator {
+			float: left;
+			width: 848px;
+			margin: 30px 0;
+		}
+
+		#paginator .linkactivo {
+			text-decoration: underline;
+		}
+
+		#paginator ul {
+			width: 848px;
+		}
+
+		#paginator ul li {
+			float: left;
+			border-left: 1px solid #76a1b8;
+			padding: 0 5px;
+		}
+
+		.datos-terceros {
+			width: 134px;
+			height: 18px;
+			float: left;
+			margin: 30px 0;
+			background: url(/static/public/socialdata/escucha-activa/datos-terceros-off.png)no-repeat;
+		}
+
+		.datos-terceros:hover {
+			background: url(/static/public/socialdata/escucha-activa/datos-terceros-on.png)no-repeat;
+			cursor: pointer;
+		}
+
+		.pagprim {
+			border-left: 1px solid #4F7589;
+		}
+
+		.pagult {
+			border-right: 1px solid #4F7589;
+		}
+
+		.separadorContenidoPaginamenu {
+			position: absolute;
+			left: 0;
+			width: 100%;
+			border-bottom: 1px solid #76a1b8;
+			clear: both;
+			margin: -3px 0 0 0;
+		}
+
+		.separadorpaginas {
+			height: 2px;
+			background: #76a1b8
+		}
+
+
+		.refrescar {
+			float: right;
+			margin: 0 6px 0 0;
+		}
+
+		.bordesocialdata {
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		#mapaDinamico {
+			position: absolute;
+			height: 590px;
+			width: 982px;
+			border: 1px solid #76a1b8;
+		}
+
+		#mapaDinamico img {
+			max-width: none;
+		}
+
+		#miMapa {
+			margin-top: 30px;
+		}
+
+		#infoventana {
+			font-size: 10px;
+			text-align: left;
+		}
+
+		.selectDisabled {
+			-webkit-appearance: none;
+			-moz-appearance: none !important;
+			border: none;
+		}
+
+		.fixed-top {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			z-index: 1030;
+		}
+	</style>
+
+	<script src="/static/public/header/js/funcs_header.js"></script>
+</head>
+
+<body>
+
+	<div id="header"></div>
+	<div id="contenido" role="main">
+		<div class="huecoInicioPagina"></div>
+		<div class="separadorContenidoPagina"></div>
+		<div class="huecoInicioPagina"></div>
+		<div class="clear"></div>
+	</div>
+	<div ng-app="aosd">
+		<ng-view onload="loaded()"></ng-view>
+	</div>
+
+	<div id="footer"></div>
+
+	<script src="/static/public/socialdata/js/app.js"></script>
+	<script src="/static/public/socialdata/js/controllers.js"></script>
+	<script src="/static/public/socialdata/js/services.js"></script>
+	<script src="/static/public/socialdata/js/directives.js"></script>
+	<script src="/static/public/socialdata/js/filters.js"></script>
+
+	<!-- Google Analytics -->
+	<script type='text/javascript'>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-36118896-2', 'auto');
+	</script>
+	<!-- End Google Analytics -->
+</body>
+
+</html>

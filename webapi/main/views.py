@@ -84,9 +84,13 @@ def get_polarity(request, terms, region, start, end):
 	if not isinstance(terms, list):
 		terms = [terms]
 	for term in terms:
+		if term == 'USARLISTA':
+			continue
+		polarity_info = remote.polarity(term, region, start, end)
+
 		polarities.append({
 			'term': term,
-			'polarity': remote.polarity(term, region, start, end)['aggregations']['polarity']['buckets'],
+			'polarity': polarity_info['aggregations']['polarity']['buckets'],
 			'polarity_pos': remote.polarity_mean(term, region, start, end, min_val=0),
 			'polarity_neg': -remote.polarity_mean(term, region, start, end, max_val=0),
 			'polarity_total': remote.polarity_mean(term, region, start, end),
@@ -122,6 +126,15 @@ def multiterm_evolution(request, terms, region, start, end):
 		})
 	response = {
 		'evolution': evol,
+	}
+	return JsonResponse(response)
+
+
+@require_http_methods(['POST'])
+@parse_params
+def get_hist_cloud(request, terms, region, start, end):
+	response = {
+		'historics_cloud': remote.historics_cloud(terms, region, start, end),
 	}
 	return JsonResponse(response)
 

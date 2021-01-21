@@ -1,0 +1,50 @@
+<!-- <div
+  class="row aosd-section"
+  ng-if="hemicycle_hashtags.series[0].data.length || hemicycle_mentions.series[0].data.length"
+> -->
+<div class="row aosd-section">
+  <div class="col-sm-12">
+    <hr class="aosd-section-separator" />
+    <h2>
+      Top hashtags y menciones
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('top-hashtags')"
+        id="top-hashtags-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
+  </div>
+  <div
+    ng-if="hemicycle_hashtags.series[0].data.length"
+    class="col-lg-6 hemicycle-container top-hashtags-dropdown"
+  >
+    <highchart
+      id="chart_hemicycle_hashtags"
+      config="hemicycle_hashtags"
+    ></highchart>
+  </div>
+  <div
+    ng-if="!hemicycle_hashtags.series[0].data.length"
+    class="col-lg-6 hemicycle-container-info top-hashtags-dropdown"
+  >
+    <h5>No hay hashtags relacionados con el término en rango seleccionados</h5>
+  </div>
+  <div
+    ng-if="hemicycle_mentions.series[0].data.length"
+    class="col-lg-6 hemicycle-container top-hashtags-dropdown"
+  >
+    <highchart
+      id="chart_hemicycle_mentions"
+      config="hemicycle_mentions"
+    ></highchart>
+  </div>
+  <div
+    ng-if="!hemicycle_mentions.series[0].data.length"
+    class="col-lg-6 hemicycle-container-info top-hashtags-dropdown"
+  >
+    <h5>No hay menciones relacionadas con el término en rango seleccionados</h5>
+  </div>
+</div>

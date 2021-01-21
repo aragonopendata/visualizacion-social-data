@@ -1,0 +1,89 @@
+<div class="row aosd-section">
+  <div class="col-sm-12">
+    <hr class="aosd-section-separator" />
+    <h2>
+      Hashtags y menciones
+      <a
+        href=""
+        class="btn btn-default top-btn aosd-dropdown-button"
+        ng-click="toggleDropdown('hashtags')"
+        id="hashtags-dropdown-button"
+      >
+        Ocultar
+      </a>
+    </h2>
+  </div>
+  <div class="col-lg-4 hashtags-dropdown">
+    <div class="panel panel-default">
+      <div class="panel-heading">Hashtags más usados</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Término</th>
+            <th>Apariciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="hashtag in top_hashtags">
+            <td>
+              <a
+                href="https://twitter.com/hashtag/{{ hashtag.key | removeTwitterChar }}"
+                target="_blank"
+                >#</a
+              >
+              <a
+                href="#/general_inst?enlista&region={{ (region == 'Todo Aragón') ? '*' : region }}&start={{ start }}&end={{ end }}&term={{ hashtag.key | removeTwitterChar }}"
+                >{{ hashtag.key | removeTwitterChar }}
+              </a>
+            </td>
+            <td>{{ hashtag.doc_count | number }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-4 hashtags-dropdown">
+    <div class="panel panel-default">
+      <div class="panel-heading">Autores más activos</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Autor</th>
+            <th>Mensajes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="author in top_authors">
+            <td>{{ author.key }}</td>
+            <td>{{ author.doc_count | number }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-4 hashtags-dropdown">
+    <div class="panel panel-default">
+      <div class="panel-heading">Autores más mencionados</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Autor</th>
+            <th>Menciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="mention in top_mentions">
+            <td>
+              <a
+                href="https://twitter.com/{{ mention.key | removeTwitterChar }}"
+                target="_blank"
+                >{{ mention.key }}</a
+              >
+            </td>
+            <td>{{ mention.doc_count | number }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -15,21 +15,23 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PARENT_DIR = os.path.abspath(os.path.join(BASE_DIR, os.pardir))
+GREATPARENT_DIR = os.path.abspath(os.path.join(PARENT_DIR, os.pardir))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = '...'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # Application definition
 
 INSTALLED_APPS = (
+    ##commented out to run without database. Production could have different needs
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,12 +40,27 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     #'corsheaders',
     'main',
+    'aosd',
 )
 
+
+# ADDED THE ALLOWED HOST HERE BECAUSE PROBLEMS FOR PRODUCTION
+ALLOWED_HOSTS = [
+             '127.0.0.1',
+             'localhost',
+             '193.146.116.193',
+             'miv-aodfront-01.aragon.local',
+             '193.146.116.204',
+             '172.27.38.119'
+         ]
+
+
+
+
 MIDDLEWARE_CLASSES = (
-    #'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # UNCOMENT FOR PRODUCTION 
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.CommonMiddleware', # UNCOMENT FOR PRODUCTION 
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -98,7 +115,7 @@ DATABASES = {
 }
 
 #DATABASE_ROUTERS = ['aosd.db_routers.MainRouter']
-#DATABASES = {}
+DATABASES = {}
 
 
 # Internationalization
@@ -121,36 +138,42 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-
 STATICFILES_DIRS = (
-    os.path.join(PARENT_DIR, 'static'),
+    #os.path.join(PARENT_DIR, 'static'),
+    os.path.join(GREATPARENT_DIR, 'deploy2020/static'),
 )
 
-#CORS_ORIGIN_ALLOW_ALL = True
+print("usando para /static/ los DIRS:", STATICFILES_DIRS)
 
-#CORS_ORIGIN_WHITELIST = (
-    #'opendata.aragon.es',
-    #'preopendata.aragon.es',
-    #'localhost:8004',
-    #'127.0.0.1:8004',
-    #'localhost:7030',
-    #'127.0.1:7030',
-    #'localhost'
-#)
+# UNCOMENT FOR PRODUCTION START
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+    'opendata.aragon.es',
+    'preopendata.aragon.es',
+    'localhost:8004',
+    '127.0.0.1:8004',
+    'localhost:7030',
+    '127.0.1:7030',
+    'miv-aodfront-01.aragon.local:7030',
+    'miv-aodfront-01.aragon.local:8004',
+    'miv-aodfront-01.aragon.local',
+    'localhost'
+)
 
 # IE cache... (DEFAULT CORS ALLOW HEADERS + ['cache-control', 'pragma'])
-#CORS_ALLOW_HEADERS = (
- #   'x-requested-with',
- #   'content-type',
- #   'accept',
- #   'origin',
- #   'authorization',
- #   'x-csrftoken',
- #   'jwt-token',
- #   'cache-control',
- #   'pragma',
-#)
-
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+    'jwt-token',
+    'cache-control',
+    'pragma',
+)
+# UNCOMENT FOR PRODUCTION END
 
 # 128 SECRET KEY
 JWT_SECRET_KEY = ''

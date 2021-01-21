@@ -1,0 +1,80 @@
+<h2>Resultados de la búsqueda:</h2>
+<div class="aosd-controls row" ng-controller="mainController">
+  <form name="terms2" class="col-12 inline-formcontrol" novalidate>
+    <div class="alert alert-danger" role="alert" ng-show="invalid_dates">
+      <span
+        class="glyphicon glyphicon-exclamation-sign"
+        aria-hidden="true"
+      ></span>
+      <span class="sr-only">Error:</span>
+      {{ invalid_dates }}
+    </div>
+    <div class="row">
+      <div class="form-group date input-daterange col-md-4 pr-0">
+        <label for="start" class="align-bottom">Desde</label>
+        <input
+          class="col-8 form-control date-filter-control d-inline align-middle"
+          id="start"
+          ng-model="start"
+          placeholder="dd/mm/yyyy"
+          type="text"
+          autocomplete="off"
+        />
+        <span class="col-1 input-group-addon d-inline p-3"
+          ><span class="glyphicon glyphicon-calendar"></span
+        ></span>
+      </div>
+      <div class="form-group date input-daterange col-md-4 pr-0">
+        <label for="end" class="align-bottom">Hasta</label>
+        <input
+          class="col-8 form-control date-filter-control d-inline align-middle"
+          id="end"
+          ng-model="end"
+          placeholder="dd/mm/yyyy"
+          type="text"
+          autocomplete="off"
+        />
+        <span class="col-1 input-group-addon d-inline p-3"
+          ><span class="glyphicon glyphicon-calendar"></span
+        ></span>
+      </div>
+      <div class="form-group col-md-4 pr-0">
+        <label for="terminos" class="align-bottom">Sobre</label>
+        <input
+          type="text"
+          class="col-8 form-control d-inline align-middle m-0"
+          id="terminos"
+          data-ng-model="termsList"
+          placeholder="Introduce los términos"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input
+          type="submit"
+          class="btn btn-primary"
+          value="Buscar en institucional"
+          ng-click="search_inst()"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<script>
+  // Needed for the update of the week with the week selected in the cloud
+  // $(window).trigger("mouseup");
+  // Needed because for some reason this only sometimes in the controller
+  $('.input-daterange[readonly!="True"]').datepicker(
+    {
+      format: "dd/mm/yyyy",
+      weekStart: 1,
+      todayHighlight: true,
+      autoclose: true,
+      language: "es",
+    }
+    );
+</script>

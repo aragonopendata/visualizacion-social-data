@@ -1,0 +1,83 @@
+<script>
+  $(function () {
+    $.fn.scrollBottom = function () {
+      return $(document).height() - this.scrollTop() - this.height();
+    };
+
+    var $el = $(".aosd-side-nav");
+    var $window = $(window);
+
+    $window.bind("scroll resize", function () {
+      var gap = $window.height() - $el.height() - $("header").height() - 10;
+      var visibleFoot =
+        $("footer").height() - $window.scrollBottom() + $("header").height();
+      var scrollTop = $window.scrollTop();
+
+      if (visibleFoot > gap) {
+        $el.css({
+          top: "auto",
+          bottom: visibleFoot + "px",
+        });
+      } else {
+        $el.css({
+          top: "auto",
+          bottom: "auto",
+        });
+      }
+    });
+  });
+</script>
+
+<ul class="nav navbar-nav aosd-side-nav">
+  <li ng-class="{active:isActive('#/general_inst')}">
+    <a href="" ng-click="moveTo('/general_inst')">
+      <i class="fa fa-fw fa-dashboard"></i> Vista general
+    </a>
+  </li>
+  <!-- <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('topHastagsSection')">
+      <i class="fa fa-fw fa-pie-chart"></i> Estadisticas
+    </a>
+  </li> -->
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('topHastagsSection')">
+      <i class="fa fa-fw fa-star"></i> Top hashtags
+    </a>
+  </li>
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('hastagsSection')">
+      <i class="fa fa-fw fa-tags"></i> Hashtags
+    </a>
+  </li>
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('lastMessagesSection')">
+      <i class="fa fa-fw fa-comments"></i> Últimos mensajes
+    </a>
+  </li>
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('evolutionSection')">
+      <i class="fa fa-fw fa-line-chart"></i> Evolución
+    </a>
+  </li>
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('polaritySection')">
+      <i class="fa fa-fw fa-toggle-on"></i> Polaridad
+    </a>
+  </li>
+  <li class="aosd-nav-section" ng-class="{hidden:!isActive('#/general_inst')}">
+    <a href="" ng-click="scrollTo('heatMapSection')">
+      <i class="fa fa-fw fa-globe"></i> Mapas de calor
+    </a>
+  </li>
+  <li ng-class="{active:isActive('#/historics_inst')}">
+    <a href="" ng-click="moveTo('/historics_inst')">
+      <i class="fa fa-fw fa-cloud"></i> Historicos
+      <!-- <i class="fa fa-fw fa-history"></i> Historicos -->
+    </a>
+  </li>
+  <li ng-class="{active:isActive('#/about')}">
+    <a href="" ng-click="moveTo('/about')">
+      <i class="fa fa-fw fa-info-circle"></i> About
+    </a>
+  </li>
+</ul>

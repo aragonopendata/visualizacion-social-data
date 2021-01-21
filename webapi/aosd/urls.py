@@ -18,7 +18,15 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^', include('main.urls', namespace='main')),
+    url(r'^aosd/', include('main.urls', namespace='aosdmain'))
 ]
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static('servicios/open-social-data/', document_root=settings.GREATPARENT_DIR+"/deploy2020/servicios/open-social-data/index.html")
+urlpatterns += static('servicios/', document_root=settings.GREATPARENT_DIR+"/deploy2020/servicios")
+

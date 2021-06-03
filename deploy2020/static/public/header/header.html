@@ -1,143 +1,76 @@
-<div id="header1" class="fixed-top">
-    <div class="relatedHeader container-fluid">
-        <!--<ul class="nav">
-                <button (click)="locale.switchLanguage('en')">Inglés</button>
-                <button (click)="locale.switchLanguage('es')">Español</button>
-            </ul>--> 
-        <div class="row primary nav">
-            <div class="col-4 col-sm-6"> <img class="img-fluid imgob" id="imgGobAragon" src="/static/public/contenido-general/header/logoDGABlanco.png"  />
-            <img id="imgGobFEDER" class="img-fluid imgob" src="/static/public/contenido-general/header/logoFEDER.png" />
-        </div>            
-        <div class="col-8  col-sm-6">               
-            <a class="nav-link col-3" href="http://transparencia.aragon.es/" target="_blank">TRANSPARENCIA</a>
-            <a class="nav-link col-6" href="http://aragonparticipa.aragon.es" target="_blank">PARTICIPACIÓN CIUDADANA</a>
-            <a class="nav-link active col-3" href="/">OPEN DATA</a>                 
+<header>
+  <section>
+    <a href="/" class="logo-dga"> <img src="https://deswww.aragon.es:4163/o/aragon-theme/images/dga/logo-dga-color.svg" alt="Gobierno de Aragón. Ir a la página principal del portal."> </a>
+    <div class="header-menu">
+      <a href="/-/fondos-europeos-aragon" class="european-flag-head" title="Más información sobre los Fondos Estructurales y de Inversión Europeos y Fondo Next Generation EU en Aragón"> <img class="image" src="https://deswww.aragon.es:4163/o/aragon-theme/images/dga/flag_europe.svg" alt="Unión Europea"> </a>
+      <label for="toggle-1" class="toggle-menu">
+        <ul  id="nav-icon3">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <strong class="text-open-menu">MENÚ</strong>
+        </ul>
+      </label>
+    </div>
+  <input type="checkbox" id="toggle-1">
+  <nav>
+    <ul>
+      <li><a class="" href="#logo"></i>Información</a>
+        <ul class="dropdown-content">
+          <li><a href="#">Información</a></li>
+          <li><a href="#">Eventos</a></li>
+          <li><a href="#">Colabora</a></li>
+          <li><a href="#">Aplicaciones</a></li>
+        </ul>
+      </li>
+      <li><a href="#logo"></i>Datos</a>
+        <ul class="dropdown-content">
+          <li><a href="#">Banco de datos</a></li>
+          <li><a href="#">Temas</a></li>
+          <li><a href="#">Publicadores</a></li>
+        </ul>
+      </li>
+      <li><a href="#logo"></i>Servicios</a>
+        <ul class="dropdown-content">
+          <li><a href="#">Datos enlazados</a></li>
+          <li><a href="#">Aragopedia</a></li>
+          <li><a href="#">Presupuestos</a></li>
+          <li><a href="#">Open social data</a></li>
+          <li><a href="#">Open data focus</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+</section>
+<section class="content">
+    <div class="content-header">
+      <div class="content-header-logo">
+        <a href="/"> <img src="/static/public/header/images/logo-opendata.svg" alt="Aragón Open Data"> </a>
+      </div>
+      <div class="search-module"> 
+        <div class="row">
+          <div class="col-md-6 offset-md-3"> 
+            <form class="portal_searcher_form" action="javascript:void(0)" method="get" class="access-to-search input-group" onsubmit="onClickSearchOpendata()" autocomplete="off"> 
+              <div class="search-input-container"> <input id="searchTextHeaderOpendata" maxlength="400" type="search" placeholder="Busca datos abiertos" class="search-input" title="Buscar">
+              </div>
+              <button class="search-btn" type="submit">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
         </div>
-    </div>     
-</div>
-    <div class="navbar navbar-toggleable-md navbar-light" id="nav">
-            
-                <a class="navbar-brand logo" href="/">
-                      <img class="navbar-brand" id="logo" src="/static/public/header/images/AOD-Logo.png"  class="d-inline-block align-top"  alt="">
-                  </a>
-                <div class="navbar-item menu" onclick="openNav()">
-                    <a class="nav-link aMenu">
-                        <img id="menu" class="aMenu" src="/static/public/header/images/Boton-Menu-Responsive-OFF.png"
-                        onmouseover="hoverButtonMenu()"
-                        onmouseout="outButtonMenu()"
-                        border="0" alt="x"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div  id="myNav" class="overlay">
-            <div class="overlay-content">
-                <div id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="card">
-                        <div class="card-header" role="tab" id="headingOne">
-                            <h5 class="mb-0">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                  Datos
-                              </a>
-                            </h5>
-                        </div>
-                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="card-block">
-                                <ul id="datos">
-                                    <li><a href="/datos/catalogo" onclick="openNav()">Banco de datos</a></li>
-                                    <li><a href="/datos/temas" onclick="openNav()">Temas</a></li>
-                                    <li><a href="/datos/publicadores" onclick="openNav()">Publicadores</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" role="tab" id="headingTwo">
-                            <h5 class="mb-0">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                  Servicios
-                              </a>
-                            </h5>
-                        </div>
-                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="card-block">
-                                <ul id="servicios">
-				    <li><a href="/pool">Datos Enlazados</a></li>
-                                    <li><a href="/servicios/aragopedia">Aragopedia</a></li>
-                                    <li><a href="http://presupuesto.aragon.es/">Presupuestos</a></li>
-                                    <li><a href="/servicios/analytics">Open Analytics Data</a></li>
-                                    <li><a href="/servicios/open-social-data">Open Social Data</a></li>
-                                    <li><a href="/servicios/focus">Open Data Focus</a></li>
-                                    <li><a href="/servicios/cras">CRAs Aragón</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" role="tab" id="headingThree">
-                            <h5 class="mb-0">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                  Información
-                              </a>
-                            </h5>
-                        </div>
-                        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-                            <div class="card-block">
-                                <ul id="info">
-                                    <li><a href="/informacion/open-data" onclick="openNav()">Información</a></li>
-				    <li><a href="/informacion/conocimiento" onclick="openNav()">Conocimiento</a></li>
-                                    <li><a href="/informacion/aplicaciones" onclick="openNav()">Aplicaciones</a></li>
-                                    <li><a href="/informacion/eventos" onclick="openNav()">Eventos</a></li>
-                                    <li><a href="/informacion/colabora" onclick="openNav()">Colabora</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" role="tab" id="headingFour">
-                            <h5 class="mb-0">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
-                                      Herramientas
-                                  </a>
-                            </h5>
-                        </div>
-                        <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
-                            <div class="card-block">
-                                <ul id="tools">
-                                    <li><a href="/herramientas/campus" onclick="openNav()">AOD Campus</a></li>
-                                    <li><a href="/herramientas/desarrolladores" onclick="openNav()">Desarrolladores</a></li>
-                                    <li><a href="/herramientas/apis" onclick="openNav()">APIs</a></li>
-                                    <li><a href="/sparql" onclick="openNav()">SPARQL</a></li>
-                                    <li><a href="https://github.com/aragonopendata" target="_blank" onclick="openNav()">GITHUB</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <form class="search" method="post" onsubmit="return buscaCkan()">
-                        <input autocomplete="off" id="buscador_header" class="textBox" placeholder="BUSCA DATOS ABIERTOS" type="search" onkeyup='autocompleteRequest()'/>
-                        <!--<button type="submit" class="submit"><i aria-hidden="true" class="fa fa-search"></i></button>-->
-                        <button type="submit" class="btnSearch">
-                                <i aria-hidden="true" class="fa fa-search" style="display: table; vertical-align: middle;"></i>
-                            </button>
-                        <!--<input autocomplete="off" #searchBox id="searchBox" placeholder="BUSCA DATOS ABIERTOS" type="search" class="textBox" (keyup)="search(searchBox.value)"
-                            (keyup.enter)="searchDatasetsByText(searchBox.value); openNav();" />-->
-                        <div id="resultsList">
-                            <div class="search-result">
-                                <a id="searchResult1"></a>
-                            </div>
-                            <div class="search-result">
-                                <a id="searchResult2"></a>
-                            </div>
-                            <div class="search-result">
-                                <a id="searchResult3"></a>
-                            </div>
-                            <div class="search-result">
-                                <a id="searchResult4"></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+      </div>
+      <p class="text-header-center col-md-8 mt-5 offset-md-2 mb-0">
+				Busca en Open Data lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id eros sit amet velit venenatis eleifend vitae sed erat.
+      </p>
+    </div>
+</section>
+<script>
+  $(document).ready(function(){
+    $('#nav-icon3').click(function(){
+      $(this).toggleClass('open');
+    });
+  });
+</script>

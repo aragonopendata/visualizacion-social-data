@@ -598,7 +598,7 @@
   }
   
   .content-header{
-    background-image: url(../img/opendata-background-header.jpg);
+    background-image: url(/static/public/images/opendata-background-header.jpg);
     height: 350px;
   }
   

@@ -1,8 +1,8 @@
 <header>
-  <section>
-    <a href="/" class="logo-dga"> <img src="https://preopendata.aragon.es/o/aragon-theme/images/dga/logo-dga-color.svg" alt="Gobierno de Aragón. Ir a la página principal del portal."> </a>
+  <section class="section-header">
+    <a href="https://www.aragon.es/" class="logo-dga"> <img src="/static/public/header/images/logo-dga-color.svg" alt="Gobierno de Aragón. Ir a la página principal del portal."> </a>
     <div class="header-menu">
-      <a href="/-/fondos-europeos-aragon" class="european-flag-head" title="Más información sobre los Fondos Estructurales y de Inversión Europeos y Fondo Next Generation EU en Aragón"> <img class="image" src="https://preopendata.aragon.es/o/aragon-theme/images/dga/flag_europe.svg" alt="Unión Europea"> </a>
+      <a href="https://www.aragon.es/-/fondos-europeos-aragon" class="european-flag-head" title="Más información sobre los Fondos Estructurales y de Inversión Europeos y Fondo Next Generation EU en Aragón"> <img class="image" src="/static/public/header/images/flag_europe.svg" alt="Unión Europea"> </a>
       <label for="toggle-1" class="toggle-menu">
         <ul  id="nav-icon3">
             <span></span>
@@ -16,28 +16,33 @@
   <input type="checkbox" id="toggle-1">
   <nav>
     <ul>
-      <li><a class="" href="#logo"></i>Información</a>
-        <ul class="dropdown-content">
-          <li><a href="#">Información</a></li>
-          <li><a href="#">Eventos</a></li>
-          <li><a href="#">Colabora</a></li>
-          <li><a href="#">Aplicaciones</a></li>
-        </ul>
-      </li>
       <li><a href="#logo"></i>Datos</a>
         <ul class="dropdown-content">
-          <li><a href="#">Banco de datos</a></li>
-          <li><a href="#">Temas</a></li>
-          <li><a href="#">Publicadores</a></li>
+          <li><a href="https://preopendata.aragon.es/datos/catalogo">Banco de datos</a></li>
+          <li><a href="https://preopendata.aragon.es/datos/publicadores">Publicadores</a></li>
+          <li><a href="https://preopendata.aragon.es/datos/temas">Temas</a></li>
         </ul>
       </li>
-      <li><a href="#logo"></i>Servicios</a>
+       <li><a href="#logo"></i>Servicios</a>
         <ul class="dropdown-content">
-          <li><a href="#">Datos enlazados</a></li>
-          <li><a href="#">Aragopedia</a></li>
-          <li><a href="#">Presupuestos</a></li>
-          <li><a href="#">Open social data</a></li>
-          <li><a href="#">Open data focus</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/landing-datos-enlazados">Datos enlazados</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/landing-aragopedia">Aragopedia</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/landing-presupuestos">Presupuestos</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/analytics">Open Analytics Data</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/landing-open-social-data">Open Social Data</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/landing-open-data-focus">Open Data Focus</a></li>
+          <li><a href="https://preopendata.aragon.es/servicios/fianzas-alquileres">Alquileres</a></li>
+        </ul>
+      </li>
+      <li><a class="" href="#logo"></i>Información</a>
+        <ul class="dropdown-content">
+          <li><a href="https://preopendata.aragon.es/informacion/conoce-aragon-open-data-y-los-datos-abiertos">Conócenos</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/blog-de-aragon-open-data">Blog</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/herramientas-para-usuarios-as-y-desarrolladores-as">Herramientas y APIs</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/eventos-de-datos-abiertos">Eventos</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/aplicaciones-hechas-con-datos-abiertos-en-aragon-open-data">Aplicaciones</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/colabora-con-tus-propuestas">Colabora</a></li>
+          <li><a href="https://preopendata.aragon.es/informacion/terminos-de-uso-licencias">Términos de uso</a></li>
         </ul>
       </li>
     </ul>
@@ -49,11 +54,12 @@
       <div class="content-header-logo">
         <a href="/"> <img src="/static/public/header/images/logo-opendata.svg" alt="Aragón Open Data"> </a>
       </div>
+      <div class="container">
       <div class="search-module"> 
-        <div class="row">
+        <div>
           <div class="col-md-6 offset-md-3"> 
-            <form class="portal_searcher_form" action="javascript:void(0)" method="get" class="access-to-search input-group" onsubmit="onClickSearchOpendata()" autocomplete="off"> 
-              <div class="search-input-container"> <input id="searchTextHeaderOpendata" maxlength="400" type="search" placeholder="Busca datos abiertos" class="search-input" title="Buscar">
+            <form class="portal_searcher_form" action="https://preopendata.aragon.es/datos/catalogo" method="get" class="access-to-search input-group"  autocomplete="off"> 
+              <div class="search-input-container"> <input id="searchTextHeaderOpendata" name="texto" maxlength="400" type="search" placeholder="Busca datos abiertos" class="search-input" title="Buscar">
               </div>
               <button class="search-btn" type="submit">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -61,10 +67,12 @@
             </form>
           </div>
         </div>
-      </div>
-      <p class="text-header-center col-md-8 mt-5 offset-md-2 mb-0">
-				Busca en Open Data lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id eros sit amet velit venenatis eleifend vitae sed erat.
+      
+      <p class="text-header-center">
+				Encuentra datos en el portal de datos abiertos del Gobierno de Aragón: Aragón Open Data
       </p>
+
+      </div>
     </div>
 </section>
 <script>

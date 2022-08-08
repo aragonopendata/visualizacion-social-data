@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% verbatim %}
+<div ng-app="aosd">
+  <ng-view onload="loaded()"></ng-view>
+</div>
+{% endverbatim %}
+{% endblock content %}
+
+
+{% block extra_javascript %}
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/controllers.js' %}"></script>
+<script src="{% static 'js/services.js' %}"></script>
+<script src="{% static 'js/directives.js' %}"></script>
+<script src="{% static 'js/filters.js' %}"></script>
+{% endblock extra_javascript %}
